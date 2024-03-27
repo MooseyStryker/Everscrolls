@@ -6,7 +6,7 @@ from sqlalchemy import Enum, DateTime
 from sqlalchemy import ForeignKey, String, Integer, Float, Boolean, Date, Text
 from sqlalchemy.orm import relationship
 
-many_cards_many_users = db.Table(
+many_notes_many_users = db.Table(
     "users_notes",
     db.Column("user_id", db.ForeignKey('users.id'), primary_key=True),
     db.Column("note_id", db.ForeignKey('notes.id'), primary_key=True),
@@ -14,7 +14,7 @@ many_cards_many_users = db.Table(
     db.Column('permissions', db.Enum('View Only', 'View and Edit'), nullable=False)
 )
 if environment == "production":
-    many_cards_many_users.schema = SCHEMA
+    many_notes_many_users.schema = SCHEMA
 
 
 class User(db.Model, UserMixin):
@@ -66,7 +66,7 @@ class Notebook(db.Model):
     created_at = db.Column(DateTime, default=datetime.utcnow)
     updated_at = db.Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    #The relationships attached to NoteBook
+    #The relationships attached to Notebook
     notebook_to_notes = db.relationship("Note", back_populates='notes_to_notebook', cascade="all, delete-orphan")
 
 
@@ -94,9 +94,9 @@ class Note(db.Model):
     updated_at = db.Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     #The relationships attached to Notes
-    notes_to_notebook = db.relationship("NoteBook", back_populates='notebook_to_notes')
+    notes_to_notebook = db.relationship("Notebook", back_populates='notebook_to_notes')
     notes_task = db.relationship("Task", back_populates='tasks_to_notes', cascade="all, delete-orphan")
-    notes_body = db.relationship("Body", back_populates='bodys_to_notes', cascade="all, delete-orphan")
+    notes_body = db.relationship("NoteBody", back_populates='bodys_to_notes', cascade="all, delete-orphan")
     notes_audio = db.relationship("NoteAudio", back_populates='audios_to_notes', cascade="all, delete-orphan")
     notes_images = db.relationship("NoteImage", back_populates='images_to_notes', cascade="all, delete-orphan")
 
@@ -137,7 +137,7 @@ class Task(db.Model):
 
 
 class NoteBody(db.Model):
-    __tablename__ = 'notebodys'
+    __tablename__ = 'note_bodys'
 
     if environment == "production":
         __table_args__ = {'schema': SCHEMA}
