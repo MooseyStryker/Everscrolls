@@ -32,7 +32,7 @@ def view_note():
 
 
 
-@note_routes.route("/new", methods=["POST"])
+@note_routes.route("", methods=["POST"])
 @login_required
 def new_note():
     form = NoteForm()
@@ -79,7 +79,7 @@ def edit_note(note_id):
     return jsonify(note.to_dict()), 201
 
 
-@note_routes.route("/<int:note_id>/delete", methods=["DELETE"])
+@note_routes.route("/<int:note_id>", methods=["DELETE"])
 @login_required
 def yeet_note(note_id):
     stmt = select(Note).where(Note.id == note_id)
@@ -104,10 +104,26 @@ def yeet_note(note_id):
 
 
 
+
+
+
+
+
+
+
+
+
 #NoteBody to a note
-@note_routes.route("/<int:note_id>/notebody/new", methods=["POST"])
+@note_routes.route("/<int:note_id>/notebody", methods=["POST"])
 @login_required
 def adding_notebody(note_id):
+    auth = select(Note).where(Note.id == note_id)
+    note = db.session.execute(auth).scalar_one()
+    if (note.creator_id != current_user.id):
+        return jsonify({
+            "Not authorized": "Forbidden"
+        }), 403
+
     form = NoteBody()
     form["csrf_token"].data = request.cookies["csrf_token"]
 
@@ -126,12 +142,14 @@ def adding_notebody(note_id):
 
 
 
-@note_routes.route("/<int:note_id>/notebody/<int:notebody_id>/edit", methods=["GET","PUT"])
+@note_routes.route("/<int:note_id>/notebody/<int:notebody_id>", methods=["GET","PUT"])
 @login_required
 def edit_notebody(note_id, notebody_id):
     auth = select(Note).where(Note.id == note_id)
     note = db.session.execute(auth).scalar_one()
-    if (note.creator_id != current_user.id):
+    permission_check = db.session.query(many_notes_many_users).filter_by(user_id=current_user.id, note_id=note_id).first()
+
+    if note.creator_id != current_user.id and (permission_check is None or permission_check.permissions != 'View and Edit'):
         return jsonify({
             "Not authorized": "Forbidden"
         }), 403
@@ -156,7 +174,7 @@ def edit_notebody(note_id, notebody_id):
 
 
 
-@note_routes.route("/<int:note_id>/notebody/<int:notebody_id>/delete", methods=["DELETE"])
+@note_routes.route("/<int:note_id>/notebody/<int:notebody_id>", methods=["DELETE"])
 @login_required
 def yeet_notebody(note_id, notebody_id):
     auth = select(Note).where(Note.id == note_id)
@@ -173,8 +191,17 @@ def yeet_notebody(note_id, notebody_id):
     db.session.commit()
 
     return jsonify({
-        "Message": "Notebook deleted successfully"
+        "Message": "NoteBody deleted successfully"
     })
+
+
+
+
+
+
+
+
+
 
 
 
@@ -182,7 +209,7 @@ def yeet_notebody(note_id, notebody_id):
 
 # Tasks to a note
 
-@note_routes.route("/<int:note_id>/tasks/new", methods=["POST"])
+@note_routes.route("/<int:note_id>/tasks", methods=["POST"])
 @login_required
 def adding_tasks(note_id):
     stmt = select(Note).where(Note.id == note_id)
@@ -209,7 +236,7 @@ def adding_tasks(note_id):
     return jsonify(form.errors), 400
 
 
-@note_routes.route("/<int:note_id>/tasks/<int:task_id>/edit", methods=["GET", "PUT"])
+@note_routes.route("/<int:note_id>/tasks/<int:task_id>", methods=["GET", "PUT"])
 @login_required
 def edit_task(note_id, task_id):
     stmt = select(Note).where(Note.id == note_id)
@@ -241,7 +268,7 @@ def edit_task(note_id, task_id):
     return jsonify(task.to_dict()), 200
 
 
-@note_routes.route("/<int:note_id>/tasks/<int:task_id>/delete", methods=["DELETE"])
+@note_routes.route("/<int:note_id>/tasks/<int:task_id>", methods=["DELETE"])
 @login_required
 def yeet_task(note_id, task_id):
     check_auth = select(Note).where(Note.id == note_id)
@@ -258,8 +285,125 @@ def yeet_task(note_id, task_id):
     db.session.commit()
 
     return jsonify({
-        "Message": "Notebook deleted successfully"
+        "Message": "Task deleted successfully"
     })
+
+
+
+
+#Images in a note
+@note_routes.route("/<int:note_id>/images", methods=["POST"])
+@login_required
+def add_image(note_id):
+    check_auth = select(Note).where(Note.id == note_id)
+    note = db.session.execute(check_auth).scalar_one()
+    if (note.creator_id != current_user.id):
+        return jsonify({
+            "Not authorized": "Forbidden"
+        }), 403
+
+    form = NoteImageForm()
+    form["csrf_token"].data = request.cookies["csrf_token"]
+
+    if form.validate_on_submit():
+        newImage = NoteImage(
+            note_id = note_id,
+            image_file = form.image_file.data,
+        )
+        db.session.add(newImage)
+        db.session.commit()
+        return jsonify(
+            newImage.to_dict()
+        ), 201
+    return jsonify(form.errors), 400
+
+
+
+@note_routes.route("/<int:note_id>/images/<int:image_id>", methods=["DELETE"])
+@login_required
+def delete_image(note_id, image_id):
+    check_auth = select(Note).where(Note.id == note_id)
+    note = db.session.execute(check_auth).scalar_one()
+    if (note.creator_id != current_user.id):
+        return jsonify({
+            "Not authorized": "Forbidden"
+        }), 403
+
+    stmt = select(NoteImage).where(NoteImage.id == image_id)
+    image = db.session.execute(stmt).scalar_one()
+    if image.note_id != note_id:
+        return jsonify({
+            "Error": "Image not found in this note"
+        }), 404
+
+    db.session.delete(image)
+    db.session.commit()
+    return jsonify({
+        "Success": "Image deleted"
+    }), 200
+
+
+
+
+
+
+
+
+
+
+
+
+#Audio in notes
+@note_routes.route("/<int:note_id>/audios", methods=["POST"])
+@login_required
+def add_audio(note_id):
+    check_auth = select(Note).where(Note.id == note_id)
+    note = db.session.execute(check_auth).scalar_one()
+    if (note.creator_id != current_user.id):
+        return jsonify({
+            "Not authorized": "Forbidden"
+        }), 403
+
+    form = NoteAudioForm()
+    form["csrf_token"].data = request.cookies["csrf_token"]
+
+    if form.validate_on_submit():
+        newAudio = NoteAudio(
+            note_id = note_id,
+            audio_file = form.audio_file.data,
+        )
+        db.session.add(newAudio)
+        db.session.commit()
+        return jsonify(
+            newAudio.to_dict()
+        ), 201
+    return jsonify(form.errors), 400
+
+
+
+@note_routes.route("/<int:note_id>/audios/<int:audio_id>", methods=["DELETE"])
+@login_required
+def delete_audio(note_id, audio_id):
+    check_auth = select(Note).where(Note.id == note_id)
+    note = db.session.execute(check_auth).scalar_one()
+    if (note.creator_id != current_user.id):
+        return jsonify({
+            "Not authorized": "Forbidden"
+        }), 403
+
+    stmt = select(NoteAudio).where(NoteAudio.id == audio_id)
+    audio = db.session.execute(stmt).scalar_one()
+    if audio.note_id != note_id:
+        return jsonify({
+            "Error": "Audio not found in this note"
+        }), 404
+
+    db.session.delete(audio)
+    db.session.commit()
+    return jsonify({
+        "Success": "Audio deleted"
+    }), 200
+
 
 
 
@@ -297,7 +441,7 @@ def view_shared_notes():
     return jsonify(allNotes)
 
 
-@note_routes.route("shared/<int:note_id>/user/<int:user_id>/new", methods=["POST"])
+@note_routes.route("shared/<int:note_id>/user/<int:user_id>", methods=["POST"])
 @login_required
 def share_this_note(note_id, user_id):
     form = ShareNote()
@@ -318,7 +462,7 @@ def share_this_note(note_id, user_id):
 
 
 
-@note_routes.route("shared/<int:note_id>/user/<int:user_id>/edit", methods=["GET","PUT"])
+@note_routes.route("shared/<int:note_id>/user/<int:user_id>", methods=["GET","PUT"])
 @login_required
 def edit_shared_note(note_id, user_id):
     stmt = select(many_notes_many_users).where(and_(many_notes_many_users.c.user_id == user_id, many_notes_many_users.c.note_id == note_id))
@@ -353,7 +497,7 @@ def edit_shared_note(note_id, user_id):
 
 
 
-@note_routes.route("shared/<int:note_id>/user/<int:user_id>/delete", methods=["DELETE"])
+@note_routes.route("shared/<int:note_id>/user/<int:user_id>", methods=["DELETE"])
 @login_required
 def yeete_shared_note(note_id, user_id):
     stmt = select(many_notes_many_users).where(and_(many_notes_many_users.c.user_id == user_id, many_notes_many_users.c.note_id == note_id))
