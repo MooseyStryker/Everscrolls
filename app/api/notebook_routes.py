@@ -26,7 +26,7 @@ def view_notebook():
     return jsonify(allNotebooks)
 
 
-@notebook_routes.route("/new", methods=["GET","POST"])
+@notebook_routes.route("", methods=["POST"])
 @login_required
 def create_notebook():
     form = NotebookForm()
@@ -68,7 +68,7 @@ def edit_notebook(notebook_id):
     return jsonify(notebook.to_dict()), 201
 
 
-@notebook_routes.route("/<int:notebook_id>/delete", methods=["DELETE"])
+@notebook_routes.route("/<int:notebook_id>", methods=["DELETE"])
 @login_required
 def yeet_delete(notebook_id):
     stmt = select(Notebook).where(Notebook.id == notebook_id)
@@ -85,7 +85,7 @@ def yeet_delete(notebook_id):
     })
 
 
-@notebook_routes.route("/<int:notebook_id>/new_note", methods=["POST"])
+@notebook_routes.route("/<int:notebook_id>/note", methods=["POST"])
 @login_required
 def new_note_in_notebook(notebook_id):
     form = NoteForm()
