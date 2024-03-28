@@ -195,36 +195,35 @@ def adding_notebody(note_id):
 @note_routes.route("/<int:note_id>/notebody/<int:notebody_id>", methods=["GET","PUT"])
 @login_required
 def edit_notebody(note_id, notebody_id):
-    auth = select(Note).where(Note.id == note_id)  # Select the note with the given ID
-    note = db.session.execute(auth).scalar_one()  # Execute the statement and get the note
-    permission_check = db.session.query(many_notes_many_users).filter_by(user_id=current_user.id, note_id=note_id).first()  # Check if the note shared has permission to edit the note
+    auth = select(Note).where(Note.id == note_id)                                                                               # Select the note with the given ID
+    note = db.session.execute(auth).scalar_one()                                                                                # Execute the statement and get the note
+    permission_check = db.session.query(many_notes_many_users).filter_by(user_id=current_user.id, note_id=note_id).first()      # Check if the note shared has permission to edit the note
 
-    # If the current user is not the creator of the note and does not have 'View and Edit' permissions, return a 403 status code with an error message
-    if note.creator_id != current_user.id and (permission_check is None or permission_check.permissions != 'View and Edit'):
+    if note.creator_id != current_user.id and (permission_check is None or permission_check.permissions != 'View and Edit'):    # If the current user is not the creator of the note and does not have 'View and Edit' permissions, return a 403 status code with an error message
         return jsonify({
             "Not authorized": "Forbidden"
         }), 403
 
-    stmt = select(NoteBody).where(NoteBody.id == notebody_id)       # 2nd select the NoteBody with the given ID
-    notebody = db.session.execute(stmt).scalar_one()                # Execute the statement and get the NoteBody
+    stmt = select(NoteBody).where(NoteBody.id == notebody_id)                                                                   # 2nd select the NoteBody with the given ID
+    notebody = db.session.execute(stmt).scalar_one()                                                                            # Execute the statement and get the NoteBody
 
     # If the request method is PUT, edit the NoteBody
     if request.method == "PUT":
-        form = NoteBody()                                           # Create a new form for the NoteBody
-        form["csrf_token"].data = request.cookies["csrf_token"]     # Set the CSRF token from the request cookies
+        form = NoteBody()                                                                                                       # Create a new form for the NoteBody
+        form["csrf_token"].data = request.cookies["csrf_token"]                                                                 # Set the CSRF token from the request cookies
 
         # Validate the form
         if form.validate_on_submit():
-            notebody.body = form.body.data                          # Update the NoteBody body with the form data
+            notebody.body = form.body.data                                                                                      # Update the NoteBody body with the form data
 
             db.session.add(notebody)
             db.session.commit()
 
-            return jsonify(notebody.to_dict()), 201                 # Return the NoteBody as a JSON response with a 201 status code
+            return jsonify(notebody.to_dict()), 201                                                                             # Return the NoteBody as a JSON response with a 201 status code
         else:
-            return jsonify(form.errors), 400                        # If the form is not valid, return the form errors as a JSON response with a 400 status code
+            return jsonify(form.errors), 400                                                                                    # If the form is not valid, return the form errors as a JSON response with a 400 status code
 
-    return jsonify(notebody.to_dict()), 201                         # If the request method is GET, return the NoteBody as a JSON response with a 201 status code
+    return jsonify(notebody.to_dict()), 201                                                                                     # If the request method is GET, return the NoteBody as a JSON response with a 201 status code
 
 
 
@@ -324,7 +323,7 @@ def edit_task(note_id, task_id):
     task = db.session.execute(stmt2).scalar_one()
 
     if request.method == "PUT":
-        form = TaskForm()  # Use TaskForm instead of Task
+        form = TaskForm()
         form["csrf_token"].data = request.cookies["csrf_token"]
 
         if form.validate_on_submit():
@@ -366,6 +365,32 @@ def yeet_task(note_id, task_id):
 
 
 #Images in a note
+@note_routes.route("/<int:note_id>/images", methods=["GET"])
+@login_required
+def view_all_image(note_id):
+    check_auth = select(Note).where(Note.id == note_id)
+    note = db.session.execute(check_auth).scalar_one()
+    if (note.creator_id != current_user.id):
+        return jsonify({
+            "Not authorized": "Forbidden"
+        }), 403
+
+    get_image = select(NoteImage).where(NoteImage.note_id == note_id)
+    allImages = db.session.execute(get_image).all()
+
+    results_info = [
+        {
+            "id": image.id,
+            "note_id": image.note_id,
+            "image_file": image.image_file
+        }
+        for image in allImages
+    ]
+
+    return jsonify(results_info)
+
+
+
 @note_routes.route("/<int:note_id>/images", methods=["POST"])
 @login_required
 def add_image(note_id):
@@ -428,7 +453,32 @@ def delete_image(note_id, image_id):
 
 
 #Audio in notes
-@note_routes.route("/<int:note_id>/audios", methods=["POST"])
+@note_routes.route("/<int:note_id>/audio", methods=["POST"])
+@login_required
+def get_all_audio(note_id):
+    check_auth = select(Note).where(Note.id == note_id)
+    note = db.session.execute(check_auth).scalar_one()
+    if (note.creator_id != current_user.id):
+        return jsonify({
+            "Not authorized": "Forbidden"
+        }), 403
+
+    get_audio = select(NoteAudio).where(NoteAudio.note_id == note_id)
+    allAudios = db.session.execute(get_audio).all()
+
+    results_info = [
+        {
+            "id": audio.id,
+            "note_id": audio.note_id,
+            "audio_file": audio.audio_file
+        }
+        for audio in allAudios
+    ]
+
+    return jsonify(results_info)
+
+
+@note_routes.route("/<int:note_id>/audio", methods=["POST"])
 @login_required
 def add_audio(note_id):
     check_auth = select(Note).where(Note.id == note_id)
@@ -455,7 +505,7 @@ def add_audio(note_id):
 
 
 
-@note_routes.route("/<int:note_id>/audios/<int:audio_id>", methods=["DELETE"])
+@note_routes.route("/<int:note_id>/audio/<int:audio_id>", methods=["DELETE"])
 @login_required
 def delete_audio(note_id, audio_id):
     check_auth = select(Note).where(Note.id == note_id)

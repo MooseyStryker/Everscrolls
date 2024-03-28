@@ -8,11 +8,17 @@ import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import notebooksReducer from "./notebook";
 import notebodiesReducer from "./notebody";
+import taskReducer from "./tasks";
+import imageReducer from "./images";
+import audioReducer from "./audio";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   notebook: notebooksReducer,
   notebody: notebodiesReducer,
+  tasks: taskReducer,
+  images: imageReducer,
+  audios: audioReducer
 });
 
 let enhancer;
