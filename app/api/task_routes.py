@@ -6,7 +6,7 @@ from sqlalchemy import select, and_
 
 task_routes = Blueprint("tasks", __name__)
 
-@task_routes.route("/<int:task_id>/delete", methods=["DELETE"])
+@task_routes.route("/<int:task_id>", methods=["DELETE"])
 @login_required
 def yeet_task(task_id):
     stmt = select(Task).where(Task.id == task_id)

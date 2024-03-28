@@ -20,9 +20,8 @@ const editTask = (noteId, task) => ({
     noteId,
     task
 })
-const deleteTask = (noteId, taskId) => ({
+const deleteTask =  (taskId) => ({
     type: DELETE_TASK,
-    noteId,
     taskId
 })
 
@@ -68,8 +67,8 @@ export const thunkUpdateTask = (noteId, taskId, updateDescription) => async (dis
     }
 }
 
-export const thunkDeleteTask = (noteId, taskId) => async (dispatch) => {
-    const response = await fetch(`/api/notes/${noteId}/tasks/${taskId}`, {
+export const thunkDeleteTask = (taskId) => async (dispatch) => {
+    const response = await fetch(`/api/tasks/${taskId}`, {
         method: "DELETE",
     });
     const data = await response.json();
