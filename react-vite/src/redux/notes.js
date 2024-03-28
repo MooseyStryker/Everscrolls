@@ -29,6 +29,8 @@ const deleteNote = (note_id) => ({
   note_id,
 });
 
+
+
 export const thunkGetAllNotes = () => async (dispatch) => {
     const response = await fetch("/api/notes");
 
@@ -98,8 +100,6 @@ export const thunkGetAllNotes = () => async (dispatch) => {
   };
 
 
-
-  
 const initialState = {};
 
 export default function notesReducer(state = initialState, action) {

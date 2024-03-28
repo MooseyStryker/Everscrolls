@@ -7,10 +7,12 @@ import {
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import notebooksReducer from "./notebook";
+import notebodiesReducer from "./notebody";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   notebook: notebooksReducer,
+  notebody: notebodiesReducer,
 });
 
 let enhancer;

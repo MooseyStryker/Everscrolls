@@ -138,6 +138,30 @@ def yeet_note(note_id):
 
 
 # NoteBody to a note
+@note_routes.route("/<int:note_id>/notebody", methods=["GET"])
+@login_required
+def get_notebody(note_id):
+    stmt = select(NoteBody).where(NoteBody.note_id == note_id)
+
+    # Execute the query and retrieve all note bodies associated with the given note_id
+    allNotebodies = db.session.execute(stmt).all()
+
+    # Convert the results to a list of dictionaries
+    results_info = [
+        {
+            "id": notebody.id,
+            "note_id": notebody.note_id,
+            "body": notebody.body,
+            "created_at": notebody.created_at,
+            "updated_at": notebody.updated_at,
+        }
+        for notebody in allNotebodies
+    ]
+
+    return jsonify(results_info)
+
+
+
 @note_routes.route("/<int:note_id>/notebody", methods=["POST"])
 @login_required
 def adding_notebody(note_id):
