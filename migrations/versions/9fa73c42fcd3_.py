@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: b6645f44316f
+Revision ID: 9fa73c42fcd3
 Revises:
-Create Date: 2024-03-26 17:13:24.552339
+Create Date: 2024-03-27 18:00:05.152691
 
 """
 from alembic import op
@@ -12,10 +12,8 @@ import os
 environment = os.getenv("FLASK_ENV")
 SCHEMA = os.environ.get("SCHEMA")
 
-
-
 # revision identifiers, used by Alembic.
-revision = 'b6645f44316f'
+revision = '9fa73c42fcd3'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -29,7 +27,7 @@ def upgrade():
     sa.Column('first_name', sa.String(length=40), nullable=False),
     sa.Column('last_name', sa.String(length=40), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=False),
-    sa.Column('role', sa.Enum('Captain', 'First Mate', 'Crew', 'Bucket swabbler'), nullable=False),
+    sa.Column('role', sa.Enum('Captain', 'First Mate', 'Crew', 'Bucket swabbler', name='role_types'), nullable=False),
     sa.Column('hashed_password', sa.String(length=255), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
@@ -38,6 +36,7 @@ def upgrade():
     )
     if environment == "production":
         op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
+
 
     op.create_table('notebooks',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -50,6 +49,7 @@ def upgrade():
     )
     if environment == "production":
         op.execute(f"ALTER TABLE notebooks SET SCHEMA {SCHEMA};")
+
 
     op.create_table('notes',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -65,6 +65,7 @@ def upgrade():
     if environment == "production":
         op.execute(f"ALTER TABLE notes SET SCHEMA {SCHEMA};")
 
+
     op.create_table('note_audios',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('note_id', sa.Integer(), nullable=True),
@@ -74,6 +75,7 @@ def upgrade():
     )
     if environment == "production":
         op.execute(f"ALTER TABLE note_audios SET SCHEMA {SCHEMA};")
+
 
     op.create_table('note_bodys',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -87,6 +89,7 @@ def upgrade():
     if environment == "production":
         op.execute(f"ALTER TABLE note_bodys SET SCHEMA {SCHEMA};")
 
+
     op.create_table('note_images',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('note_id', sa.Integer(), nullable=True),
@@ -96,6 +99,7 @@ def upgrade():
     )
     if environment == "production":
         op.execute(f"ALTER TABLE note_images SET SCHEMA {SCHEMA};")
+
 
     op.create_table('tasks',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -108,18 +112,18 @@ def upgrade():
     if environment == "production":
         op.execute(f"ALTER TABLE tasks SET SCHEMA {SCHEMA};")
 
+
     op.create_table('users_notes',
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('note_id', sa.Integer(), nullable=False),
     sa.Column('opened', sa.Boolean(), nullable=True),
-    sa.Column('permissions', sa.Enum('View Only', 'View and Edit'), nullable=False),
+    sa.Column('permissions', sa.Enum('View Only', 'View and Edit', name='permission_types'), nullable=False),
     sa.ForeignKeyConstraint(['note_id'], ['notes.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('user_id', 'note_id')
     )
     if environment == "production":
         op.execute(f"ALTER TABLE users_notes SET SCHEMA {SCHEMA};")
-
     # ### end Alembic commands ###
 
 
