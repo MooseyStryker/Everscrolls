@@ -6,16 +6,21 @@ from sqlalchemy import select, and_
 
 note_routes = Blueprint("notes", __name__)
 
-#This will get all notes, tasks, images, and audio
+
+
+# This route gets all notes, tasks, images, and audio for the current user
 @note_routes.route("", methods=["GET"])
 @login_required
 def view_note():
-    stmt = select(Note).where(Note.creator_id == current_user.id)
+    stmt = select(Note).where(Note.creator_id == current_user.id)           # Select all notes where the creator is the current user
+
+
     allNotes = []
 
-    for row in db.session.execute(stmt):
+    for row in db.session.execute(stmt):                                    # Execute the statement and iterate over the results
         results = row.Notebook
-        results_info = {
+
+        results_info = {                                                    # Create a dictionary with the note details
             "id": results.id,
             "creator_id": results.creator_id,
             "note_title": results.notebook_name,
@@ -27,71 +32,89 @@ def view_note():
             "images": [image.to_dict() for image in results.notes_images]
         }
 
-        allNotes.append(results_info)
+        allNotes.append(results_info)                                       # Append the note details to the list of all notes
     return jsonify(allNotes)
 
 
 
+
+
+
+# This route adds a new note
 @note_routes.route("", methods=["POST"])
 @login_required
 def new_note():
-    form = NoteForm()
-    form["csrf_token"].data = request.cookies["csrf_token"]
+    form = NoteForm()                                           # Create a new form for the note
+    form["csrf_token"].data = request.cookies["csrf_token"]     # Set the CSRF token from the request cookies
 
+    # Validate the form
     if form.validate_on_submit():
-        newNote = Note(
+        newNote = Note(                                         # Create a new note with the form data
             creator_id = current_user.id,
             title = form.title.data,
         )
-        db.session.add(newNote)
+        db.session.add(newNote)                                 # Add the new note to the database session
         db.session.commit()
         return jsonify(
             newNote.to_dict()
         ), 201
+
     return jsonify(form.errors), 400
 
 
+
+
+
+# This route gets or edits a note
 @note_routes.route("/<int:note_id>", methods=["GET","PUT"])
 @login_required
 def edit_note(note_id):
-    stmt = select(Note).where(Note.id == note_id)
-    note = db.session.execute(stmt).scalar_one()
+    stmt = select(Note).where(Note.id == note_id)               # Select the note with the given ID
+    note = db.session.execute(stmt).scalar_one()                # Execute the statement and get the note
 
-    if note.creator_id != current_user.id:
+    if note.creator_id != current_user.id:                      # Check if the current user is the creator of the note
         return jsonify({
             "Not Authorized": "forbidden"
         }), 403
 
+    # If the request method is PUT, edit the note
     if request.method == "PUT":
-        form = NoteForm()
-        form["csrf_token"].data = request.cookies["csrf_token"]
+        form = NoteForm()                                       # Create a new form for the note
+        form["csrf_token"].data = request.cookies["csrf_token"] # Set the CSRF token from the request cookies
 
+        # Validate the form
         if form.validate_on_submit():
-            note.title = form.title.data
+            note.title = form.title.data                        # Update the note title with the form data
             db.session.add(note)
             db.session.commit()
 
             return jsonify(
                 note.to_dict()
             ), 201
+
         else:
-            return jsonify(form.errors), 400
-    return jsonify(note.to_dict()), 201
+            return jsonify(form.errors), 400                    # If the form is not valid, return the form errors as a JSON response with a 400 status code
+
+    return jsonify(note.to_dict()), 201                         # If the request method is GET, return the note as a JSON response with a 201 status code
 
 
+
+# This route deletes a note
 @note_routes.route("/<int:note_id>", methods=["DELETE"])
 @login_required
 def yeet_note(note_id):
-    stmt = select(Note).where(Note.id == note_id)
-    yeeted_note = db.session.execute(stmt).scalar_one()
-    if (yeeted_note.creator_id != current_user.id):
-        return jsonify({
+    stmt = select(Note).where(Note.id == note_id)       # Select the note with the given ID
+    yeeted_note = db.session.execute(stmt).scalar_one() # Execute the statement and get the note
+
+    if (yeeted_note.creator_id != current_user.id):     # Checks if the current user is the creator of the note
+        return jsonify({                                # If not, return a 403 status code with an error message
             "Not authorized": "Forbidden"
         }), 403
-    db.session.delete(yeeted_note)
-    db.session.commit()
 
-    return jsonify({
+    db.session.delete(yeeted_note)                      # Delete the note from the database session
+    db.session.commit()                                 # Commit the database session
+
+    return jsonify({                                    # Return a success message as a JSON response
         "Message": "Notebook deleted successfully"
     })
 
@@ -113,7 +136,8 @@ def yeet_note(note_id):
 
 
 
-#NoteBody to a note
+
+# NoteBody to a note
 @note_routes.route("/<int:note_id>/notebody", methods=["POST"])
 @login_required
 def adding_notebody(note_id):
@@ -142,35 +166,42 @@ def adding_notebody(note_id):
 
 
 
+# NoteBody to a note
+# This contains an additional auth that im going to be testing when sharing code. I would like the shared note with another user to edit the same document
 @note_routes.route("/<int:note_id>/notebody/<int:notebody_id>", methods=["GET","PUT"])
 @login_required
 def edit_notebody(note_id, notebody_id):
-    auth = select(Note).where(Note.id == note_id)
-    note = db.session.execute(auth).scalar_one()
-    permission_check = db.session.query(many_notes_many_users).filter_by(user_id=current_user.id, note_id=note_id).first()
+    auth = select(Note).where(Note.id == note_id)  # Select the note with the given ID
+    note = db.session.execute(auth).scalar_one()  # Execute the statement and get the note
+    permission_check = db.session.query(many_notes_many_users).filter_by(user_id=current_user.id, note_id=note_id).first()  # Check if the note shared has permission to edit the note
 
+    # If the current user is not the creator of the note and does not have 'View and Edit' permissions, return a 403 status code with an error message
     if note.creator_id != current_user.id and (permission_check is None or permission_check.permissions != 'View and Edit'):
         return jsonify({
             "Not authorized": "Forbidden"
         }), 403
 
-    stmt = select(NoteBody).where(NoteBody.id == notebody_id)
-    notebody = db.session.execute(stmt).scalar_one()
+    stmt = select(NoteBody).where(NoteBody.id == notebody_id)       # 2nd select the NoteBody with the given ID
+    notebody = db.session.execute(stmt).scalar_one()                # Execute the statement and get the NoteBody
 
+    # If the request method is PUT, edit the NoteBody
     if request.method == "PUT":
-        form = NoteBody()
-        form["csrf_token"].data = request.cookies["csrf_token"]
+        form = NoteBody()                                           # Create a new form for the NoteBody
+        form["csrf_token"].data = request.cookies["csrf_token"]     # Set the CSRF token from the request cookies
 
+        # Validate the form
         if form.validate_on_submit():
-            notebody.body = form.body.data
+            notebody.body = form.body.data                          # Update the NoteBody body with the form data
 
             db.session.add(notebody)
             db.session.commit()
 
-            return jsonify(notebody.to_dict()), 201
+            return jsonify(notebody.to_dict()), 201                 # Return the NoteBody as a JSON response with a 201 status code
         else:
-            return jsonify(form.errors), 400
-    return jsonify(notebody.to_dict()), 201
+            return jsonify(form.errors), 400                        # If the form is not valid, return the form errors as a JSON response with a 400 status code
+
+    return jsonify(notebody.to_dict()), 201                         # If the request method is GET, return the NoteBody as a JSON response with a 201 status code
+
 
 
 
