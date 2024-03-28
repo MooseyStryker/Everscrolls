@@ -264,6 +264,25 @@ def yeet_notebody(note_id, notebody_id):
 
 # Tasks to a note
 
+@note_routes.route("/<int:note_id>/tasks", methods=["GET"])
+@login_required
+def get_all_tasks(note_id):
+    stmt = select(Task).where(Task.note_id == note_id)
+    allTasks = db.session.execute(stmt).all()
+
+    results_info = [
+        {
+            "id": task.id,
+            "note_id": task.note_id,
+            "description": task.body,
+            "due_date": task.due_date,
+        }
+        for task in allTasks
+    ]
+
+    return jsonify(results_info)
+
+
 @note_routes.route("/<int:note_id>/tasks", methods=["POST"])
 @login_required
 def adding_tasks(note_id):
