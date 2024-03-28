@@ -43,9 +43,9 @@ export const thunkGetAllNotes = () => async (dispatch) => {
       }
       dispatch(getAllNotes(data));
     }
-  };
+};
 
-  export const thunkGetNote = (note_id) => async (dispatch) => {
+export const thunkGetNote = (note_id) => async (dispatch) => {
     const response = await fetch(`/api/notes/${note_id}`);
     const data = await response.json();
 
@@ -54,9 +54,9 @@ export const thunkGetAllNotes = () => async (dispatch) => {
     }
 
     dispatch(getNote(data));
-  };
+};
 
-  export const thunkPostNote = (note) => async (dispatch) => {
+export const thunkPostNote = (note) => async (dispatch) => {
     const response = await fetch("/api/notes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -69,9 +69,9 @@ export const thunkGetAllNotes = () => async (dispatch) => {
       const note = await dispatch(postNote(data));
       return note;
     }
-  };
+};
 
-  export const thunkPutNote = (note, note_id) => async (dispatch) => {
+export const thunkPutNote = (note, note_id) => async (dispatch) => {
     const response = await fetch(`/api/notes/${note_id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -83,9 +83,9 @@ export const thunkGetAllNotes = () => async (dispatch) => {
     } else {
       dispatch(putNote(data));
     }
-  };
+};
 
-  export const thunkDeleteNote = (note_id) => async (dispatch) => {
+export const thunkDeleteNote = (note_id) => async (dispatch) => {
     const response = await fetch(`/api/notes/${note_id}`, {
       method: "DELETE",
       headers: {
@@ -97,7 +97,7 @@ export const thunkGetAllNotes = () => async (dispatch) => {
       return data;
     }
     dispatch(deleteNote(data));
-  };
+};
 
 
 const initialState = {};

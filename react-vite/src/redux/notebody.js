@@ -98,7 +98,7 @@ export default function notebodiesReducer(state = initialState, action) {
             };
         case PUT_NOTEBODY:
             return {...state, [action.noteId]: action.notebody};
-        case DELETE_NOTE:
+        case DELETE_NOTEBODY:
             newState = { ...state };
             delete newState[action.notebodyId];
             return newState;

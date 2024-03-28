@@ -75,7 +75,7 @@ export const thunkDeleteTask = (taskId) => async (dispatch) => {
     if (data.errors) {
         return data
     } else {
-        dispatch(deleteTask(noteId, taskId, data));
+        dispatch(deleteTask(taskId, data));
     }
 };
 

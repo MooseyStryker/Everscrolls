@@ -57,6 +57,10 @@ export const thunkDeleteAudio = (noteId, audioId) => async (dispatch) => {
     }
 };
 
+
+
+const initialState = {};
+
 export default function audioReducer(state = initialState, action) {
     let newState;
     switch (action.type) {

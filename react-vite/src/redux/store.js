@@ -11,9 +11,11 @@ import notebodiesReducer from "./notebody";
 import taskReducer from "./tasks";
 import imageReducer from "./images";
 import audioReducer from "./audio";
+import notesReducer from "./notes";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
+  notes: notesReducer,
   notebook: notebooksReducer,
   notebody: notebodiesReducer,
   tasks: taskReducer,

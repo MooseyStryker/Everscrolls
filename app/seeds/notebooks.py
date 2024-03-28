@@ -22,10 +22,31 @@ def seed_notebooks():
         created_at=datetime.utcnow(),
         updated_at=datetime.utcnow()
     )
+    notebook4 = Notebook(
+        user_id=1,
+        notebook_name='Notebook12',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
+    notebook5 = Notebook(
+        user_id=1,
+        notebook_name='Notebook123',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
+    notebook6 = Notebook(
+        user_id=1,
+        notebook_name='Notebook1234',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
 
     db.session.add(notebook1)
     db.session.add(notebook2)
     db.session.add(notebook3)
+    db.session.add(notebook4)
+    db.session.add(notebook5)
+    db.session.add(notebook6)
     db.session.commit()
 
 # Uses a raw SQL query to TRUNCATE or DELETE the notebooks table. SQLAlchemy doesn't

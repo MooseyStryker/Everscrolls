@@ -57,6 +57,8 @@ export const thunkDeleteImage = (noteId, imageId) => async (dispatch) => {
     }
 };
 
+const initialState = {};
+
 export default function imageReducer(state = initialState, action) {
     let newState;
     switch (action.type) {

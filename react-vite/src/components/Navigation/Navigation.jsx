@@ -8,7 +8,12 @@ function Navigation() {
       <li>
         <NavLink to="/">Home</NavLink>
       </li>
-
+      <li>
+        <NavLink to="/notebooks">Get all notebooks</NavLink>
+      </li>
+      <li>
+        <NavLink to="/notes">Get all notes</NavLink>
+      </li>
       <li>
         <ProfileButton />
       </li>

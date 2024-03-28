@@ -18,12 +18,12 @@ def view_note():
     allNotes = []
 
     for row in db.session.execute(stmt):                                    # Execute the statement and iterate over the results
-        results = row.Notebook
+        results = row.Note
 
         results_info = {                                                    # Create a dictionary with the note details
             "id": results.id,
             "creator_id": results.creator_id,
-            "note_title": results.notebook_name,
+            "note_title": results.title,
             "updated_at": results.updated_at,
             "created_at": results.created_at,
             "tasks": [task.to_dict() for task in results.notes_task],
