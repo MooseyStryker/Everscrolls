@@ -6,12 +6,15 @@ from sqlalchemy import Enum, DateTime
 from sqlalchemy import ForeignKey, String, Integer, Float, Boolean, Date, Text
 from sqlalchemy.orm import relationship
 
+role_enum = Enum('Captain', 'First Mate', 'Crew', 'Bucket swabbler', name='role_types')
+permission_enum = Enum('View Only', 'View and Edit', name='permission_types')
+
 many_notes_many_users = db.Table(
     "users_notes",
     db.Column("user_id", db.ForeignKey('users.id'), primary_key=True),
     db.Column("note_id", db.ForeignKey('notes.id'), primary_key=True),
     db.Column('opened', db.Boolean, default=False),
-    db.Column('permissions', db.Enum('View Only', 'View and Edit'), nullable=False)
+    db.Column('permissions', permission_enum, nullable=False)
 )
 if environment == "production":
     many_notes_many_users.schema = SCHEMA
@@ -28,7 +31,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(40), nullable=False)
     last_name = db.Column(db.String(40), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
-    role = db.Column(Enum('Captain', 'First Mate', 'Crew', 'Bucket swabbler'), nullable=False)
+    role = db.Column(role_enum, nullable=False)
     hashed_password = db.Column(db.String(255), nullable=False)
     created_at = db.Column(DateTime, default=datetime.utcnow)
 
