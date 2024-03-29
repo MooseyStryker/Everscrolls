@@ -1,20 +1,50 @@
-.main-container-allhands{
+.main-container-allhands {
     display: flex;
-    
+    width: 100%;
+    height: 100vh; /* 100% of the viewport height */
 }
 
 
 .leftinfo{
-    border: 1px solid red
+    border: 1px solid red;
+    margin: 4px
+}
+
+.info-container{
+    border: 1px solid green;
+    margin: 4px
+
+}
+
+.profile-info{
+    border: 1px solid orange;
+    margin: 4px
+
+}
+
+.search-create-note-task{
+    border: 1px solid orange;
+    margin: 4px;
+    display: flex;
+    flex-direction: column;
+
 }
 
 
+.notes-task-calendar-info{
+    border: 1px solid orange;
+    margin: 4px;
+    display: flex;
+    flex-direction: column;
+}
 
+.notebooks-tags{
+    border: 1px solid orange;
+    margin: 4px;
+    display: flex;
+    flex-direction: column;
 
-
-
-
-
+}
 
 
 
@@ -39,5 +69,39 @@
 
 
 .rightinfo{
-    border: 1px solid red
+    border: 1px solid red;
+    margin: 4px;
+    width: 100%;
+}
+
+.pictureontop{
+    border: 1px solid green;
+    margin: 4px;
+
+}
+
+.homenotelayout{
+    border: 1px solid green;
+    margin: 4px;
+}
+
+.home-page-text{
+    border: 1px solid orange;
+    margin: 4px;
+}
+
+.note-cal-task{
+    border: 1px solid orange;
+    margin: 4px;
+}
+
+.allnotes-alltasks-connectedtouser{
+    border: 1px solid blue;
+    margin: 4px;
+}
+
+.notesinhome, .tasksinhome{
+    border: 1px solid brown;
+    margin: 4px;
+
 }

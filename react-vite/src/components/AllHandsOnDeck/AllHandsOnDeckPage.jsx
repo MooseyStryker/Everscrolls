@@ -32,10 +32,10 @@ export default function AllNotebooks() {
                 <div className="leftinfo">
                     <div className="info-container">
                         <div className="profile-info">
-                            <div>Seach</div>
-                            <div className="morebuttons">
-                                <button>New Note</button>
-                                <button>New Task</button>
+                            <div>Logo for profile</div>
+                            <div className="Profile-info">
+                                <div>First and last name</div>
+                                <div>email</div>
                             </div>
                         </div>
 
@@ -48,14 +48,37 @@ export default function AllNotebooks() {
                                 <button>New Task</button>
                             </div>
                         </div>
-                        <div className="notes-task-calendar-info"></div>
-                        <div className="notebooks-tags"></div>
+                        <div className="notes-task-calendar-info">
+                            <button>Home</button>
+                            <button>Notes</button>
+                            <button>Tasks</button>
+                            <button>Calendar</button>
+
+                        </div>
+                        <div className="notebooks-tags">
+                            <button>Noteooks</button>
+                            <button>Tags(Bonus)</button>
+                        </div>
                     </div>
                 </div>
 
 
                 <div className="rightinfo">
+                    <div className="pictureontop">big picture div</div>
 
+                    <div className="homenotelayout">
+
+                        <div className="home-page-text">Home page stuff</div>
+
+                        <div className="note-cal-task">
+                            <div className="allnotes-alltasks-connectedtouser">
+                                <div className="notesinhome">Note container</div>
+                                <div className="tasksinhome">Task Container</div>
+                            </div>
+                            <div className=""></div>
+                        </div>
+                        
+                    </div>
 
                 </div>
             </div>
