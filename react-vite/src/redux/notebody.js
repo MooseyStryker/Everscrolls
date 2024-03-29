@@ -2,6 +2,7 @@ const GET_ALL_NOTEBODY = "notebodies/getAllNotebody";
 const POST_NOTEBODY_TO_NOTE = "notebodies/postNotebodyToNote";
 const PUT_NOTEBODY = "notebodies/putNotebody";
 const DELETE_NOTEBODY = "notebodies/deleteNotebody";
+const DELETE_ALL_NOTEBODY = 'notebody/DELETE_ALL';
 
 
 const getAllNotebody = (noteId, notebody) => ({
@@ -25,6 +26,11 @@ const deleteNotebody = (noteId, notebodyId) => ({
     noteId,
     notebodyId
 })
+const deleteAllNotebody = (noteId, data) => ({
+    type: DELETE_ALL_NOTEBODY,
+    noteId,
+    data
+});
 
 
 
@@ -82,6 +88,18 @@ export const thunkDeleteNoteBody = (noteId, notebodyId) => async (dispatch) => {
     }
 };
 
+export const thunkDeleteAllNoteBody = (noteId) => async (dispatch) => {
+    const response = await fetch(`/api/notes/${noteId}/notebody`, {
+        method: "DELETE",
+    });
+    const data = await response.json();
+    if (data.errors) {
+        return data;
+    } else {
+        dispatch(deleteAllNotebody(noteId, data));
+    }
+};
+
 const initialState = {};
 
 export default function notebodiesReducer(state = initialState, action) {
@@ -101,6 +119,10 @@ export default function notebodiesReducer(state = initialState, action) {
         case DELETE_NOTEBODY:
             newState = { ...state };
             delete newState[action.notebodyId];
+            return newState;
+        case DELETE_ALL_NOTEBODY:
+            newState = { ...state };
+            delete newState[action.noteId];
             return newState;
         default:
           return state;

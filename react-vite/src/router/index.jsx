@@ -4,21 +4,19 @@ import SignupFormPage from '../components/SignupFormPage';
 import AllNotebooks from '../components/Notebooks/GetAllNotebooks';
 import Layout from './Layout';
 import CreateNotebook from '../components/Notebooks/CreateNewNotebook';
-import AllNotes from '../components/Notes/GetAllNotes';
+import AllNotes from '../components/Notes/HomeNotesContainer';
 import MainPage from '../components/MainPage/MainPage'
-import AllHandsOnDeckPage from '../components/AllHandsOnDeck/AllHandsOnDeckPage'
+import AllNotesAndTasks from '../components/HomePage/AllNotesAndTasks';
+import NoteHomePage from '../components/HomePage/NotePage/Notes';
+import HomeLayout from './HomeLayout';
 
 export const router = createBrowserRouter([
   {
-    element: <Layout />,
+    element: <Layout />, // Main layout for most routes
     children: [
       {
         path: "/",
         element: <MainPage />,
-      },
-      {
-        path: "/home",
-        element: <AllHandsOnDeckPage />,
       },
       {
         path: "login",
@@ -41,6 +39,21 @@ export const router = createBrowserRouter([
         element: <AllNotes />,
       },
     ],
+  },
+  {
+    // Specific layout for /home
+    element: <HomeLayout />,
+    children: [
+      {
+        path: "/home", // Example child route for /home
+        element: <AllNotesAndTasks />,
+      },
+      {
+        path: "/home/note/:noteid",
+        element: <NoteHomePage />,
+      },
 
+      // Add other child routes specific to /home here
+    ],
   },
 ]);

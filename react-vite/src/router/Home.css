@@ -1,13 +1,20 @@
+.homecontainer{
+    display: flex;
+    flex-direction: row;
+
+}
+
 .main-container-allhands {
     display: flex;
-    width: 100%;
+    width: 250px;
     height: 100vh; /* 100% of the viewport height */
 }
 
 
 .leftinfo{
     border: 1px solid red;
-    margin: 4px
+    margin: 4px;
+    width: 100%;
 }
 
 .info-container{
@@ -16,10 +23,24 @@
 
 }
 
+
 .profile-info{
     border: 1px solid orange;
-    margin: 4px
+    margin: 4px;
+    display: flex;
 
+}
+
+.profi_logo{
+    width:50px;
+    border-radius: 30px;
+}
+
+.user-profile-info{
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .search-create-note-task{
@@ -28,6 +49,19 @@
     display: flex;
     flex-direction: column;
 
+}
+
+.home-buttons {
+    margin: 4px;
+    /* background-color: aqua; */
+}
+
+.home-buttons:hover {
+    background-color: grey;
+}
+
+.notebookshowdiv{
+    margin-left:40px;
 }
 
 
@@ -95,13 +129,14 @@
     margin: 4px;
 }
 
-.allnotes-alltasks-connectedtouser{
+.allnotes-alltasks-connectedtouser, .scratchpad-cal{
+    display: flex;
+    justify-content: space-between;
     border: 1px solid blue;
     margin: 4px;
 }
 
-.notesinhome, .tasksinhome{
+.notesinhome, .tasksinhome, .scratchinhome, .bonus-calendar{
     border: 1px solid brown;
     margin: 4px;
-
 }

@@ -1,0 +1,9 @@
+.homenotescontainer{
+    display: flex;
+    overflow: auto;
+}
+
+.singlenote{
+    border: 2px solid rgb(255, 116, 47);
+    margin: 2px;
+}

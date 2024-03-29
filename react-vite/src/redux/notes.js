@@ -66,8 +66,8 @@ export const thunkPostNote = (note) => async (dispatch) => {
     if (data.errors) {
       return data;
     } else {
-      const note = await dispatch(postNote(data));
-      return note;
+      await dispatch(postNote(data));
+      return data;
     }
 };
 
@@ -77,7 +77,9 @@ export const thunkPutNote = (note, note_id) => async (dispatch) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(note),
     });
+    console.log("🚀 ~ thunkPutNote ~ response:", response)
     const data = await response.json();
+    console.log("🚀 ~ thunkPutNote ~ data:", data)
     if (data.errors) {
       return data;
     } else {

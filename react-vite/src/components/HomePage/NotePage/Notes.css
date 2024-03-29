@@ -1,0 +1,18 @@
+.home-notes{
+    border: 1px solid red;
+    height: 100vh;
+    width: 100%;
+}
+
+.notesinfocontainer{
+    display: flex;
+    justify-content: center;
+}
+
+.notesinfo{
+    border: 1px solid green;
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+
+}

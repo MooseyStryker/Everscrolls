@@ -143,22 +143,23 @@ def yeet_note(note_id):
 def get_notebody(note_id):
     stmt = select(NoteBody).where(NoteBody.note_id == note_id)
 
-    # Execute the query and retrieve all note bodies associated with the given note_id
-    allNotebodies = db.session.execute(stmt).all()
+    allNoteBodies = []
 
-    # Convert the results to a list of dictionaries
-    results_info = [
-        {
-            "id": notebody.id,
-            "note_id": notebody.note_id,
-            "body": notebody.body,
-            "created_at": notebody.created_at,
-            "updated_at": notebody.updated_at,
-        }
-        for notebody in allNotebodies
-    ]
+    for row in db.session.execute(stmt):
+        results = row.NoteBody
+        results_info = {
+                "id": results.id,
+                "note_id": results.note_id,
+                "body": results.body,
+                "created_at": results.created_at,
+                "updated_at": results.updated_at,
+            }
 
-    return jsonify(results_info)
+        allNoteBodies.append(results_info)
+
+
+    return jsonify(allNoteBodies)
+
 
 
 
@@ -172,8 +173,10 @@ def adding_notebody(note_id):
             "Not authorized": "Forbidden"
         }), 403
 
-    form = NoteBody()
+    form = NoteBodyForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
+
+
 
     if form.validate_on_submit():
         create_notebody = NoteBody(
@@ -187,6 +190,8 @@ def adding_notebody(note_id):
         return jsonify(create_notebody.to_dict()), 201
 
     return jsonify(form.errors), 400
+
+
 
 
 
@@ -248,6 +253,28 @@ def yeet_notebody(note_id, notebody_id):
         "Message": "NoteBody deleted successfully"
     })
 
+
+@note_routes.route("/<int:note_id>/notebody", methods=["DELETE"])
+@login_required
+def delete_all_notebody(note_id):
+    auth = select(Note).where(Note.id == note_id)
+    note = db.session.execute(auth).scalar_one()
+    if (note.creator_id != current_user.id):
+        return jsonify({
+            "Not authorized": "Forbidden"
+        }), 403
+
+    stmt = select(NoteBody).where(NoteBody.note_id == note_id)
+    all_notebodies = db.session.execute(stmt).scalars().all()
+
+    for notebody in all_notebodies:
+        db.session.delete(notebody)
+
+    db.session.commit()
+
+    return jsonify({
+        "Message": "All NoteBody instances deleted successfully"
+    })
 
 
 
