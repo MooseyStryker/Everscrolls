@@ -8,6 +8,7 @@ export default function AllNotes() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const allNotes = useSelector((state) => state.notes);
+    const allNoteBody = useSelector((state) => state.notebody)
     const notesObj = Object.values(allNotes);
     console.log("🚀 ~ AllNotes ~ allNotes:", allNotes)
     console.log("🚀 ~ AllNotes ~ notesObj:", notesObj)
@@ -31,17 +32,14 @@ export default function AllNotes() {
                 <div onClick={() => handleNavigate(note.id)} className="singlenote" key={note.id}>
                     <button onClick={() => handleDelete(note.id)}>Delete Note</button>
                     <h2>Note Title: {note.note_title}</h2>
-                    {notesObj?.map((note) => (
-                        <div key={note.id}>
-                        <h4>Bodies for {note.note_title}:</h4>
-                        {note.bodies.map((body, index) => (
-                            <p key={index}>{body.body}</p>
-                        ))}
-                        </div>
-                    ))}
+                    <div>
+                        {note.note_title}'s' body:
+                    </div>
                 </div>
             ))}
 
         </div>
     );
+
+
 }

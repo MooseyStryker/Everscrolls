@@ -89,17 +89,31 @@ export default function NoteHomePage() {
         }
     }, [currentNote]);
 
+    // useEffect(() => {
+    //     if (currentNoteBody) {
+    //         // Convert the note bodies object to an array
+    //         const noteBodiesArray = Object.values(currentNoteBody);
+    //         // Map over the array and create a new array for the divs state
+    //         const noteBodies = noteBodiesArray.map((body, index) => ({
+    //             id: index + 1,
+    //             text: body.body, // Access the body property of each note body object
+    //             ref: createRef()
+    //         }));
+    //         setDivs(noteBodies);
+    //     }
+    // }, [currentNoteBody]);
+    const [prevNoteBody, setPrevNoteBody] = useState({});
+
     useEffect(() => {
-        if (currentNoteBody) {
-            // Convert the note bodies object to an array
+        if (currentNoteBody && JSON.stringify(prevNoteBody) !== JSON.stringify(currentNoteBody)) {
             const noteBodiesArray = Object.values(currentNoteBody);
-            // Map over the array and create a new array for the divs state
             const noteBodies = noteBodiesArray.map((body, index) => ({
                 id: index + 1,
-                text: body.body, // Access the body property of each note body object
+                text: body.body,
                 ref: createRef()
             }));
             setDivs(noteBodies);
+            setPrevNoteBody(currentNoteBody); // Update prevNoteBody to the currentNoteBody
         }
     }, [currentNoteBody]);
 
