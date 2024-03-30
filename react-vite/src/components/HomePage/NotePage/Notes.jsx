@@ -17,8 +17,9 @@ export default function NoteHomePage() {
 
     const currentNoteBody = useSelector((state) => state.notebody)
 
-
+    const [prevNoteBody, setPrevNoteBody] = useState({});
     const [title, setTitle] = useState()
+    console.log("🚀 ~ NoteHomePage ~ title:", title)
     const [isEditing, setIsEditing] = useState(false);
 
     const [divs, setDivs] = useState([{ id: 1, text: 'hello', ref: createRef() }]);
@@ -84,25 +85,12 @@ export default function NoteHomePage() {
     }, [dispatch, noteid]);
 
     useEffect(() => {
-        if (currentNote) {
+        if (currentNote && !title) { // This will pull data when coming in but wont keep refreshing title when dispatch new edit titl
             setTitle(currentNote.note_title);
         }
+        console.log("Is this firing")
     }, [currentNote]);
 
-    // useEffect(() => {
-    //     if (currentNoteBody) {
-    //         // Convert the note bodies object to an array
-    //         const noteBodiesArray = Object.values(currentNoteBody);
-    //         // Map over the array and create a new array for the divs state
-    //         const noteBodies = noteBodiesArray.map((body, index) => ({
-    //             id: index + 1,
-    //             text: body.body, // Access the body property of each note body object
-    //             ref: createRef()
-    //         }));
-    //         setDivs(noteBodies);
-    //     }
-    // }, [currentNoteBody]);
-    const [prevNoteBody, setPrevNoteBody] = useState({});
 
     useEffect(() => {
         if (currentNoteBody && JSON.stringify(prevNoteBody) !== JSON.stringify(currentNoteBody)) {
@@ -161,6 +149,7 @@ export default function NoteHomePage() {
                             {divs.map(div => (
                                 <div key={div.id}>
                                     <input
+                                        className="noteinput"
                                         type="text"
                                         value={div.text}
                                         onChange={(e) => handleTextChange(e, div.id)}
