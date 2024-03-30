@@ -1,9 +1,19 @@
 .homenotescontainer{
+    border: 2px solid yellowgreen;
     display: flex;
     overflow: auto;
 }
 
+.singlenotecontainer{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-right: 20px;
+    
+
+}
+
 .singlenote{
-    border: 2px solid rgb(255, 116, 47);
     margin: 2px;
 }
