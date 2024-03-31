@@ -9,6 +9,7 @@ import MainPage from '../components/MainPage/MainPage'
 import AllNotesAndTasks from '../components/HomePage/AllNotesAndTasks';
 import NoteHomePage from '../components/HomePage/NotePage/Notes';
 import HomeLayout from './HomeLayout';
+import { ModalProvider, Modal } from '../context/Modal';
 
 export const router = createBrowserRouter([
   {
@@ -40,9 +41,30 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  // {
+  //   // Specific layout for /home
+  //   element: <HomeLayout />,
+  //   children: [
+  //     {
+  //       path: "/home", // Example child route for /home
+  //       element: <AllNotesAndTasks />,
+  //     },
+  //     {
+  //       path: "/home/note/:noteid",
+  //       element: <NoteHomePage />,
+  //     },
+
+  //     // Add other child routes specific to /home here
+  //   ],
+  // },
   {
     // Specific layout for /home
-    element: <HomeLayout />,
+    element: (
+      <ModalProvider>
+        <HomeLayout />
+        <Modal />
+      </ModalProvider>
+    ),
     children: [
       {
         path: "/home", // Example child route for /home
@@ -52,8 +74,7 @@ export const router = createBrowserRouter([
         path: "/home/note/:noteid",
         element: <NoteHomePage />,
       },
-
       // Add other child routes specific to /home here
     ],
-  },
+  }
 ]);

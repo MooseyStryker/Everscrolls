@@ -53,13 +53,17 @@ def sign_up():
     if form.validate_on_submit():
         user = User(
             username=form.data['username'],
+            first_name=form.data['first_name'],
+            last_name=form.data['last_name'],
             email=form.data['email'],
+            role=form.data['role'],
             password=form.data['password']
         )
         db.session.add(user)
         db.session.commit()
         login_user(user)
         return user.to_dict()
+    print(form.errors)
     return form.errors, 401
 
 

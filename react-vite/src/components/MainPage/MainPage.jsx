@@ -1,65 +1,214 @@
-
+import React, { useState } from 'react';
+import { thunkLogin, thunkSignup } from "../../redux/session";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 import './MainPage.css'
 
-export default function MainPage() {
+export default function LoginPage() {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [password, setPassword] = useState("");
+    const [isNewUser, setIsNewUser] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState("");
 
-    return(
-        <>
-            <div className="mainpage-container">
-
-                <div className="header">
-
-                    <div className="navbar-container">
-
-                        <div className="left-buttons">
-                            <div className="logo">Logo</div>
-                            <div>Bonus</div>
-                            <div>Bonus</div>
-                            <div>Bonus</div>
-                            <div>Bonus</div>
-                        </div>
-                        <div className="right-buttons">
-                            <div className="Login-butt">Log In</div>
-                            <div className="Signup-butt">Signup</div>
-                        </div>
-
-                    </div>
-
-                </div>
+    const [errors, setErrors] = useState({
+        username: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
+    console.log(errors)
 
 
-                <div className="main">
-                    <div className="top-container">
 
-                        <div className="main-big-text">
-                            <div className='bigtextsales'>
-                                <h1>Everscrolls: Navigating Creativity Beneath the Waves</h1>
-                                <h2>Dive into the Depths of Productivity</h2>
-                                <h3>Welcome to Everscrolls, where productivity meets the mesmerizing allure of the ocean. As you embark on your digital journey, let the sea theme guide you through a world of seamless note-taking, organization, and inspiration.</h3>
-                            </div>
-                            <div className='signuplowbox'>
-                                <button className='signupbutton'>Sign up today!</button>
-                                <h3>Already joined the seas? Click me to come abord!</h3>
-                            </div>
-
-                        </div>
-                        <div className="fake-testimony"></div>
-
-                    </div>
-                    <div className="bottom-container">
-
-                        <div className="scroll-features"></div>
-
-                    </div>
-                </div>
+    const switchLoginSignup = () => {
+        setIsNewUser(!isNewUser)
+        setErrors({})
+        setFirstName("")
+        setLastName("")
+        setEmail("")
+        setUsername("")
+    }
 
 
-                <div className="footer">
-                    <div>
-                    </div>
-                </div>
+    const validateSignupInput = () => {
+        const newErrors = {};
 
-            </div>
-        </>
-    )
+        if (!username) {
+            newErrors.username = 'Username is required.';
+        } else if (username.length < 3 || username.length > 20) {
+            newErrors.username = 'Username must be between 3 and 20 characters.';
+        } else if (username.toLowerCase() === 'stryker') {
+            newErrors.username = 'The username "Stryker" is not allowed. Seriously.';
+        }
+
+        if (!firstName) {
+            newErrors.firstName = 'First name is required.';
+        } else if (firstName.toLowerCase() === 'stryker') {
+            newErrors.firstName = 'The first name "Stryker" is not allowed. I mean is that even real?';
+        }
+        if (!lastName) newErrors.lastName = 'Last name is required.';
+
+        if (!email) {
+            newErrors.email = 'Email is required.';
+        } else if (!email.includes('@')) {
+            newErrors.email = 'Email must include an @ symbol.';
+        }
+
+        if (!password) {
+            newErrors.password = 'Password is required.';
+        } else if (password.length < 6) {
+            newErrors.password = 'Password must be at least 6 characters.';
+        }
+
+        if (password !== confirmPassword) newErrors.confirmPassword = 'Passwords must match.';
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
+
+    const validateLoginInput = () => {
+        const newErrors = {};
+
+        if (!email) {
+            newErrors.email = 'Email is required.';
+        } else if (!email.includes('@')) {
+            newErrors.email = 'Email must include an @ symbol.';
+        }
+
+        if (!password) {
+            newErrors.password = 'Password is required.';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    }
+
+
+    const handleLogin = async(e) => {
+        e.preventDefault();
+
+        if (!validateLoginInput()) return;
+
+        console.log("Here")
+
+        const serverResponse = await dispatch(
+          thunkLogin({
+            email,
+            password,
+          })
+        );
+
+        if (serverResponse) {
+          console.log("🚀 ~ handleLogin ~ serverResponse:", serverResponse)
+          setErrors(serverResponse);
+        } else {
+          navigate("/home");
+        }
+    }
+
+    const handleSignup = async(e) => {
+        e.preventDefault();
+
+        if (!validateSignupInput()) return;
+
+        if (password !== confirmPassword) {
+          return setErrors({
+            confirmPassword:
+              "Confirm Password field must be the same as the Password field",
+          });
+        }
+
+        const serverResponse = await dispatch(
+          thunkSignup({
+            username,
+            first_name: firstName,
+            last_name: lastName,
+            email,
+            role: "Bucket swabbler",
+            password
+          })
+        );
+
+        if (serverResponse) {
+          setErrors(serverResponse);
+        } else {
+          navigate("/home");
+        }
+    }
+
+    return (
+        <div className="login-signup-container">
+            {isNewUser ? (
+
+                 <form onSubmit={handleSignup} className='signupform'>
+                    <h2>Signup Page</h2>
+                    <label className='input-group'>
+                        Username:
+                        <input
+                            className='input-indiv'
+                            style={{ border: errors.username ? '1px solid red' : '1px solid black' }}
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                        {errors.username && <p className='p-errors'>{errors.username}</p>}
+                    </label>
+                    <label className='input-group'>
+                        First Name:
+                        <input className='input-indiv' style={{ border: errors.firstName ? '1px solid red' : '1px solid black' }} type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                        {errors.firstName && <p className='p-errors'>{errors.firstName}</p>}
+                    </label>
+                    <label className='input-group'>
+                        Last Name:
+                        <input className='input-indiv' style={{ border: errors.lastName ? '1px solid red' : '1px solid black' }} type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                        {errors.lastName && <p className='p-errors'>{errors.lastName}</p>}
+                    </label>
+                    <label className='input-group'>
+                        Email:
+                        <input className='input-indiv' style={{ border: errors.email ? '1px solid red' : '1px solid black' }} type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        {errors.email && <p className='p-errors'>{errors.email}</p>}
+                    </label>
+                    <label className='input-group'>
+                        Password:
+                        <input className='input-indiv' style={{ border: errors.password ? '1px solid red' : '1px solid black' }} type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        {errors.password && <p className='p-errors'>{errors.password}</p>}
+                    </label>
+                    <label className='input-group'>
+                        Confirm Password:
+                        <input className='input-indiv' style={{ border: errors.confirmPassword ? '1px solid red' : '1px solid black' }} type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                        {errors.confirmPassword && <p className='p-errors'>{errors.confirmPassword}</p>}
+                    </label>
+                    <input className='input-indiv' type="submit" value="Signup" />
+                    <button onClick={() => switchLoginSignup()}>Existing User? Login
+                    </button>
+                </form>
+
+            ) : (
+
+                <form onSubmit={handleLogin} className='loginform'>
+                    <h2>Login Page</h2>
+                    <label className='input-group'>
+                        Email:
+                        <input className='input-indiv' style={{ border: errors.email ? '1px solid red' : '1px solid black' }} type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        {errors.email && <p className='p-errors'>{errors.email}</p>}
+                    </label>
+                    <label className='input-group'>
+                        Password:
+                        <input className='input-indiv' style={{ border: errors.password ? '1px solid red' : '1px solid black' }} type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        {errors.password && <p className='p-errors'>{errors.password}</p>}
+                    </label>
+                    <input type="submit" value="Login" />
+                    <button onClick={() => switchLoginSignup()}>New User? Signup</button>
+                </form>
+
+            )}
+        </div>
+    );
 }

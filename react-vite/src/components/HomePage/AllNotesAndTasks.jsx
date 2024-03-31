@@ -13,21 +13,18 @@ export default function AllNotesAndTasks() {
     const navigate = useNavigate();
     const sessionUser = useSelector((state) => state.session.user);
     const allNotebooks = useSelector((state) => state.notebook);
-    console.log("🚀 ~ AllNotesAndTasks ~ allNotebooks:", allNotebooks)
-    console.log("🚀 ~ AllNotesAndTasks ~ sessionUser:", sessionUser)
+
 
     useEffect(() => {
         dispatch(thunkGetCurrentUser)
     }, [dispatch])
 
     const handleNewNote = async() => {
-
         const newNote = {
             title: "Untitled"
         }
 
         const res = await dispatch(thunkPostNote(newNote))
-        console.log("🚀 ~ handleNewNote ~ res:", res)
 
         if (res && res.errors){
             return setErrors(res.errors)

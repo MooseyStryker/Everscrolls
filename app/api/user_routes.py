@@ -32,13 +32,6 @@ def get_current_user():
     """
 
     user = User.query.get(current_user.id)
-    print("")
-    print("")
-    print("")
-    print(user.to_dict())
-    print("")
-    print("")
-    print("")
     return user.to_dict()
 
 @user_routes.route('/search', methods=['POST'])

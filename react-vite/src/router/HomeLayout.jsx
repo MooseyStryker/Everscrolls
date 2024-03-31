@@ -4,9 +4,12 @@ import { thunkGetAllNotebooks } from "../redux/notebook";
 import { thunkGetAllNotes } from "../redux/notes";
 import { Outlet, useNavigate } from "react-router-dom";
 import { thunkGetCurrentUser } from "../redux/session";
+import { useModal } from "../context/Modal";
 
 import logo from "../../../images/website_images/profile_logo.png"
 import './Home.css'
+import ProfileModal from "../components/Modals/ProfileModal";
+import ProfileButton from "../components/Navigation/ProfileButton";
 
 export default function HomeLayout({ children }) { // Add children here
     const dispatch = useDispatch();
@@ -16,6 +19,14 @@ export default function HomeLayout({ children }) { // Add children here
     const sessionUser = useSelector((state) => state.session.user);
     const notebooksObj = Object.values(allNotebooks)
     const notesObj = Object.values(allNotes);
+
+    const [showProfile, setShowProfile] = useState(false)
+
+    const handleProfileClick = () => {
+        setShowProfile(!showProfile)
+    }
+
+    const { setModalContent } = useModal()
 
     const [showNotebooks, setShowNotebooks] = useState(false)
 
@@ -30,11 +41,12 @@ export default function HomeLayout({ children }) { // Add children here
     }, [dispatch]);
 
     return (
-        <div className="homecontainer"> {/* Add this line */}
+        <div className="homecontainer">
             <div className="main-container-allhands">
                 <div className="leftinfo">
                     <div className="info-container">
-                        <div className="profile-info">
+                        <div onClick={handleProfileClick} className="profile-info">
+                                {showProfile && <ProfileButton />}
 
                             <div>
                                 <img src={logo} alt="profile_logo" className="profi_logo" />

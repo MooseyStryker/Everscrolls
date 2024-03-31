@@ -23,7 +23,7 @@ export default function NoteHomePage() {
     const [isEditing, setIsEditing] = useState(false);
 
     const [divs, setDivs] = useState([{ id: 1, text: 'hello', ref: createRef() }]);
-    console.log("🚀 ~ NoteHomePage ~ divs:", divs)
+
 
     const handleKeyPress = (e, id) => {
         if (e.key === 'Enter') {
