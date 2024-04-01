@@ -35,6 +35,8 @@ class User(db.Model, UserMixin):
     hashed_password = db.Column(db.String(255), nullable=False)
     created_at = db.Column(DateTime, default=datetime.utcnow)
 
+    user_tasks = db.relationship("Task", back_populates='task_to_user', cascade="all, delete-orphan")
+
     @property
     def password(self):
         return self.hashed_password
@@ -123,17 +125,22 @@ class Task(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     note_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('notes.id')))
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')))
     body = db.Column(db.String(600))
-    due_date = db.Column(DateTime)
+    due_date = db.Column(DateTime, nullable=True)
+    complete = db.Column(db.Boolean, default=False)
 
+    task_to_user = db.relationship("User", back_populates='user_tasks')
     tasks_to_notes = db.relationship("Note", back_populates='notes_task')
 
     def to_dict(self):
         return {
             'id': self.id,
             'note_id': self.note_id,
+            'user_id': self.user_id,
             'body': self.body,
-            'due_date': self.due_date
+            'due_date': self.due_date,
+            'complete': self.complete
         }
 
 

@@ -299,9 +299,11 @@ def get_all_tasks(note_id):
     results_info = [
         {
             "id": task.id,
+            "user_id": task.user_id,
             "note_id": task.note_id,
             "description": task.body,
             "due_date": task.due_date,
+            "complete": task.complete,
         }
         for task in allTasks
     ]
@@ -324,9 +326,11 @@ def adding_tasks(note_id):
 
     if form.validate_on_submit():
         newTask = Task(
+            user_id = current_user.id,
             note_id = note_id,
             body = form.body.data,
             due_date = form.due_date.data,
+            complete = form.complete.data,
         )
         db.session.add(newTask)
         db.session.commit()

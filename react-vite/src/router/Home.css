@@ -83,3 +83,12 @@
     flex-direction: column;
 
 }
+
+
+.testing {
+    border: 1px solid orange;
+    height: 98vh;
+    border-radius: 10px;
+    width: 250px;
+    margin-top: 5px; /* aligns with the left task bar */
+}

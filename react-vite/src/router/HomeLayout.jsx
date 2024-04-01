@@ -8,8 +8,8 @@ import { useModal } from "../context/Modal";
 
 import logo from "../../../images/website_images/profile_logo.png"
 import './Home.css'
-import ProfileModal from "../components/Modals/ProfileModal";
 import ProfileButton from "../components/Navigation/ProfileButton";
+import TaskBar from "../components/Tasks/Task";
 
 export default function HomeLayout({ children }) { // Add children here
     const dispatch = useDispatch();
@@ -29,8 +29,6 @@ export default function HomeLayout({ children }) { // Add children here
     const handleProfileClick = () => {
         setShowProfile(!showProfile)
     }
-
-    const { setModalContent } = useModal()
 
     const [showNotebooks, setShowNotebooks] = useState(false)
 
@@ -82,7 +80,7 @@ export default function HomeLayout({ children }) { // Add children here
                             <div onClick={() => navigate('/home')} className="home-buttons">Home</div>
                             <div className="home-buttons">Notes</div>
                             <div className="home-buttons">Tasks</div>
-                            <div className="home-buttons">Calendar</div>
+                            {/* <div className="home-buttons">Calendar</div> */}
                         </div>
 
                         <div className="notebooks-tags">
@@ -91,15 +89,22 @@ export default function HomeLayout({ children }) { // Add children here
                                 {showNotebooks && notebooksObj.map(notebook => (
                                     <div className="notebookshowdiv" key={notebook.id}>{notebook.notebook_name}</div>
                                 ))}
-                            <div className="home-buttons">Tags(Bonus)</div>
+                            {/* <div className="home-buttons">Tags(Bonus)</div> */}
 
                         </div>
 
                     </div>
                 </div>
             </div>
-            {children} {/* Add this line */}
+            <div className="2ndcontainer">
+                <div className="testing">
+                    Testing this out
+                    <TaskBar notes={allNotes} />
+                </div>
+
+            </div>
+            {children}
             <Outlet />
-        </div> // Close the new div here
+        </div>
     );
 }

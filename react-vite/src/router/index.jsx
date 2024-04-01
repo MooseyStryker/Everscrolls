@@ -41,22 +41,6 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  // {
-  //   // Specific layout for /home
-  //   element: <HomeLayout />,
-  //   children: [
-  //     {
-  //       path: "/home", // Example child route for /home
-  //       element: <AllNotesAndTasks />,
-  //     },
-  //     {
-  //       path: "/home/note/:noteid",
-  //       element: <NoteHomePage />,
-  //     },
-
-  //     // Add other child routes specific to /home here
-  //   ],
-  // },
   {
     // Specific layout for /home
     element: (

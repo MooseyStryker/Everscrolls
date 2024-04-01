@@ -1,7 +1,13 @@
+const GET_ALL_THE_TASKS = 'tasks/getAllOfTheTasks';
 const GET_ALL_TASK = "tasks/getAllTask";
 const POST_TASK_TO_NOTE = "tasks/postTaskToNote";
 const PUT_TASK = "tasks/putTask";
 const DELETE_TASK = "tasks/deleteTask";
+
+const getEveryTask = (tasks) => ({
+    type: GET_ALL_THE_TASKS,
+    tasks
+})
 
 
 const getAllTask = (noteId, tasks) => ({
@@ -25,6 +31,17 @@ const deleteTask =  (taskId) => ({
     taskId
 })
 
+export const thunkGettingAllOfTheTasks = () => async(dispatch) => {
+    const res = await fetch(`api/tasks`);
+    const data = await res.json()
+    if (data.errors) {
+        return data;
+    } else {
+        dispatch(getEveryTask(data));
+    }
+
+}
+
 export const thunkGetAllTask = (noteId) => async (dispatch) => {
     const response = await fetch(`/api/notes/${noteId}/tasks`);
     const data = await response.json();
@@ -36,7 +53,7 @@ export const thunkGetAllTask = (noteId) => async (dispatch) => {
 };
 
 
-export const thunkPostAllTask = (noteId, task) => async (dispatch) => {
+export const thunkPostTask = (noteId, task) => async (dispatch) => {
     const response = await fetch(`/api/notes/${noteId}/tasks`,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -84,6 +101,12 @@ const initialState = {};
 export default function taskReducer(state = initialState, action) {
     let newState;
     switch (action.type) {
+        case GET_ALL_THE_TASKS:
+            newState = { ...state };
+            action.tasks.forEach((task) => {
+                newState[task.id] = task
+            })
+            return newState;
         case GET_ALL_TASK:
             let taskState = {}
             action.tasks.forEach((task) => {
