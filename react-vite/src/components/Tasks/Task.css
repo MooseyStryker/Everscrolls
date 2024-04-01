@@ -1,0 +1,10 @@
+.eachtask {
+    margin: 4px;
+    margin-top: 8px;
+    transition: background-color 0.1s ease; /* Add transition effect */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.eachtask:hover {
+    background-color: #f0f0f0; /* Change background color on hover */
+}

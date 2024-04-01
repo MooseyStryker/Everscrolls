@@ -80,7 +80,7 @@ export const thunkUpdateTask = (noteId, taskId, updateDescription) => async (dis
     if (data.errors) {
        return data
     } else {
-        dispatch(editTask(noteId, taskId, data));
+        dispatch(editTask(data));
     }
 }
 

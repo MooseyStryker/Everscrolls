@@ -1,29 +1,30 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { thunkPostTask } from "../../redux/tasks"
+import { thunkPostTask, thunkUpdateTask } from "../../redux/tasks"
 
-export default function PostTask({ closeModal }){
+export default function PutTask({ task, closeModal }){
+    console.log("🚀 ~ PutTask ~ task:", task)
     const dispatch = useDispatch()
     const whichNote = useSelector((state) => state.notes)
     const noteObj = Object.values(whichNote)
     console.log("🚀 ~ PostTask ~ noteObj:", noteObj)
 
     // State variables for form inputs
-    const [noteId, setNoteId] = useState('');
-    const [body, setBody] = useState('');
-    const [dueDate, setDueDate] = useState('');
+    const [noteId, setNoteId] = useState(task.note_id);
+    const [body, setBody] = useState(task.body);
+    const [dueDate, setDueDate] = useState(task.due_date || '');
 
     const handleTaskSubmit = async(e) => {
         e.preventDefault();  // Prevent form from refreshing the page
 
-        const newTask = {
+        const putTask = {
             note_id: noteId,
             body,
             due_date: dueDate,
         }
-        console.log("🚀 ~ handleTaskSubmit ~ newTask:", newTask)
+        console.log("🚀 ~ handleTaskSubmit ~ putTask:", putTask)
 
-       const res = await dispatch(thunkPostTask(noteId, newTask))
+       const res = await dispatch(thunkUpdateTask(task.note_id, task.id, putTask))
        console.log("🚀 ~ handleTaskSubmit ~ res:", res)
 
        if (res && res.errors) {
@@ -31,6 +32,10 @@ export default function PostTask({ closeModal }){
        }
 
        closeModal()
+    }
+
+    const deleteTaskModal = (taskId) => {
+        setModalContent(<DeleteTask task={taskId} closeModal={closeModal} />)
 
     }
 
@@ -58,6 +63,8 @@ export default function PostTask({ closeModal }){
                     </label>
                 </div>
                 <button type="submit">Submit</button>
+                <button onClick={() => deleteTaskModal(task.id)}>Delete Task</button>
+
             </form>
         </>
     )
