@@ -6,13 +6,13 @@
     width: 100%
 }
 .rightinfo{
-    border: 1px solid red;
+    /* border: 1px solid red; */
     margin: 4px;
     width: 100%;
 }
 
 .pictureontop{
-    border: 1px solid green;
+    /* border: 1px solid green; */
     margin: 4px;
 }
 
@@ -22,12 +22,12 @@
 }
 
 .homenotelayout{
-    border: 1px solid green;
+    /* border: 1px solid green; */
     margin: 4px;
 }
 
 .home-page-text{
-    border: 1px solid orange;
+    /* border: 1px solid orange; */
     margin: 4px;
     display: flex;
     flex-direction: row;
@@ -35,7 +35,7 @@
 }
 
 .note-cal-task{
-    border: 1px solid orange;
+    /* border: 1px solid orange; */
     margin: 4px;
 
 }
@@ -43,13 +43,13 @@
 .allnotes-alltasks-connectedtouser, .scratchpad-cal{
     display: flex;
     justify-content: space-between;
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
     margin: 4px;
     height: 100%;
 }
 
 .notesinhome, .tasksinhome, .scratchinhome, .bonus-calendar{
-    border: 1px solid brown;
+    /* border: 1px solid brown; */
     margin: 4px;
 }
 
@@ -61,11 +61,11 @@
 }
 
 .note-individual{
-    border: 1px solid rebeccapurple;
+    /* border: 1px solid rebeccapurple; */
 
 }
 
 .creatinganewnote{
-    border: 1px solid pink;
+    /* border: 1px solid pink; */
     margin: 4px;
 }

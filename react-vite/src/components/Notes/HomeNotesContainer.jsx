@@ -44,7 +44,7 @@ export default function AllNotes() {
                         <h2>Note Title: {note.note_title}</h2>
                         <div>
                             First two bodies:
-                            {note.bodies.slice(0, 2).map((body, index) => (
+                            {note.bodies && note.bodies.slice(0, 2).map((body, index) => (
                                 <p key={index}>{body.body}</p>
                             ))}
                         </div>

@@ -1,0 +1,6 @@
+.profile-dropdown{
+    background-color: aliceblue;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 8%;
+}

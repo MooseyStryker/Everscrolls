@@ -5,6 +5,7 @@ import { thunkLogout } from "../../redux/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
+import './Profile.css'
 
 function ProfileButton() {
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ function ProfileButton() {
   };
 
     return (
-      <>
+      <div className="profiledivcontainer">
         {!showMenu && (
           <ul className={"profile-dropdown"} ref={ulRef}>
               <>
@@ -54,7 +55,7 @@ function ProfileButton() {
         )}
 
 
-      </>
+      </div>
     );
 }
 

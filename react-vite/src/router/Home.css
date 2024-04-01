@@ -7,25 +7,27 @@
 .main-container-allhands {
     display: flex;
     width: 250px;
-    height: 100vh; /* 100% of the viewport height */
+    height: 100vh;
 }
 
 
 .leftinfo{
-    border: 1px solid red;
+    border: 1px solid rgb(181, 181, 181);
+    background-color: #F2F2F2;
+    border-radius: 10px;
     margin: 4px;
     width: 100%;
-}
+    box-shadow: 3px 8px 20px rgba(0, 0, 1, 0.2);
 
 .info-container{
-    border: 1px solid green;
+    /* border: 1px solid green; */
     margin: 4px
 
 }
 
 
 .profile-info{
-    border: 1px solid orange;
+    /* border: 1px solid orange; */
     margin: 4px;
     display: flex;
 
@@ -44,7 +46,7 @@
 }
 
 .search-create-note-task{
-    border: 1px solid orange;
+    /* border: 1px solid orange; */
     margin: 4px;
     display: flex;
     flex-direction: column;
@@ -66,77 +68,16 @@
 
 
 .notes-task-calendar-info{
-    border: 1px solid orange;
+    /* border: 1px solid orange; */
     margin: 4px;
     display: flex;
     flex-direction: column;
 }
 
 .notebooks-tags{
-    border: 1px solid orange;
+    /* border: 1px solid orange; */
     margin: 4px;
     display: flex;
     flex-direction: column;
 
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.rightinfo{
-    border: 1px solid red;
-    margin: 4px;
-    width: 100%;
-}
-
-.pictureontop{
-    border: 1px solid green;
-    margin: 4px;
-
-}
-
-.homenotelayout{
-    border: 1px solid green;
-    margin: 4px;
-}
-
-.home-page-text{
-    border: 1px solid orange;
-    margin: 4px;
-}
-
-.note-cal-task{
-    border: 1px solid orange;
-    margin: 4px;
-}
-
-.allnotes-alltasks-connectedtouser, .scratchpad-cal{
-    display: flex;
-    justify-content: space-between;
-    border: 1px solid blue;
-    margin: 4px;
-}
-
-.notesinhome, .tasksinhome, .scratchinhome, .bonus-calendar{
-    border: 1px solid brown;
-    margin: 4px;
 }

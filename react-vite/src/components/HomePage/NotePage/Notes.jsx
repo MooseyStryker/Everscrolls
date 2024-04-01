@@ -25,14 +25,25 @@ export default function NoteHomePage() {
     const [divs, setDivs] = useState([{ id: 1, text: 'hello', ref: createRef() }]);
 
 
+    // const handleKeyPress = (e, id) => {
+    //     if (e.key === 'Enter') {
+    //         e.preventDefault(); // prevents us from going to the new line
+    //         const newDiv = { id: id + 1, text: '', ref: createRef() };
+    //         setDivs([...divs, newDiv]);
+    //         setTimeout(() => newDiv.ref.current.focus(), 0); // focus the new input element
+    //     }
+    // };
     const handleKeyPress = (e, id) => {
         if (e.key === 'Enter') {
             e.preventDefault(); // prevents us from going to the new line
-            const newDiv = { id: id + 1, text: '', ref: createRef() };
-            setDivs([...divs, newDiv]);
+            const newDiv = { id: divs.length + 1, text: '', ref: createRef() }; // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data
+            const index = divs.findIndex(div => div.id === id);
+            setDivs([...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)]);
             setTimeout(() => newDiv.ref.current.focus(), 0); // focus the new input element
         }
     };
+
+
 
     const handleTextChange = (e, id) => {
         console.log("Are we getting here")
@@ -125,25 +136,22 @@ export default function NoteHomePage() {
                     <div className="notesinfocontainer">
                         <div className="notesinfo">
                             <div>
+
                                 { isEditing ? (
                                     <input
+                                        className="titleinputedit"
                                         type="text"
                                         value={title}
                                         onChange={handleTitleChange}
                                         onBlur={handleBlur}
                                         autoFocus
-                                        style={{
-                                            background: 'none',
-                                            border: 'none',
-                                            fontSize: '2em',
-                                            outline: 'none',
-                                        }}
                                     />
                                 ) : (
                                     <h1 onClick={handleTitleClick}>
                                         {title === "Untitled" ? "Enter a title" : title}
                                     </h1>
                                 )}
+
                             </div>
                             <button onClick={handleSaveNoteBody}>Save note</button>
                             {divs.map(div => (

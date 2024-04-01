@@ -20,6 +20,10 @@ export default function HomeLayout({ children }) { // Add children here
     const notebooksObj = Object.values(allNotebooks)
     const notesObj = Object.values(allNotes);
 
+    if (allNotebooks){
+        if(!sessionUser) navigate('/');
+    }
+
     const [showProfile, setShowProfile] = useState(false)
 
     const handleProfileClick = () => {
@@ -35,9 +39,9 @@ export default function HomeLayout({ children }) { // Add children here
       };
 
     useEffect(() => {
+        dispatch(thunkGetCurrentUser())
         dispatch(thunkGetAllNotebooks())
         dispatch(thunkGetAllNotes());
-        dispatch(thunkGetCurrentUser())
     }, [dispatch]);
 
     return (

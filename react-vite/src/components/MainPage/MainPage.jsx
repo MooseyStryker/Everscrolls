@@ -14,6 +14,10 @@ export default function LoginPage() {
     const [password, setPassword] = useState("");
     const [isNewUser, setIsNewUser] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState("");
+    const sessionUser = useSelector((state) => state.session.user);
+
+
+    if (sessionUser) navigate('/home')
 
     const [errors, setErrors] = useState({
         username: '',
@@ -88,6 +92,22 @@ export default function LoginPage() {
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
+    }
+
+    const handleDemoUser = async() => {
+        const demoUser = {
+            email: 'user1@aa.io',
+            password: 'password'
+        };
+
+        const serverResponse = await dispatch(thunkLogin(demoUser));
+
+        if (serverResponse) {
+            console.log("🚀 ~ handleLogin ~ serverResponse:", serverResponse)
+            setErrors(serverResponse);
+        } else {
+            navigate("/home");
+        }
     }
 
 
@@ -206,6 +226,7 @@ export default function LoginPage() {
                     </label>
                     <input type="submit" value="Login" />
                     <button onClick={() => switchLoginSignup()}>New User? Signup</button>
+                    <button onClick={() => handleDemoUser()}>Login as Demo User</button>
                 </form>
 
             )}

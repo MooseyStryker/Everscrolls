@@ -1,5 +1,17 @@
+.titleinputedit{
+    background: none;
+    border: none;
+    font-size: 31px;
+    outline: none;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 700;
+    margin-top: 21.440px;
+    margin-bottom: 21.440px;
+}
+
+
 .home-notes{
-    border: 1px solid red;
+    /* border: 1px solid red; */
     height: 100vh;
     width: 100%;
 }
@@ -10,7 +22,7 @@
 }
 
 .notesinfo{
-    border: 1px solid green;
+    /* border: 1px solid green; */
     display: flex;
     flex-direction: column;
     width: 600px;
@@ -19,4 +31,6 @@
 
 .noteinput{
     width: 100%;
+    border: none;
+    word-wrap: break-word;
 }
