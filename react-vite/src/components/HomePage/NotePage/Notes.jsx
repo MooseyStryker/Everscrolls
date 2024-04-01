@@ -24,15 +24,6 @@ export default function NoteHomePage() {
 
     const [divs, setDivs] = useState([{ id: 1, text: 'hello', ref: createRef() }]);
 
-
-    // const handleKeyPress = (e, id) => {
-    //     if (e.key === 'Enter') {
-    //         e.preventDefault(); // prevents us from going to the new line
-    //         const newDiv = { id: id + 1, text: '', ref: createRef() };
-    //         setDivs([...divs, newDiv]);
-    //         setTimeout(() => newDiv.ref.current.focus(), 0); // focus the new input element
-    //     }
-    // };
     const handleKeyPress = (e, id) => {
         if (e.key === 'Enter') {
             e.preventDefault(); // prevents us from going to the new line
@@ -41,14 +32,27 @@ export default function NoteHomePage() {
             setDivs([...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)]);
             setTimeout(() => newDiv.ref.current.focus(), 0); // focus the new input element
         }
+        if (e.key === 'Backspace') {
+            const index = divs.findIndex(div => div.id === id);
+            if (divs[index].text === '') {
+                e.preventDefault(); // prevents the default delete action
+                const newDivs = [...divs];
+                newDivs.splice(index, 1);
+                setDivs(newDivs);
+                if (newDivs[index]) {
+                    setTimeout(() => newDivs[index].ref.current.focus(), 0); // focus the next input element
+                }
+            }
+        }
     };
 
-
-
+    // This is chagned to try out text area
     const handleTextChange = (e, id) => {
-        console.log("Are we getting here")
+        e.target.style.height = 'inherit'; // Resets the height when we add text to the textarea
+        e.target.style.height = `${e.target.scrollHeight}px`; // Set the height based on scroll height
         setDivs(divs.map(div => div.id === id ? { ...div, text: e.target.value } : div));
     };
+
 
     const handleTitleClick = () => {
         setIsEditing(true);
@@ -70,7 +74,6 @@ export default function NoteHomePage() {
         }
 
         const res = await dispatch(thunkPutNote(edittedNote, noteid))
-        console.log("🚀 ~ handleEditNote ~ res:", res)
     }
 
     const handleSaveNoteBody = async() => {
@@ -78,8 +81,6 @@ export default function NoteHomePage() {
         dispatch(thunkDeleteAllNoteBody(noteid))
 
         const divTexts = divs.map(div => div.text);
-        console.log("🚀 ~ handleSaveNoteBody ~ divTexts:", divTexts)
-
         for (let i = 0; i < divTexts.length; i++) {
             const newNoteBody = {
                 body: divTexts[i]
@@ -98,8 +99,9 @@ export default function NoteHomePage() {
     useEffect(() => {
         if (currentNote && !title) { // This will pull data when coming in but wont keep refreshing title when dispatch new edit titl
             setTitle(currentNote.note_title);
+            console.log("🚀 ~ useEffect ~ currentNote:", currentNote.note_title)
         }
-        console.log("Is this firing")
+        console.log("Grabbing title useEffect")
     }, [currentNote]);
 
 
@@ -115,7 +117,6 @@ export default function NoteHomePage() {
             setPrevNoteBody(currentNoteBody); // Update prevNoteBody to the currentNoteBody
         }
     }, [currentNoteBody]);
-
 
 
     return (
@@ -156,9 +157,8 @@ export default function NoteHomePage() {
                             <button onClick={handleSaveNoteBody}>Save note</button>
                             {divs.map(div => (
                                 <div key={div.id}>
-                                    <input
+                                    <textarea
                                         className="noteinput"
-                                        type="text"
                                         value={div.text}
                                         onChange={(e) => handleTextChange(e, div.id)}
                                         onKeyDown={(e) => handleKeyPress(e, div.id)}
