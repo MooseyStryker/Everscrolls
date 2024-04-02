@@ -8,6 +8,9 @@
     margin-top: 21.440px;
     margin-bottom: 21.440px;
 }
+.titleinfo-needsmargin{
+    margin-bottom: 30px;
+}
 
 
 .home-notes{
@@ -48,6 +51,6 @@
 }
 
 .notebody-container{
-    overflow-x: hidden; 
+    overflow-x: hidden;
     overflow-y: scroll;
 }
