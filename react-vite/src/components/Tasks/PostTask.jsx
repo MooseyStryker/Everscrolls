@@ -11,7 +11,7 @@ export default function PostTask({ closeModal }){
     // State variables for form inputs
     const [noteId, setNoteId] = useState('');
     const [body, setBody] = useState('');
-    const [dueDate, setDueDate] = useState('');
+    // const [dueDate, setDueDate] = useState('');
 
     const handleTaskSubmit = async(e) => {
         e.preventDefault();  // Prevent form from refreshing the page
@@ -19,7 +19,7 @@ export default function PostTask({ closeModal }){
         const newTask = {
             note_id: noteId,
             body,
-            due_date: dueDate,
+            // due_date: dueDate,
         }
         console.log("🚀 ~ handleTaskSubmit ~ newTask:", newTask)
 
@@ -52,10 +52,10 @@ export default function PostTask({ closeModal }){
                     </label>
                 </div>
                 <div>
-                    <label>
+                    {/* <label>
                         Due date
                         <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
-                    </label>
+                    </label> */}
                 </div>
                 <button type="submit">Submit</button>
             </form>

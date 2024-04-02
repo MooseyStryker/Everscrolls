@@ -25,31 +25,34 @@ export default function NoteHomePage() {
 
     const handleKeyPress = async(e, id) => {
         if (e.key === 'Enter') {
-            e.preventDefault(); // prevents us from going to the new line
-            await handleSaveNoteBody(); // await allows the save to finish before creating a new line
-            const newDiv = { id: divs.length + 1, text: '', ref: createRef() }; // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data
+            e.preventDefault();                                                         // prevents us from going to the new line
+            await handleSaveNoteBody();                                                 // await allows the save to finish before creating a new line
+            const newDiv = { id: divs.length + 1, text: '', ref: createRef() };         // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data
             const index = divs.findIndex(div => div.id === id);
             setDivs([...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)]);
-            setTimeout(() => newDiv.ref.current.focus(), 0); // focus the new input element
+            setTimeout(() => newDiv.ref.current.focus(), 0);                            // focus the new input element
         }
         if (e.key === 'Backspace') {
             const index = divs.findIndex(div => div.id === id);
             if (divs[index].text === '') {
-                e.preventDefault(); // prevents the default delete action
-                await handleSaveNoteBody(); // await allows the delete to be saved
+                e.preventDefault();                                                     // prevents the default delete action
+                await handleSaveNoteBody();                                             // await allows the delete to be saved
                 const newDivs = [...divs];
                 newDivs.splice(index, 1);
                 setDivs(newDivs);
                 if (newDivs[index]) {
-                    setTimeout(() => newDivs[index].ref.current.focus(), 0); // focus the next input element
+                    setTimeout(() => newDivs[index].ref.current.focus(), 0);            // focus the next input element
+                } else if (newDivs[index - 1]) {
+                    setTimeout(() => newDivs[index - 1].ref.current.focus(), 0);        // focus the previous input element
                 }
             }
         }
+
     };
 
     // This is chagned to try out text area
     const handleTextChange = (e, id) => {
-        e.target.style.height = 'inherit'; // Resets the height when we add text to the textarea
+        e.target.style.height = 'inherit';                     // Resets the height when we add text to the textarea
         e.target.style.height = `${e.target.scrollHeight}px`; // Set the height based on scroll height
         setDivs(divs.map(div => div.id === id ? { ...div, text: e.target.value } : div));
     };
@@ -115,7 +118,7 @@ export default function NoteHomePage() {
                 ref: createRef()
             }));
             setDivs(noteBodies);
-            setPrevNoteBody(currentNoteBody); // Update prevNoteBody to the currentNoteBody
+            setPrevNoteBody(currentNoteBody); // Update prevvNoteBody to the currentNoteBody
         }
     }, [currentNoteBody]);
 
