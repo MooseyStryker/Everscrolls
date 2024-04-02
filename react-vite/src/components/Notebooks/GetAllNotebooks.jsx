@@ -17,6 +17,9 @@ export default function AllNotebooks() {
 
     return (
         <div>
+            <div>
+                <h1>Notebooks</h1>
+            </div>
             {allNotebooks && notebooksObj.map((notebook) => (
                 <div key={notebook.user_id}>
                     <p>Notebook Name: {notebook.notebook_name}</p>

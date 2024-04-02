@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./HomeNotes.css"
 import NotesBody from "../Notes_body/NoteBody";
 import { FaTimes } from 'react-icons/fa';
+import { thunkPostNote } from "../../redux/notes";
 
 
 export default function AllNotes() {
@@ -14,10 +15,21 @@ export default function AllNotes() {
     const notesObj = Object.values(allNotes);
     const [noteUpdate, setNoteUpdate] = useState(false)
 
-    useEffect(() => {
-        if (noteUpdate === true) setNoteUpdate(!noteUpdate)
-        dispatch(thunkGetAllNotes());
-    }, [dispatch, noteUpdate]);
+
+    const handleNewNote = async() => {
+        const newNote = {
+            title: "Untitled"
+        }
+
+        const res = await dispatch(thunkPostNote(newNote))
+
+        if (res && res.errors){
+            return setErrors(res.errors)
+          }
+
+        navigate(`/home/note/${res.id}`)
+
+    }
 
 
     const handleDelete = async(noteId) => {
@@ -31,6 +43,12 @@ export default function AllNotes() {
     const handleNavigate = (noteId) => {
         navigate(`/home/note/${noteId}`);
     };
+
+
+    useEffect(() => {
+        if (noteUpdate === true) setNoteUpdate(!noteUpdate)
+        dispatch(thunkGetAllNotes());
+    }, [dispatch, noteUpdate]);
     return (
         <div className="homenotescontainer">
             {notesObj?.map((note) => (
@@ -48,10 +66,21 @@ export default function AllNotes() {
                                 <p key={index}>{body.body}</p>
                             ))}
                         </div>
+                        <div>
+                            Tasks:
+                            {note.tasks && note.tasks.slice(0,2).map((task, index) =>(
+                                <p key={index}>{task.body}</p>
+                            ))}
+                        </div>
                     </div>
 
                 </div>
             ))}
+            <div>
+                <div className="creatinganewnote" onClick={handleNewNote}>
+                    Create a New Note!
+                </div>
+                </div>
         </div>
     );
 

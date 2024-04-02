@@ -1,7 +1,15 @@
-.homenotescontainer{
-    border: 2px solid yellowgreen;
+.main-notes-page{
     display: flex;
-    overflow: auto;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.homenotescontainer{
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 1500px;
 }
 
 .singlenotecontainer{
@@ -10,10 +18,35 @@
     justify-content: flex-start;
     align-items: flex-start;
     margin-right: 20px;
-    
-
+    background-color: white;
+    width: 220px;
+    height: 320px;
+    padding: 20px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Add subtle box shadow */
+    transition: transform 0.3s ease; /* Add transition effect */
 }
 
+.singlenotecontainer:hover {
+    transform: scaleX(1.05) scaleY(1.05); /* Increase width and height by 5% on hover */
+}
+
+
+
+
 .singlenote{
-    margin: 2px;
+    width: 200px;
+}
+
+.creatinganewnote{
+    background-color: white;
+    width: 120px;
+    height: 220px;
+    padding: 20px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Add subtle box shadow */
+    transition: transform 0.3s ease; /* Add transition effect */
+    cursor: pointer;
+}
+
+.creatinganewnote:hover {
+    border: 1px solid black;
 }

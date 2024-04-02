@@ -62,9 +62,9 @@ export default function AllNotesAndTasks() {
                                         <AllNotes />
                                     </div>
 
-                                    <div className="creatinganewnote" onClick={handleNewNote}>
+                                    {/* <div className="creatinganewnote" onClick={handleNewNote}>
                                         Create a New Note!
-                                    </div>
+                                    </div> */}
 
                                 </div>
                                 <div className="tasksinhome">Task Container</div>

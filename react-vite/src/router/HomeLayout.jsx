@@ -10,8 +10,9 @@ import logo from "../../../images/website_images/profile_logo.png"
 import './Home.css'
 import ProfileButton from "../components/Navigation/ProfileButton";
 import TaskBar from "../components/Tasks/Task";
+import AllNotebooks from "../components/Notebooks/GetAllNotebooks";
 
-export default function HomeLayout({ children }) { // Add children here
+export default function HomeLayout({ children }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const allNotebooks = useSelector((state) => state.notebook);
@@ -19,22 +20,39 @@ export default function HomeLayout({ children }) { // Add children here
     const sessionUser = useSelector((state) => state.session.user);
     const notebooksObj = Object.values(allNotebooks)
     const notesObj = Object.values(allNotes);
+    const [showProfile, setShowProfile] = useState(false)
+    const [showNotebooks, setShowNotebooks] = useState(false)
 
-    if (allNotebooks){
-        if(!sessionUser) navigate('/');
+    const [showSecondContainer, setShowSecondContainer] = useState(false)
+
+    const [showTaskContainer, setShowTaskContainer] = useState(false)
+    const [showNotebookContainer, setShowNotebookContainer] = useState(false)
+
+
+    const handleTaskClick = () => {
+        setShowSecondContainer(true);
+        setShowTaskContainer(true);
+        setShowNotebookContainer(false);
     }
 
-    const [showProfile, setShowProfile] = useState(false)
+    const handleNotebooksClick = () => {
+        setShowSecondContainer(true);
+        setShowNotebookContainer(true);
+        setShowTaskContainer(false);
+    }
+
+
+
+    // if (allNotebooks){
+    //     if(!sessionUser) navigate('/');
+    // }
+    // if(!sessionUser) navigate('/');
+
 
     const handleProfileClick = () => {
         setShowProfile(!showProfile)
     }
 
-    const [showNotebooks, setShowNotebooks] = useState(false)
-
-    const handleNotebooksClick = () => {
-        setShowNotebooks(!showNotebooks);
-      };
 
     useEffect(() => {
         dispatch(thunkGetCurrentUser())
@@ -79,30 +97,34 @@ export default function HomeLayout({ children }) { // Add children here
                         <div className="notes-task-calendar-info">
                             <div onClick={() => navigate('/home')} className="home-buttons">Home</div>
                             <div className="home-buttons">Notes</div>
-                            <div className="home-buttons">Tasks</div>
+                            <div onClick={() => handleTaskClick()}  className="home-buttons">Tasks</div>
                             {/* <div className="home-buttons">Calendar</div> */}
                         </div>
 
                         <div className="notebooks-tags">
-
                             <div className="home-buttons" onClick={handleNotebooksClick}>Notebooks</div>
-                                {showNotebooks && notebooksObj.map(notebook => (
-                                    <div className="notebookshowdiv" key={notebook.id}>{notebook.notebook_name}</div>
-                                ))}
-                            {/* <div className="home-buttons">Tags(Bonus)</div> */}
-
                         </div>
 
                     </div>
                 </div>
             </div>
-            <div className="2ndcontainer">
-                <div className="testing">
-                    Testing this out
-                    <TaskBar notes={allNotes} />
+            {showSecondContainer && (
+                <div className={`secondcontainer ${showSecondContainer ? 'open' : ''}`}>
+                    <div className="backoffsecond" onClick={() => setShowSecondContainer(false)}>
+                        &lt; {/* This is a left caret (or arrow) icon */}
+                    </div>
+                    {showTaskContainer && (
+                        <div className="taskcontainersidebar">
+                            <TaskBar notes={allNotes} />
+                        </div>
+                    )}
+                    {showNotebookContainer && (
+                        <div className="notebookcontainersidebar">
+                            <AllNotebooks />
+                        </div>
+                    )}
                 </div>
-
-            </div>
+            )}
             {children}
             <Outlet />
         </div>

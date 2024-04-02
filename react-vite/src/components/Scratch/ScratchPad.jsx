@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import './ScratchPad.css'
 
 function ScratchPad() {
     const divRef = useRef();
@@ -35,19 +36,12 @@ function ScratchPad() {
 
     return (
         <div
+            className='scratchpaper'
             contentEditable="true"
             onInput={handleInput}
             onFocus={handleFocus}
             onBlur={handleBlur}
             ref={divRef}
-            style={{
-                border: '1px solid black',
-                height: '200px',
-                width: '300px',
-                padding: '10px',
-                cursor: 'text',
-                overflowWrap: 'break-word'  // This will make the text wrap
-            }}
         />
     );
 }

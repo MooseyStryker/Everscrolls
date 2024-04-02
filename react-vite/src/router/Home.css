@@ -1,12 +1,13 @@
 .homecontainer{
     display: flex;
     flex-direction: row;
+    background-color: #F5F4F8 ;
 
 }
 
 .main-container-allhands {
     display: flex;
-    width: 250px;
+    width: 300px;
     height: 98vh;
 }
 
@@ -85,10 +86,33 @@
 }
 
 
-.testing {
-    border: 1px solid orange;
-    height: 98vh;
+.secondcontainer {
+    padding: 15px;
+    background-color: lightblue;
+    border: 1px solid rgb(197, 197, 197);
+    height: 94.5vh;
     border-radius: 10px;
     width: 250px;
     margin-top: 5px; /* aligns with the left task bar */
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+    transform: translateX(-100%); /* Starts off the screen to the left */
+    transition: transform 1s ease-in-out;
+}
+
+.secondcontainer.open {
+    transform: translateX(0);
+}
+
+.backoffsecond {
+    width:fit-content;
+    padding: 5px;
+    padding-right: 10px;
+    padding-left: 10px;
+    transition: all 0.1s ease-in-out;
+    cursor: pointer;
+}
+
+.backoffsecond:hover {
+    transform: scale(1.1);
+    border: 1px solid #000;
 }
