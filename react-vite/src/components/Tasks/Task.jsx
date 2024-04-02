@@ -40,7 +40,8 @@ export default function TaskBar() {
         const updateComplete = {
             body: taskBody,
             due_date: taskDueDate || '',
-            complete: !taskComplete
+            complete: !taskComplete,
+            note_id: noteId
         }
 
         const res = await dispatch(thunkUpdateTask(noteId, taskId, updateComplete))

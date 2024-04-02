@@ -19,7 +19,6 @@ export default function NoteHomePage() {
 
     const [prevNoteBody, setPrevNoteBody] = useState({});
     const [title, setTitle] = useState()
-    console.log("🚀 ~ NoteHomePage ~ title:", title)
     const [isEditing, setIsEditing] = useState(false);
 
     const [divs, setDivs] = useState([{ id: 1, text: 'hello', ref: createRef() }]);
@@ -78,7 +77,7 @@ export default function NoteHomePage() {
 
     const handleSaveNoteBody = async() => {
 
-        dispatch(thunkDeleteAllNoteBody(noteid))
+        dispatch(thunkDeleteAllNoteBody(noteid)) // Deletes old data in the db to keep duplicates from occuring
 
         const divTexts = divs.map(div => div.text);
         for (let i = 0; i < divTexts.length; i++) {
@@ -87,6 +86,7 @@ export default function NoteHomePage() {
             }
 
             await dispatch(thunkPostNotebody(noteid, newNoteBody))
+            setDivs(divs) // this Allows me to hit the save button and it wont cause the page to lose the new data until refresh.
         }
     }
 
@@ -99,15 +99,14 @@ export default function NoteHomePage() {
     useEffect(() => {
         if (currentNote && !title) { // This will pull data when coming in but wont keep refreshing title when dispatch new edit titl
             setTitle(currentNote.note_title);
-            console.log("🚀 ~ useEffect ~ currentNote:", currentNote.note_title)
         }
-        console.log("Grabbing title useEffect")
     }, [currentNote]);
 
 
     useEffect(() => {
         if (currentNoteBody && JSON.stringify(prevNoteBody) !== JSON.stringify(currentNoteBody)) {
             const noteBodiesArray = Object.values(currentNoteBody);
+            console.log("🚀 ~ useEffect ~ noteBodiesArray:", noteBodiesArray)
             const noteBodies = noteBodiesArray.map((body, index) => ({
                 id: index + 1,
                 text: body.body,

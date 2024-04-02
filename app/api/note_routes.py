@@ -302,7 +302,7 @@ def get_all_tasks(note_id):
             "user_id": task.user_id,
             "note_id": task.note_id,
             "description": task.body,
-            "due_date": task.due_date,
+            # "due_date": task.due_date,
             "complete": task.complete,
         }
         for task in allTasks
@@ -329,7 +329,7 @@ def adding_tasks(note_id):
             user_id = current_user.id,
             note_id = note_id,
             body = form.body.data,
-            due_date = form.due_date.data,
+            # due_date = form.due_date.data,
             complete = form.complete.data,
         )
         db.session.add(newTask)
@@ -361,7 +361,7 @@ def edit_task(note_id, task_id):
             task.note_id = form.note_id.data
             task.body = form.body.data
             task.complete = form.complete.data
-            task.due_date = form.due_date.data
+            # task.due_date = form.due_date.data
 
             db.session.commit()
 

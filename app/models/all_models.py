@@ -127,7 +127,7 @@ class Task(db.Model):
     note_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('notes.id')))
     user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')))
     body = db.Column(db.String(600))
-    due_date = db.Column(DateTime, nullable=True)
+    # due_date = db.Column(DateTime, nullable=True)
     complete = db.Column(db.Boolean, default=False)
 
     task_to_user = db.relationship("User", back_populates='user_tasks')
@@ -139,7 +139,7 @@ class Task(db.Model):
             'note_id': self.note_id,
             'user_id': self.user_id,
             'body': self.body,
-            'due_date': self.due_date,
+            # 'due_date': self.due_date,
             'complete': self.complete
         }
 

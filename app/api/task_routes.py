@@ -20,7 +20,7 @@ def get_all_tasks():
                 "note_id": results.note_id,
                 "user_id": results.user_id,
                 "body": results.body,
-                "due_date": results.due_date,
+                # "due_date": results.due_date,
                 "complete": results.complete,
         }
 
