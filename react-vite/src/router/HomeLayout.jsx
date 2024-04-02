@@ -4,8 +4,6 @@ import { thunkGetAllNotebooks } from "../redux/notebook";
 import { thunkGetAllNotes } from "../redux/notes";
 import { Outlet, useNavigate } from "react-router-dom";
 import { thunkGetCurrentUser } from "../redux/session";
-import { useModal } from "../context/Modal";
-
 import logo from "../../../images/website_images/profile_logo.png"
 import './Home.css'
 import ProfileButton from "../components/Navigation/ProfileButton";
@@ -18,13 +16,10 @@ export default function HomeLayout({ children }) {
     const allNotebooks = useSelector((state) => state.notebook);
     const allNotes = useSelector((state) => state.notes);
     const sessionUser = useSelector((state) => state.session.user);
-    const notebooksObj = Object.values(allNotebooks)
-    const notesObj = Object.values(allNotes);
+
     const [showProfile, setShowProfile] = useState(false)
-    const [showNotebooks, setShowNotebooks] = useState(false)
 
     const [showSecondContainer, setShowSecondContainer] = useState(false)
-
     const [showTaskContainer, setShowTaskContainer] = useState(false)
     const [showNotebookContainer, setShowNotebookContainer] = useState(false)
 
@@ -41,17 +36,10 @@ export default function HomeLayout({ children }) {
         setShowTaskContainer(false);
     }
 
-
-
-    // if (allNotebooks){
-    //     if(!sessionUser) navigate('/');
-    // }
-    // if(!sessionUser) navigate('/');
-
-
     const handleProfileClick = () => {
         setShowProfile(!showProfile)
     }
+
 
 
     useEffect(() => {
@@ -107,24 +95,29 @@ export default function HomeLayout({ children }) {
 
                     </div>
                 </div>
-            </div>
-            {showSecondContainer && (
-                <div className={`secondcontainer ${showSecondContainer ? 'open' : ''}`}>
-                    <div className="backoffsecond" onClick={() => setShowSecondContainer(false)}>
-                        &lt; {/* This is a left caret (or arrow) icon */}
-                    </div>
-                    {showTaskContainer && (
-                        <div className="taskcontainersidebar">
-                            <TaskBar notes={allNotes} />
-                        </div>
-                    )}
-                    {showNotebookContainer && (
-                        <div className="notebookcontainersidebar">
-                            <AllNotebooks />
-                        </div>
-                    )}
+
                 </div>
-            )}
+
+
+                {showSecondContainer && (
+                    <div className={`secondcontainer ${showSecondContainer ? 'open' : ''}`}>
+                        <div className="backoffsecond" onClick={() => setShowSecondContainer(false)}>
+                            &lt;
+                        </div>
+                        {showTaskContainer && (
+                            <div className="taskcontainersidebar">
+                                <TaskBar />
+                            </div>
+                        )}
+                        {showNotebookContainer && (
+                            <div className="notebookcontainersidebar">
+                                <AllNotebooks />
+                            </div>
+                        )}
+                    </div>
+                )}
+
+
             {children}
             <Outlet />
         </div>

@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { thunkGettingAllOfTheTasks } from "../../redux/tasks"
 import { useModal } from "../../context/Modal"
@@ -8,16 +8,16 @@ import './Task.css'
 import DeleteTask from "./DeleteTask"
 
 
-export default function TaskBar() {// I want to pass in my notes variable from homeLayout
+export default function TaskBar() {
     const dispatch = useDispatch()
     const { closeModal } = useModal()
+    const { setModalContent } = useModal()
 
     const tasks = useSelector((state) => state.tasks)
-    console.log("🚀 ~ TaskBar ~ tasks:", tasks)
-
     const tasksObj = Object.values(tasks)
 
-    const { setModalContent } = useModal()
+    const [isTaskDone, setTaskDone] = useState(false)
+
 
     const postTaskModal = () => {
         setModalContent(<PostTask closeModal={closeModal}/>)
@@ -45,15 +45,20 @@ export default function TaskBar() {// I want to pass in my notes variable from h
             <div>{Object.keys(tasks).length} tasks</div>
             <div>
                 {tasksObj?.map((task, index) => (
-                    <div>
+                    <div className="individualtaskcontainer">
+                        <div className="circle" onClick={() => setTaskDone(!isTaskDone)}></div>
                         <div
                             className="eachtask"
                             onClick={() => putTaskModal(task)}
                             key={index}
                         >
-                            {task.body}
+                            <h3>
+                                {task.body}
+                            </h3>
                         </div>
-                        <button onClick={(e) => deleteTaskModal(e, task.id)}>Delete Task</button>
+                        <div className="buttoncontainerfortaskdelete">
+                            <button onClick={(e) => deleteTaskModal(e, task.id)}>Delete</button>
+                        </div>
 
                     </div>
 

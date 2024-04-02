@@ -7,7 +7,7 @@
 
 .main-container-allhands {
     display: flex;
-    width: 300px;
+    width: 250px;
     height: 98vh;
 }
 
@@ -17,7 +17,7 @@
     background-color: #F2F2F2;
     border-radius: 10px;
     margin: 4px;
-    width: 100%;
+    width: 300px;
     box-shadow: 3px 8px 20px rgba(0, 0, 1, 0.2);
 
 }
@@ -104,7 +104,7 @@
 }
 
 .backoffsecond {
-    width:fit-content;
+    width:200px;
     padding: 5px;
     padding-right: 10px;
     padding-left: 10px;

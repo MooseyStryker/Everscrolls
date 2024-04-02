@@ -114,8 +114,7 @@ export default function taskReducer(state = initialState, action) {
             })
             return taskState
         case POST_TASK_TO_NOTE:
-            return {...state, [action.noteId]: action.task
-            };
+            return {...state, [action.task.id]: action.task};
         case PUT_TASK:
             return {...state, [action.noteId]: action.task};
         case DELETE_TASK:
