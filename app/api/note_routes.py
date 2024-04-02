@@ -358,7 +358,9 @@ def edit_task(note_id, task_id):
         form["csrf_token"].data = request.cookies["csrf_token"]
 
         if form.validate_on_submit():
+            task.note_id = form.note_id.data
             task.body = form.body.data
+            task.complete = form.complete.data
             task.due_date = form.due_date.data
 
             db.session.commit()

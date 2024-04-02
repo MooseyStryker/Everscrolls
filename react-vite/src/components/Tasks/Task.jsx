@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { thunkGettingAllOfTheTasks } from "../../redux/tasks"
+import { thunkGettingAllOfTheTasks, thunkUpdateTask } from "../../redux/tasks"
 import { useModal } from "../../context/Modal"
 import PostTask from "./PostTask"
 import PutTask from "./PutTask"
@@ -33,6 +33,25 @@ export default function TaskBar() {
 
     }
 
+    const changeComplete = async(e, taskBody, taskDueDate, noteId, taskId, taskComplete) => {
+        console.log("🚀 ~ changeComplete ~ taskComplete:", taskComplete)
+        e.preventDefault();
+
+        const updateComplete = {
+            body: taskBody,
+            due_date: taskDueDate || '',
+            complete: !taskComplete
+        }
+
+        const res = await dispatch(thunkUpdateTask(noteId, taskId, updateComplete))
+        console.log("🚀 ~ changeComplete ~ res:", res)
+
+        if (res && res.errors) {
+            return res
+        }
+    }
+
+
     useEffect(() => {
         dispatch(thunkGettingAllOfTheTasks())
     }, [dispatch])
@@ -44,26 +63,36 @@ export default function TaskBar() {
             </div>
             <div>{Object.keys(tasks).length} tasks</div>
             <div>
+
                 {tasksObj?.map((task, index) => (
                     <div className="individualtaskcontainer">
-                        <div className="circle" onClick={() => setTaskDone(!isTaskDone)}></div>
-                        <div
-                            className="eachtask"
-                            onClick={() => putTaskModal(task)}
-                            key={index}
-                        >
-                            <h3>
-                                {task.body}
-                            </h3>
+
+                        <div className="completioncontainer">
+                            <div className="aligncircle">
+                                <div
+                                    className={`circle ${task.complete ? 'completed' : ''}`}
+                                    onClick={(e) => changeComplete(e, task.body, task.due_date, task.note_id, task.id, task.complete)}
+                                ></div>
+                            </div>
+                            <div
+                                className={`eachtask ${task.complete ? 'completed-task' : ''}`}
+                                onClick={() => putTaskModal(task)}
+                                key={index}
+                            >
+                                <h3>
+                                    {task && task.body}
+                                </h3>
+                            </div>
                         </div>
+
                         <div className="buttoncontainerfortaskdelete">
                             <button onClick={(e) => deleteTaskModal(e, task.id)}>Delete</button>
                         </div>
 
                     </div>
-
-
                 ))}
+
+
             </div>
             <div>
                 <button onClick={postTaskModal}>Add a new Task</button>

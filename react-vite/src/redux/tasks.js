@@ -21,10 +21,9 @@ const postTask = (noteId, task) => ({
     noteId,
     task
 })
-const editTask = (noteId, task) => ({
+const editTask = (task) => ({
     type: PUT_TASK,
-    noteId,
-    task
+    task,
 })
 const deleteTask =  (taskId) => ({
     type: DELETE_TASK,
@@ -63,12 +62,13 @@ export const thunkPostTask = (noteId, task) => async (dispatch) => {
     if (data.errors) {
         return data;
     } else {
-        dispatch(postTask(noteId, data));
+        dispatch(postTask(data));
     }
 };
 
 
 export const thunkUpdateTask = (noteId, taskId, updateDescription) => async (dispatch) => {
+    console.log("🚀 ~ thunkUpdateTask ~ updateDescription:", updateDescription)
     const response = await fetch(`/api/notes/${noteId}/tasks/${taskId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -77,6 +77,7 @@ export const thunkUpdateTask = (noteId, taskId, updateDescription) => async (dis
 
 
     const data = await response.json();
+    console.log("🚀 ~ thunkUpdateTask ~ data:", data)
     if (data.errors) {
        return data
     } else {
@@ -116,7 +117,7 @@ export default function taskReducer(state = initialState, action) {
         case POST_TASK_TO_NOTE:
             return {...state, [action.task.id]: action.task};
         case PUT_TASK:
-            return {...state, [action.noteId]: action.task};
+            return {...state, [action.task.id]: action.task};
         case DELETE_TASK:
             newState = { ...state };
             delete newState[action.taskId];
