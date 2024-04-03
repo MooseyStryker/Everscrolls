@@ -65,7 +65,7 @@ export default function AllNotesAndTasks() {
                             </div>
                             <div className="scratchpad-cal">
                                 <div className="scratchinhome"><ScratchPad /></div>
-                                <div className="bonus-calendar">calendar Container</div>
+                                {/* <div className="bonus-calendar">calendar Container</div> */}
                             </div>
                         </div>
 

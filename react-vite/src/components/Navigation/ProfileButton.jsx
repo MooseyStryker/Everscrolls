@@ -11,6 +11,7 @@ function ProfileButton() {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const user = useSelector((store) => store.session.user);
+  console.log("🚀 ~ ProfileButton ~ user:", user)
   const ulRef = useRef();
 
   const toggleMenu = (e) => {
@@ -45,10 +46,14 @@ function ProfileButton() {
         {!showMenu && (
           <ul className={"profile-dropdown"} ref={ulRef}>
               <>
-                <li>{user.username}</li>
+                <li>Hello, {user.username}!</li>
                 <li>{user.email}</li>
                 <li>
-                  <button onClick={logout}>Log Out</button>
+                  <div className="logoutdivcontainer">
+                    <div className="logoutdiv" onClick={logout}>
+                      Log out {user.first_name} {user.last_name}
+                    </div>
+                  </div>
                 </li>
               </>
           </ul>

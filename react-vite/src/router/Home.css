@@ -9,7 +9,8 @@
 
 .main-container-allhands {
     display: flex;
-    width: 250px;
+    margin-top: 10px;
+    width: 280px;
 }
 
 
@@ -20,7 +21,7 @@
     margin: 4px;
     width: 300px;
     box-shadow: 3px 8px 20px rgba(0, 0, 1, 0.2);
-
+    height: 98vh;
 }
 
 .info-container{
@@ -34,11 +35,15 @@
     /* border: 1px solid orange; */
     margin: 4px;
     display: flex;
-
+    border-bottom: 1px solid black;
+    padding: 5px;
+    margin-bottom: 15px;
+    cursor: pointer;
 }
 
+
 .profi_logo{
-    width:50px;
+    width:80px;
     border-radius: 30px;
 }
 
@@ -47,6 +52,10 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.fnlncont{
+    margin-bottom:0px;
 }
 
 .search-create-note-task{
@@ -63,7 +72,8 @@
 }
 
 .home-buttons:hover {
-    background-color: grey;
+    background-color: rgb(186, 186, 186);
+    cursor: pointer;
 }
 
 .notebookshowdiv{
@@ -86,12 +96,19 @@
 
 }
 
+.quickactionbuttons{
+    display: flex;
+    justify-content: space-around;
+    margin: 5px;
+    margin-bottom: 15px;
+}
+
 
 .secondcontainer {
     padding: 15px;
     background-color: lightblue;
     border: 1px solid rgb(197, 197, 197);
-    height: 94.5vh;
+    height: 95.8vh;
     border-radius: 10px;
     width: 350px;
     margin-top: 5px; /* aligns with the left task bar */
@@ -101,12 +118,20 @@
 }
 
 .secondcontainer.open {
+    margin-top: 15px;
     transform: translateX(0);
+    width: 400px;
+}
+
+.taskcontainersidebar{
+    width: 92%;
 }
 
 .backoffsecond {
-    width:290px;
+    width:90%;
     padding: 5px;
+    margin-left: 10px;
+    border-radius: 5px;
     padding-right: 10px;
     padding-left: 10px;
     transition: all 0.1s ease-in-out;
@@ -116,4 +141,23 @@
 .backoffsecond:hover {
     transform: scale(1.1);
     border: 1px solid #000;
+}
+button {
+    background-color: #1E90FF;
+    color: white;
+    border-radius: 12px;
+    padding: 10px 24px;
+    border: none;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .5);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
+    transition: background-color .3s, transform .3s;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #187bcd;
+}
+
+button:active {
+    transform: translateY(2px);
 }

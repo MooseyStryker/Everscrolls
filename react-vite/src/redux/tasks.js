@@ -39,7 +39,7 @@ export const thunkGettingAllOfTheTasks = () => async(dispatch) => {
 
 }
 
-export const thunkGetAllTask = (noteId) => async (dispatch) => {
+export const thunkGetTasksByNote = (noteId) => async (dispatch) => {
     const response = await fetch(`/api/notes/${noteId}/tasks`);
     const data = await response.json();
     if (data.errors) {

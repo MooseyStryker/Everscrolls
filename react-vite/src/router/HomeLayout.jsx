@@ -9,6 +9,9 @@ import './Home.css'
 import ProfileButton from "../components/Navigation/ProfileButton";
 import TaskBar from "../components/Tasks/Task";
 import AllNotebooks from "../components/Notebooks/GetAllNotebooks";
+import { thunkPostNote } from "../redux/notes";
+import { useModal } from "../context/Modal";
+import PostTask from "../components/Tasks/PostTask";
 
 export default function HomeLayout({ children }) {
     const dispatch = useDispatch();
@@ -22,6 +25,13 @@ export default function HomeLayout({ children }) {
     const [showSecondContainer, setShowSecondContainer] = useState(false)
     const [showTaskContainer, setShowTaskContainer] = useState(false)
     const [showNotebookContainer, setShowNotebookContainer] = useState(false)
+
+    const { closeModal } = useModal()
+    const { setModalContent } = useModal()
+
+    const postTaskModal = () => {
+        setModalContent(<PostTask closeModal={closeModal}/>)
+    }
 
 
     const handleTaskClick = () => {
@@ -40,6 +50,20 @@ export default function HomeLayout({ children }) {
         setShowProfile(!showProfile)
     }
 
+    const handleNewNote = async() => {
+        const newNote = {
+            title: "Untitled"
+        }
+
+        const res = await dispatch(thunkPostNote(newNote))
+
+        if (res && res.errors){
+            return setErrors(res.errors)
+          }
+
+        navigate(`/home/note/${res.id}`)
+
+    }
 
 
     useEffect(() => {
@@ -62,35 +86,34 @@ export default function HomeLayout({ children }) {
 
                            <div className="user-profile-info">
                                 <div>
-                                    {sessionUser?.first_name}
-                                    {sessionUser?.last_name}
+                                    <h3 className="fnlncont">{sessionUser?.first_name} {sessionUser?.last_name}</h3>
                                 </div>
                                 <div>
-                                    {sessionUser?.email}
+                                    <h4 className="emailmargin">{sessionUser?.email}</h4>
                                 </div>
                             </div>
 
                         </div>
 
                         <div className="search-create-note-task">
-                            <div className="searchbarinhome">
+                            {/* <div className="searchbarinhome">
                                 Search
-                            </div>
+                            </div> */}
                             <div className="quickactionbuttons">
-                                <button>New Note</button>
-                                <button>New Task</button>
+                                <button className="quickactionbuttons-note" onClick={handleNewNote}>New Note</button>
+                                <button onClick={postTaskModal}>New Task</button>
                             </div>
                         </div>
 
                         <div className="notes-task-calendar-info">
-                            <div onClick={() => navigate('/home')} className="home-buttons">Home</div>
-                            <div className="home-buttons">Notes</div>
-                            <div onClick={() => handleTaskClick()}  className="home-buttons">Tasks</div>
+                            <div onClick={() => navigate('/home')} className="home-buttons"><h2>Home</h2></div>
+                            {/* <div className="home-buttons">Notes</div> */}
+                            <div onClick={() => handleTaskClick()}  className="home-buttons"><h2>Tasks</h2></div>
                             {/* <div className="home-buttons">Calendar</div> */}
                         </div>
 
                         <div className="notebooks-tags">
-                            <div className="home-buttons" onClick={handleNotebooksClick}>Notebooks</div>
+                            <div className="home-buttons" onClick={handleNotebooksClick}><h2>Notebooks</h2></div>
                         </div>
 
                     </div>

@@ -5,7 +5,8 @@ import { thunkGetCurrentUser } from "../../../redux/session";
 import { thunkGetNote, thunkPutNote } from "../../../redux/notes";
 import './Notes.css'
 import { thunkDeleteAllNoteBody, thunkGetAllNotebody, thunkPostNotebody } from "../../../redux/notebody";
-import { thunkGetAllTask } from "../../../redux/tasks";
+import TaskBar from "../../Tasks/Task";
+import SingleNoteTask from "../../Tasks/SingleNoteTask";
 
 
 
@@ -18,6 +19,7 @@ export default function NoteHomePage() {
     const currentNoteBody = useSelector((state) => state.notebody)
     const tasks = useSelector((state) => state.tasks)
     const tasksObj = Object.values(tasks)
+    console.log("🚀 ~ NoteHomePage ~ tasksObj:", tasksObj)
 
     const [prevNoteBody, setPrevNoteBody] = useState({});
     const [title, setTitle] = useState()
@@ -98,7 +100,6 @@ export default function NoteHomePage() {
     }
 
     useEffect(() => {
-        dispatch(thunkGetAllTask(noteid))
         dispatch(thunkGetAllNotebody(noteid))
         dispatch(thunkGetNote(noteid));
         dispatch(thunkGetCurrentUser);
@@ -128,7 +129,7 @@ export default function NoteHomePage() {
 
 
     return (
-        <>
+        <div className="note-notes-container">
             <div className="home-notes">
                 <div className="top-bar-in-notes">
                     <div className="directory"></div>
@@ -178,13 +179,12 @@ export default function NoteHomePage() {
                             </div>
                             <div className="taskandattachmentscontainer">
                                 <div className="task-store-container">
+
                                     <div>
-                                        <h2 className="task-store">Tasks</h2>
-                                    </div>
-                                    <div>
-                                    {tasksObj.map((task, index) => (
+                                    {/* {tasksObj.map((task, index) => (
                                         <p key={index}>{task.description}</p>
-                                    ))}
+                                    ))} */}
+                                        <SingleNoteTask noteId={noteid} />
                                     </div>
                                 </div>
 
@@ -200,6 +200,6 @@ export default function NoteHomePage() {
 
             </div>
 
-        </>
+        </div>
     );
 }

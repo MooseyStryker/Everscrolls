@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { thunkPostTask } from "../../redux/tasks"
+import './PostTask.css'
 
-export default function PostTask({ closeModal }){
+export default function PostTask({ closeModal, singleNoteId }){
     const dispatch = useDispatch()
     const whichNote = useSelector((state) => state.notes)
     const noteObj = Object.values(whichNote)
-    console.log("🚀 ~ PostTask ~ noteObj:", noteObj)
 
     // State variables for form inputs
     const [noteId, setNoteId] = useState('');
@@ -21,10 +21,7 @@ export default function PostTask({ closeModal }){
             body,
             // due_date: dueDate,
         }
-        console.log("🚀 ~ handleTaskSubmit ~ newTask:", newTask)
-
        const res = await dispatch(thunkPostTask(noteId, newTask))
-       console.log("🚀 ~ handleTaskSubmit ~ res:", res)
 
        if (res && res.errors) {
         return res
@@ -34,31 +31,44 @@ export default function PostTask({ closeModal }){
 
     }
 
+    useEffect(() => {
+        if (singleNoteId) {
+            setNoteId(singleNoteId);
+        } else if (noteObj && noteObj.length > 0) {
+            setNoteId(noteObj[0].id);
+        }
+    }, [noteObj, singleNoteId]);
+
+
+
     return(
         <>
-            <form onSubmit={handleTaskSubmit}>
-                <div>
-                    <label htmlFor="noteSelect">List of notes:</label>
-                    <select id="noteSelect" value={noteId} onChange={(e) => setNoteId(e.target.value)}>
+            <form onSubmit={handleTaskSubmit} className="form">
+                <div className="form-div">
+                    <label htmlFor="noteSelect" className="form-label">List of notes:</label>
+                    <select id="noteSelect" value={noteId} onChange={(e) => setNoteId(e.target.value)} className="form-select">
                         {noteObj?.map((note, index) => (
                             <option key={index} value={note.id}>{note.note_title}</option>
                         ))}
                     </select>
                 </div>
-                <div>
-                    <label>
+                <div className="form-div">
+                    <label className="form-label">
                         Task body
-                        <input type="text" value={body} onChange={(e) => setBody(e.target.value)} />
+                        <input type="text" value={body} onChange={(e) => setBody(e.target.value)} className="form-input" />
                     </label>
                 </div>
-                <div>
-                    {/* <label>
+                <div className="form-div">
+                    {/* <label className="form-label">
                         Due date
-                        <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+                        <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className="form-input" />
                     </label> */}
                 </div>
-                <button type="submit">Submit</button>
+                <div>
+                    <button type="submit">Submit</button>
+                </div>
             </form>
         </>
     )
+
 }
