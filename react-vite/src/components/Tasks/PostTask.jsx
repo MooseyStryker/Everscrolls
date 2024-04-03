@@ -2,13 +2,13 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { thunkPostTask } from "../../redux/tasks"
 import './PostTask.css'
+import { thunkGetAllNotes } from "../../redux/notes"
 
 export default function PostTask({ closeModal, singleNoteId }){
     const dispatch = useDispatch()
     const whichNote = useSelector((state) => state.notes)
     const noteObj = Object.values(whichNote)
 
-    // State variables for form inputs
     const [noteId, setNoteId] = useState('');
     const [body, setBody] = useState('');
     // const [dueDate, setDueDate] = useState('');
@@ -37,6 +37,8 @@ export default function PostTask({ closeModal, singleNoteId }){
         } else if (noteObj && noteObj.length > 0) {
             setNoteId(noteObj[0].id);
         }
+
+        dispatch(thunkGetAllNotes())
     }, [noteObj, singleNoteId]);
 
 

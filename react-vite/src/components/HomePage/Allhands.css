@@ -46,9 +46,9 @@
 .allnotes-alltasks-connectedtouser, .scratchpad-cal{
     display: flex;
     justify-content: space-between;
-    /* border: 1px solid blue; */
     margin: 4px;
     height: 100%;
+    width: 100%;
 }
 
 .notesinhome, .tasksinhome, .scratchinhome, .bonus-calendar{
@@ -57,10 +57,10 @@
 }
 
 .notesinhome{
-
     margin: 4px;
     display: flex;
     flex-direction: row;
+    width: 100%;
 }
 
 

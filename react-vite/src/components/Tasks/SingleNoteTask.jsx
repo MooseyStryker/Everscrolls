@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { thunkGettingAllOfTheTasks } from "../../redux/tasks"
+import { thunkGettingAllOfTheTasks, thunkUpdateTask } from "../../redux/tasks"
 import { useModal } from "../../context/Modal"
 import PostTask from "./PostTask"
 import PutTask from "./PutTask"
