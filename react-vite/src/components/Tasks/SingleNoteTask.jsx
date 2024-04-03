@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { thunkGettingAllOfTheTasks, thunkUpdateTask } from "../../redux/tasks"
+import { thunkGettingAllOfTheTasks } from "../../redux/tasks"
 import { useModal } from "../../context/Modal"
 import PostTask from "./PostTask"
 import PutTask from "./PutTask"
@@ -61,7 +61,7 @@ export default function SingleNoteTask({ noteId }) {
             <div>
                 <h1>Tasks</h1>
             </div>
-            <div>{tasksObj?.filter(task => task.note_id == noteId).length} tasks</div>
+            <div>{Object.keys(tasks).length} tasks</div>
             <div>
 
                 {tasksObj?.filter(task => task.note_id == noteId).map((task, index) => (

@@ -30,7 +30,7 @@ export default function NoteHomePage() {
     const handleKeyPress = async(e, id) => {
         if (e.key === 'Enter') {
             e.preventDefault();                                                         // prevents us from going to the new line
-            await handleSaveNoteBody();                                                 // await allows the save to finish before creating a new line
+            // await handleSaveNoteBody();                                                 // await allows the save to finish before creating a new line
             const newDiv = { id: divs.length + 1, text: '', ref: createRef() };         // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data
             const index = divs.findIndex(div => div.id === id);
             setDivs([...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)]);
@@ -40,7 +40,7 @@ export default function NoteHomePage() {
             const index = divs.findIndex(div => div.id === id);
             if (divs[index].text === '') {
                 e.preventDefault();                                                     // prevents the default delete action
-                await handleSaveNoteBody();                                             // await allows the delete to be saved
+                // await handleSaveNoteBody();                                             // await allows the delete to be saved
                 const newDivs = [...divs];
                 newDivs.splice(index, 1);
                 setDivs(newDivs);
@@ -127,6 +127,15 @@ export default function NoteHomePage() {
         }
     }, [currentNoteBody]);
 
+    useEffect(() => {
+        // Call handleSaveNoteBody when the user leaves the route or refreshes the page
+        window.addEventListener('beforeunload', handleSaveNoteBody);
+
+        // Clean up the event listener when the component unmounts
+        return () => {
+            window.removeEventListener('beforeunload', handleSaveNoteBody);
+        };
+    }, [handleSaveNoteBody]);
 
     return (
         <div className="note-notes-container">
