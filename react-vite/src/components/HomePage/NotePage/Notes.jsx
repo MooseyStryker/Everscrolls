@@ -26,9 +26,9 @@ export default function NoteHomePage() {
 
     const [divs, setDivs] = useState([{ id: 1, text: 'Hi! Start Here!', ref: createRef() }]);
     console.log("🚀 ~ NoteHomePage ~ divs:", divs)
-    // if (!divs){ // This will prevent an issue occuring where the user deletes all the divs and now doesn't have a place to start
-    //     setDivs({ id: 1, text: 'Hi! Start Here!', ref: createRef() })
-    // }
+    if (!divs){ // This will prevent an issue occuring where the user deletes all the divs and now doesn't have a place to start
+        setDivs({ id: 1, text: 'Hi! Start Here!', ref: createRef() })
+    }
 
     const handleKeyPress = async(e, id) => {
         if (e.key === 'Enter') {
@@ -61,10 +61,9 @@ export default function NoteHomePage() {
                 }
             }
         }
-        if (e.key){
-            handleSaveToLocal();
+        if(e.key){
+            handleSaveToLocal()
         }
-
     };
 
     const handleTextChange = (e, id) => {
@@ -129,28 +128,31 @@ export default function NoteHomePage() {
         }
     }, [currentNote]);
 
-    useEffect(() => { // this uploads the data from the db to place it back in our divs
-        if (currentNoteBody && JSON.stringify(prevNoteBody) !== JSON.stringify(currentNoteBody)) {
-            const noteBodiesArray = Object.values(currentNoteBody);
-            const noteBodies = noteBodiesArray.map((body, index) => ({
-                id: index + 1,
-                text: body.body,
-                ref: createRef()
-            }));
-            if (noteBodies) setDivs(noteBodies); // this prevents any empty spaces from being downloaded from the db if there was no notebodies found
-            setPrevNoteBody(currentNoteBody); // Update prevvNoteBody to the currentNoteBody
 
-        }
-    }, [currentNoteBody]);
 
 
     useEffect(() => {
-        const timeoutId = setTimeout(handleSaveNoteBody, 5000); // Save every 5 seconds
+        // Try to retrieve the divTexts from local storage
+        let divTexts = JSON.parse(localStorage.getItem(`Note ${noteid}'s Body `));
 
-        return () => {
-            clearTimeout(timeoutId);
-        };
-    }, [divs]);
+        // If there's no data in local storage, use the data from the database
+        if (!divTexts && currentNoteBody) {
+            divTexts = Object.values(currentNoteBody).map(body => body.body);
+        } else if (divTexts && JSON.stringify(prevNoteBody) !== JSON.stringify(divTexts)) {
+            const noteBodies = divTexts.map((text, index) => ({
+                id: index + 1,
+                text: text,
+                ref: createRef()
+            }));
+
+            if (noteBodies) setDivs(noteBodies); // this prevents any empty spaces from being downloaded from the db if there was no notebodies found
+            setPrevNoteBody(divTexts); // Update prevNoteBody to the divTexts
+        } else {
+
+        }
+    }, [currentNoteBody, noteid]); // Run the effect when either currentNoteBody or noteid changes
+
+
 
 
 
@@ -216,9 +218,9 @@ export default function NoteHomePage() {
                                     </div>
                                 </div>
 
-                                <div className="attachment-store-container">
+                                {/* <div className="attachment-store-container">
                                     <h2 className="task-store">Attachments</h2>
-                                </div>
+                                </div> */}
 
                             </div>
 
