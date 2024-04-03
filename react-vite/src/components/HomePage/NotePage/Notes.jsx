@@ -17,6 +17,7 @@ export default function NoteHomePage() {
     const sessionUser = useSelector((state) => state.session.user);
     const currentNote = useSelector((state) => state.notes[noteid]);
     const currentNoteBody = useSelector((state) => state.notebody)
+    console.log("🚀 ~ NoteHomePage ~ currentNoteBody:", currentNoteBody)
     const tasks = useSelector((state) => state.tasks)
     const tasksObj = Object.values(tasks)
 
@@ -25,7 +26,7 @@ export default function NoteHomePage() {
     const [isEditing, setIsEditing] = useState(false);
 
     const [divs, setDivs] = useState([{ id: 1, text: 'Hi! Start Here!', ref: createRef() }]);
-    console.log("🚀 ~ NoteHomePage ~ divs:", divs)
+
     if (!divs){ // This will prevent an issue occuring where the user deletes all the divs and now doesn't have a place to start
         setDivs({ id: 1, text: 'Hi! Start Here!', ref: createRef() })
     }
@@ -63,6 +64,7 @@ export default function NoteHomePage() {
         }
         if(e.key){
             handleSaveToLocal()
+            console.log('divs', divs)
         }
     };
 
@@ -106,12 +108,13 @@ export default function NoteHomePage() {
             }
 
             await dispatch(thunkPostNotebody(noteid, newNoteBody))
-            setDivs(divs) // this Allows me to hit the save button and it wont cause the page to lose the new data until refresh.
+            // setDivs(divs) // this Allows me to hit the save button and it wont cause the page to lose the new data until refresh.
         }
     }
 
     const handleSaveToLocal = async() => {
         const divTexts = divs.map(div => div.text)
+        console.log("🚀 ~ handleSaveToLocal ~ divTexts:", divTexts)
         localStorage.setItem(`Note ${noteid}'s Body `, JSON.stringify(divTexts))
     }
 
@@ -129,15 +132,28 @@ export default function NoteHomePage() {
     }, [currentNote]);
 
 
-
-
     useEffect(() => {
         // Try to retrieve the divTexts from local storage
         let divTexts = JSON.parse(localStorage.getItem(`Note ${noteid}'s Body `));
 
-        // If there's no data in local storage, use the data from the database
-        if (!divTexts && currentNoteBody) {
+        console.log("🚀 ~ useEffect ~ divTexts:", divTexts)
+
+        if (!divTexts && currentNoteBody) {  // If there's no data in local storage, use the data from the database
+            console.log('here')
+            console.log("🚀 ~ useEffect ~ currentNoteBody:", currentNoteBody)
             divTexts = Object.values(currentNoteBody).map(body => body.body);
+            const noteBodies = divTexts.map((text, index) => ({
+                id: index + 1,
+                text: text,
+                ref: createRef()
+            }));
+            console.log("🚀 ~ noteBodies ~ noteBodies:", noteBodies)
+
+            if (noteBodies.length > 0){
+                setDivs(noteBodies);
+            }
+            setPrevNoteBody(divTexts);
+
         } else if (divTexts && JSON.stringify(prevNoteBody) !== JSON.stringify(divTexts)) {
             const noteBodies = divTexts.map((text, index) => ({
                 id: index + 1,
@@ -145,15 +161,25 @@ export default function NoteHomePage() {
                 ref: createRef()
             }));
 
-            if (noteBodies) setDivs(noteBodies); // this prevents any empty spaces from being downloaded from the db if there was no notebodies found
+            if (noteBodies.length > 0) setDivs(noteBodies); // this prevents any empty spaces from being downloaded from the db if there was no notebodies found
             setPrevNoteBody(divTexts); // Update prevNoteBody to the divTexts
         } else {
-
+            // keepiing this empty allows a new note to have one div to let users to start
         }
     }, [currentNoteBody, noteid]); // Run the effect when either currentNoteBody or noteid changes
 
 
+    useEffect(() => {
+        const timeoutId = setTimeout(handleSaveNoteBody, 1000); // Save every 5 seconds
 
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [divs]);
+
+    useEffect(() => {
+        setTimeout(handleSaveToLocal, 0);
+    }, [divs]);
 
 
     return (
@@ -172,7 +198,6 @@ export default function NoteHomePage() {
                             Editing note bar
                         </div>
                     </div> */}
-                                                                        <button onClick={handleSaveToLocal}>Save Note to Local</button>
                                                                         <button onClick={handleSaveNoteBody}>Save Note to DB</button>
                     <div className="notesinfocontainer">
                         <div className="notesinfo">

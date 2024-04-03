@@ -19,9 +19,8 @@ export default function HomeLayout({ children }) {
     const allNotebooks = useSelector((state) => state.notebook);
     const allNotes = useSelector((state) => state.notes);
     const sessionUser = useSelector((state) => state.session.user);
-    console.log("🚀 ~ HomeLayout ~ sessionUser:", sessionUser)
 
-    if (!sessionUser) navigate('/')
+    // if (!sessionUser) navigate('/')
 
     const [showProfile, setShowProfile] = useState(false)
 
