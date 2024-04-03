@@ -61,14 +61,7 @@ export default function AllNotesAndTasks() {
                                     <div className="note-individual">
                                         <AllNotes />
                                     </div>
-
-                                    {/* <div className="creatinganewnote" onClick={handleNewNote}>
-                                        Create a New Note!
-                                    </div> */}
-
                                 </div>
-                                <div className="tasksinhome">Task Container</div>
-
                             </div>
                             <div className="scratchpad-cal">
                                 <div className="scratchinhome"><ScratchPad /></div>

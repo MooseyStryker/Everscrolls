@@ -1,10 +1,12 @@
-.main-container-home{
+.main-container-home {
+    /* border: 1px solid blue; */
     box-sizing: border-box;
     display: flex;
-    width: auto;
+    width: 200px;
     height: 100vh;
-    width: 100%
+    flex: 1;
 }
+
 .rightinfo{
     /* border: 1px solid red; */
     margin: 4px;
@@ -24,6 +26,7 @@
 .homenotelayout{
     /* border: 1px solid green; */
     margin: 4px;
+    width: auto;
 }
 
 .home-page-text{
@@ -65,5 +68,3 @@
     /* border: 1px solid pink; */
     margin: 4px;
 }
-
-

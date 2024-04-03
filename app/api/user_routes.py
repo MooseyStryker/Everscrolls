@@ -31,6 +31,15 @@ def get_current_user():
     Query for the currently logged in user and returns that user in a dictionary
     """
 
+    print('Am i getting here???')
+    print('Am i getting here???')
+    print('Am i getting here???')
+    print('Am i getting here???')
+    print('Am i getting here???')
+    print('Am i getting here???')
+    print('Am i getting here???')
+    print('Am i getting here???')
+    print('Am i getting here???')
     user = User.query.get(current_user.id)
     return user.to_dict()
 

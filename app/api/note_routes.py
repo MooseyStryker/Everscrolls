@@ -288,27 +288,31 @@ def delete_all_notebody(note_id):
 
 
 
+
+
+
 # Tasks to a note
 
 @note_routes.route("/<int:note_id>/tasks", methods=["GET"])
 @login_required
 def get_all_tasks(note_id):
     stmt = select(Task).where(Task.note_id == note_id)
-    allTasks = db.session.execute(stmt).all()
 
-    results_info = [
-        {
-            "id": task.id,
-            "user_id": task.user_id,
-            "note_id": task.note_id,
-            "description": task.body,
-            # "due_date": task.due_date,
-            "complete": task.complete,
-        }
-        for task in allTasks
-    ]
+    allTasks = []
 
-    return jsonify(results_info)
+    for row in db.session.execute(stmt):
+        results = row.Task
+        results_info = {
+                "id": results.id,
+                "user_id": results.user_id,
+                "note_id": results.note_id,
+                "description": results.body,
+                # "due_date": results.due_date,
+                "complete": results.complete,
+         }
+
+        allTasks.append(results_info)
+    return jsonify(allTasks)
 
 
 @note_routes.route("/<int:note_id>/tasks", methods=["POST"])

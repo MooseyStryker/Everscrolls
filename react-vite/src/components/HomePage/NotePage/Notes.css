@@ -54,3 +54,17 @@
     overflow-x: hidden;
     overflow-y: scroll;
 }
+
+.taskandattachmentscontainer{
+    border: 1px solid red;
+    display: flex;
+}
+
+.task-store-container{
+    width: 450px
+}
+
+.attachment-store-container{
+    width: 450px
+
+}

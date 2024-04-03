@@ -10,15 +10,13 @@ const getEveryTask = (tasks) => ({
 })
 
 
-const getAllTask = (noteId, tasks) => ({
+const getAllTask = (tasks) => ({
   type: GET_ALL_TASK,
-  noteId,
   tasks
 });
 
-const postTask = (noteId, task) => ({
+const postTask = (task) => ({
     type: POST_TASK_TO_NOTE,
-    noteId,
     task
 })
 const editTask = (task) => ({
@@ -31,7 +29,7 @@ const deleteTask =  (taskId) => ({
 })
 
 export const thunkGettingAllOfTheTasks = () => async(dispatch) => {
-    const res = await fetch(`api/tasks`);
+    const res = await fetch(`/api/tasks`);
     const data = await res.json()
     if (data.errors) {
         return data;
@@ -47,7 +45,7 @@ export const thunkGetAllTask = (noteId) => async (dispatch) => {
     if (data.errors) {
         return data;
     } else {
-        dispatch(getAllTask(noteId, data));
+        dispatch(getAllTask(data));
     }
 };
 

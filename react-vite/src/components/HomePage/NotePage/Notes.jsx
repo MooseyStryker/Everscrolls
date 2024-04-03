@@ -5,6 +5,7 @@ import { thunkGetCurrentUser } from "../../../redux/session";
 import { thunkGetNote, thunkPutNote } from "../../../redux/notes";
 import './Notes.css'
 import { thunkDeleteAllNoteBody, thunkGetAllNotebody, thunkPostNotebody } from "../../../redux/notebody";
+import { thunkGetAllTask } from "../../../redux/tasks";
 
 
 
@@ -14,14 +15,15 @@ export default function NoteHomePage() {
     const navigate = useNavigate();
     const sessionUser = useSelector((state) => state.session.user);
     const currentNote = useSelector((state) => state.notes[noteid]);
-
     const currentNoteBody = useSelector((state) => state.notebody)
+    const tasks = useSelector((state) => state.tasks)
+    const tasksObj = Object.values(tasks)
 
     const [prevNoteBody, setPrevNoteBody] = useState({});
     const [title, setTitle] = useState()
     const [isEditing, setIsEditing] = useState(false);
 
-    const [divs, setDivs] = useState([{ id: 1, text: 'hello', ref: createRef() }]);
+    const [divs, setDivs] = useState([{ id: 1, text: 'Hi! Start Here!', ref: createRef() }]);
 
     const handleKeyPress = async(e, id) => {
         if (e.key === 'Enter') {
@@ -96,6 +98,7 @@ export default function NoteHomePage() {
     }
 
     useEffect(() => {
+        dispatch(thunkGetAllTask(noteid))
         dispatch(thunkGetAllNotebody(noteid))
         dispatch(thunkGetNote(noteid));
         dispatch(thunkGetCurrentUser);
@@ -107,7 +110,6 @@ export default function NoteHomePage() {
         }
     }, [currentNote]);
 
-
     useEffect(() => {
         if (currentNoteBody && JSON.stringify(prevNoteBody) !== JSON.stringify(currentNoteBody)) {
             const noteBodiesArray = Object.values(currentNoteBody);
@@ -117,8 +119,10 @@ export default function NoteHomePage() {
                 text: body.body,
                 ref: createRef()
             }));
-            setDivs(noteBodies);
+            console.log("🚀 ~ noteBodies ~ noteBodies:", noteBodies)
+            if (noteBodies) setDivs(noteBodies);
             setPrevNoteBody(currentNoteBody); // Update prevvNoteBody to the currentNoteBody
+
         }
     }, [currentNoteBody]);
 
@@ -171,6 +175,23 @@ export default function NoteHomePage() {
                                         />
                                     </div>
                                 ))}
+                            </div>
+                            <div className="taskandattachmentscontainer">
+                                <div className="task-store-container">
+                                    <div>
+                                        <h2 className="task-store">Tasks</h2>
+                                    </div>
+                                    <div>
+                                    {tasksObj.map((task, index) => (
+                                        <p key={index}>{task.description}</p>
+                                    ))}
+                                    </div>
+                                </div>
+
+                                <div className="attachment-store-container">
+                                    <h2 className="task-store">Attachments</h2>
+                                </div>
+
                             </div>
 
                         </div>

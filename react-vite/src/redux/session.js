@@ -18,15 +18,17 @@ const removeUser = () => ({
 
 
 export const thunkGetCurrentUser = () => async(dispatch) => {
-  const res = await fetch(`api/users/current`)
+  const res = await fetch(`/api/users/current`)
+  console.log('Am i gettting here?')
+  console.log("🚀 ~ thunkGetCurrentUser ~ res:", res)
 
-  if (res.ok) {
-		const data = await res.json();
-		if (data.errors) {
-			return data;
-		}
-		dispatch(getUser(data));
+	const data = await res.json();
+	console.log("🚀 ~ thunkGetCurrentUser ~ data:", data)
+	if (data.errors) {
+		return data;
 	}
+	dispatch(getUser(data));
+
 }
 
 
