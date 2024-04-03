@@ -1,0 +1,70 @@
+.main-container-home {
+    /* border: 1px solid blue; */
+    box-sizing: border-box;
+    display: flex;
+    width: 200px;
+    height: 100vh;
+    flex: 1;
+}
+
+.rightinfo{
+    /* border: 1px solid red; */
+    margin: 4px;
+    width: 100%;
+}
+
+.pictureontop{
+    /* border: 1px solid green; */
+    margin: 4px;
+}
+
+.shipview{
+    width: 100%;
+
+}
+
+.homenotelayout{
+    /* border: 1px solid green; */
+    margin: 4px;
+    width: auto;
+}
+
+.home-page-text{
+    /* border: 1px solid orange; */
+    margin: 4px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.note-cal-task{
+    /* border: 1px solid orange; */
+    margin: 4px;
+
+}
+
+.allnotes-alltasks-connectedtouser, .scratchpad-cal{
+    display: flex;
+    justify-content: space-between;
+    margin: 4px;
+    height: 100%;
+    width: 100%;
+}
+
+.notesinhome, .tasksinhome, .scratchinhome, .bonus-calendar{
+    /* border: 1px solid brown; */
+    margin: 4px;
+}
+
+.notesinhome{
+    margin: 4px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+
+.creatinganewnote{
+    /* border: 1px solid pink; */
+    margin: 4px;
+}
