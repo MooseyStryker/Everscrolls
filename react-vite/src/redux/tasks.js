@@ -66,7 +66,6 @@ export const thunkPostTask = (noteId, task) => async (dispatch) => {
 
 
 export const thunkUpdateTask = (noteId, taskId, updateDescription) => async (dispatch) => {
-    console.log("🚀 ~ thunkUpdateTask ~ updateDescription:", updateDescription)
     const response = await fetch(`/api/notes/${noteId}/tasks/${taskId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -74,8 +73,7 @@ export const thunkUpdateTask = (noteId, taskId, updateDescription) => async (dis
     })
 
 
-    const data = await response.json();
-    console.log("🚀 ~ thunkUpdateTask ~ data:", data)
+    const data = await response.json(); 
     if (data.errors) {
        return data
     } else {

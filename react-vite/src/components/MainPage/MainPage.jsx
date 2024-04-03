@@ -27,7 +27,7 @@ export default function LoginPage() {
         password: '',
         confirmPassword: ''
     });
-    console.log(errors)
+
 
 
 
@@ -103,7 +103,7 @@ export default function LoginPage() {
         const serverResponse = await dispatch(thunkLogin(demoUser));
 
         if (serverResponse) {
-            console.log("🚀 ~ handleLogin ~ serverResponse:", serverResponse)
+           
             setErrors(serverResponse);
         } else {
             navigate("/home");
@@ -116,7 +116,7 @@ export default function LoginPage() {
 
         if (!validateLoginInput()) return;
 
-        console.log("Here")
+     
 
         const serverResponse = await dispatch(
           thunkLogin({
@@ -126,7 +126,7 @@ export default function LoginPage() {
         );
 
         if (serverResponse) {
-          console.log("🚀 ~ handleLogin ~ serverResponse:", serverResponse)
+
           setErrors(serverResponse);
         } else {
           navigate("/home");

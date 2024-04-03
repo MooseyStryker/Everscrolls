@@ -19,11 +19,8 @@ const removeUser = () => ({
 
 export const thunkGetCurrentUser = () => async(dispatch) => {
   const res = await fetch(`/api/users/current`)
-  console.log('Am i gettting here?')
-  console.log("🚀 ~ thunkGetCurrentUser ~ res:", res)
 
 	const data = await res.json();
-	console.log("🚀 ~ thunkGetCurrentUser ~ data:", data)
 	if (data.errors) {
 		return data;
 	}
@@ -56,7 +53,7 @@ export const thunkLogin = (credentials) => async dispatch => {
     dispatch(setUser(data));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
-    console.log("🚀 ~ thunkLogin ~ errorMessages:", errorMessages)
+
     return errorMessages
   } else {
     return { server: "Something went wrong. Please try again" }
@@ -72,11 +69,10 @@ export const thunkSignup = (user) => async (dispatch) => {
 
   if(response.ok) {
     const data = await response.json();
-    console.log("🚀 ~ thunkSignup ~ data:", data)
     dispatch(setUser(data));
   } else if (response.status < 500) {
     const errorMessages = await response.json();
-    console.log("🚀 ~ thunkSignup ~ errorMessages:", errorMessages)
+
     return errorMessages
   } else {
     return { server: "Something went wrong. Please try again" }

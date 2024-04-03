@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { thunkDeleteTask, thunkPostTask, thunkUpdateTask } from "../../redux/tasks"
 
 export default function DeleteTask({ taskId, closeModal }){
-    console.log("🚀 ~ DeleteTask ~ taskId:", taskId)
     const dispatch = useDispatch()
 
     const handleDelete = () => {

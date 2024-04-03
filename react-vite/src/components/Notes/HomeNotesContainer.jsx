@@ -34,8 +34,7 @@ export default function AllNotes() {
 
     const handleDelete = async(noteId) => {
         const res = await dispatch(thunkDeleteNote(noteId))
-        console.log("🚀 ~ handleDelete ~ res:", res)
-
+        
         setNoteUpdate(!noteUpdate)
 
     }

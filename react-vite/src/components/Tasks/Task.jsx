@@ -34,7 +34,6 @@ export default function TaskBar() {
     }
 
     const changeComplete = async(e, taskBody, taskDueDate, noteId, taskId, taskComplete) => {
-        console.log("🚀 ~ changeComplete ~ taskComplete:", taskComplete)
         e.preventDefault();
 
         const updateComplete = {
@@ -45,7 +44,6 @@ export default function TaskBar() {
         }
 
         const res = await dispatch(thunkUpdateTask(noteId, taskId, updateComplete))
-        console.log("🚀 ~ changeComplete ~ res:", res)
 
         if (res && res.errors) {
             return res

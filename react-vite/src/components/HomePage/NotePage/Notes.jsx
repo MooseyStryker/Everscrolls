@@ -19,18 +19,18 @@ export default function NoteHomePage() {
     const currentNoteBody = useSelector((state) => state.notebody)
     const tasks = useSelector((state) => state.tasks)
     const tasksObj = Object.values(tasks)
-    console.log("🚀 ~ NoteHomePage ~ tasksObj:", tasksObj)
 
     const [prevNoteBody, setPrevNoteBody] = useState({});
     const [title, setTitle] = useState()
     const [isEditing, setIsEditing] = useState(false);
 
     const [divs, setDivs] = useState([{ id: 1, text: 'Hi! Start Here!', ref: createRef() }]);
+    console.log("🚀 ~ NoteHomePage ~ divs:", divs)
 
     const handleKeyPress = async(e, id) => {
         if (e.key === 'Enter') {
             e.preventDefault();                                                         // prevents us from going to the new line
-            await handleSaveNoteBody();                                                 // await allows the save to finish before creating a new line
+            // await handleSaveNoteBody();                                                 // await allows the save to finish before creating a new line
             const newDiv = { id: divs.length + 1, text: '', ref: createRef() };         // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data
             const index = divs.findIndex(div => div.id === id);
             setDivs([...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)]);
@@ -40,7 +40,7 @@ export default function NoteHomePage() {
             const index = divs.findIndex(div => div.id === id);
             if (divs[index].text === '') {
                 e.preventDefault();                                                     // prevents the default delete action
-                await handleSaveNoteBody();                                             // await allows the delete to be saved
+                // await handleSaveNoteBody();                                             // await allows the delete to be saved
                 const newDivs = [...divs];
                 newDivs.splice(index, 1);
                 setDivs(newDivs);
@@ -86,6 +86,8 @@ export default function NoteHomePage() {
 
     const handleSaveNoteBody = async() => {
 
+        console.log("Database reloade")
+
         dispatch(thunkDeleteAllNoteBody(noteid)) // Deletes old data in the db to keep duplicates from occuring
 
         const divTexts = divs.map(div => div.text);
@@ -114,18 +116,31 @@ export default function NoteHomePage() {
     useEffect(() => {
         if (currentNoteBody && JSON.stringify(prevNoteBody) !== JSON.stringify(currentNoteBody)) {
             const noteBodiesArray = Object.values(currentNoteBody);
-            console.log("🚀 ~ useEffect ~ noteBodiesArray:", noteBodiesArray)
             const noteBodies = noteBodiesArray.map((body, index) => ({
                 id: index + 1,
                 text: body.body,
                 ref: createRef()
             }));
-            console.log("🚀 ~ noteBodies ~ noteBodies:", noteBodies)
             if (noteBodies) setDivs(noteBodies);
             setPrevNoteBody(currentNoteBody); // Update prevvNoteBody to the currentNoteBody
 
         }
     }, [currentNoteBody]);
+
+    useEffect(() => {
+        const handleUnload = async (e) => {
+            e.preventDefault();
+            await handleSaveNoteBody();
+        };
+
+        window.addEventListener('beforeunload', handleUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleUnload);
+        };
+    }, []);
+
+
 
 
     return (
