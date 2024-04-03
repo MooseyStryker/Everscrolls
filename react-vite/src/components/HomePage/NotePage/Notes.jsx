@@ -34,9 +34,7 @@ export default function NoteHomePage() {
         if (e.key === 'Enter') {
             e.preventDefault();                                                         // prevents us from going to the new line
 
-
-
-            await handleSaveNoteBody();                                                 // await allows the save to finish before creating a new line
+            handleSaveToLocal();                                                 // await allows the save to finish before creating a new line
 
 
             const newDiv = { id: divs.length + 1, text: '', ref: createRef() };         // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data
@@ -50,7 +48,7 @@ export default function NoteHomePage() {
                 e.preventDefault();                                                     // prevents the default delete action
 
 
-                await handleSaveNoteBody();                                             // await allows the delete to be saved
+                handleSaveToLocal();                                                // await allows the delete to be saved
 
 
                 const newDivs = [...divs];
@@ -63,10 +61,12 @@ export default function NoteHomePage() {
                 }
             }
         }
+        if (e.key){
+            handleSaveToLocal();
+        }
 
     };
 
-    // This is chagned to try out text area
     const handleTextChange = (e, id) => {
         e.target.style.height = 'inherit';                     // Resets the height when we add text to the textarea
         e.target.style.height = `${e.target.scrollHeight}px`; // Set the height based on scroll height
@@ -97,9 +97,7 @@ export default function NoteHomePage() {
     }
 
     const handleSaveNoteBody = async() => {
-
-        console.log("Database reloade")
-
+        console.log("Uploading data to the database...");
         dispatch(thunkDeleteAllNoteBody(noteid)) // Deletes old data in the db to keep duplicates from occuring
 
         const divTexts = divs.map(div => div.text);
@@ -111,6 +109,11 @@ export default function NoteHomePage() {
             await dispatch(thunkPostNotebody(noteid, newNoteBody))
             setDivs(divs) // this Allows me to hit the save button and it wont cause the page to lose the new data until refresh.
         }
+    }
+
+    const handleSaveToLocal = async() => {
+        const divTexts = divs.map(div => div.text)
+        localStorage.setItem(`Note ${noteid}'s Body `, JSON.stringify(divTexts))
     }
 
     useEffect(() => {
@@ -140,19 +143,14 @@ export default function NoteHomePage() {
         }
     }, [currentNoteBody]);
 
-    // useEffect(() => {
-    //     const handleUnload = async (e) => {
-    //         e.preventDefault();
-    //         await handleSaveNoteBody();
-    //     };
 
-    //     window.addEventListener('beforeunload', handleUnload);
+    useEffect(() => {
+        const timeoutId = setTimeout(handleSaveNoteBody, 5000); // Save every 5 seconds
 
-    //     return () => {
-    //         window.removeEventListener('beforeunload', handleUnload);
-    //     };
-    // }, []);
-
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [divs]);
 
 
 
@@ -172,6 +170,8 @@ export default function NoteHomePage() {
                             Editing note bar
                         </div>
                     </div> */}
+                                                                        <button onClick={handleSaveToLocal}>Save Note to Local</button>
+                                                                        <button onClick={handleSaveNoteBody}>Save Note to DB</button>
                     <div className="notesinfocontainer">
                         <div className="notesinfo">
                             <div className="titleinfo-needsmargin">
