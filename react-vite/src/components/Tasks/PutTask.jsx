@@ -3,11 +3,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { thunkPostTask, thunkUpdateTask } from "../../redux/tasks"
 
 export default function PutTask({ task, closeModal }){
-    console.log("🚀 ~ PutTask ~ task:", task)
     const dispatch = useDispatch()
     const whichNote = useSelector((state) => state.notes)
     const noteObj = Object.values(whichNote)
-    console.log("🚀 ~ PostTask ~ noteObj:", noteObj)
 
     // State variables for form inputs
     const [noteId, setNoteId] = useState(task.note_id);
@@ -22,10 +20,8 @@ export default function PutTask({ task, closeModal }){
             body,
             due_date: dueDate,
         }
-        console.log("🚀 ~ handleTaskSubmit ~ putTask:", putTask)
 
        const res = await dispatch(thunkUpdateTask(task.note_id, task.id, putTask))
-       console.log("🚀 ~ handleTaskSubmit ~ res:", res)
 
        if (res && res.errors) {
         return res

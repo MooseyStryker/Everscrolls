@@ -17,9 +17,9 @@ export default function NoteHomePage() {
     const sessionUser = useSelector((state) => state.session.user);
     const currentNote = useSelector((state) => state.notes[noteid]);
     const currentNoteBody = useSelector((state) => state.notebody)
+    console.log("🚀 ~ NoteHomePage ~ currentNoteBody:", currentNoteBody)
     const tasks = useSelector((state) => state.tasks)
     const tasksObj = Object.values(tasks)
-    console.log("🚀 ~ NoteHomePage ~ tasksObj:", tasksObj)
 
     const [prevNoteBody, setPrevNoteBody] = useState({});
     const [title, setTitle] = useState()
@@ -27,10 +27,17 @@ export default function NoteHomePage() {
 
     const [divs, setDivs] = useState([{ id: 1, text: 'Hi! Start Here!', ref: createRef() }]);
 
+    if (!divs){ // This will prevent an issue occuring where the user deletes all the divs and now doesn't have a place to start
+        setDivs({ id: 1, text: 'Hi! Start Here!', ref: createRef() })
+    }
+
     const handleKeyPress = async(e, id) => {
         if (e.key === 'Enter') {
             e.preventDefault();                                                         // prevents us from going to the new line
-            await handleSaveNoteBody();                                                 // await allows the save to finish before creating a new line
+
+            handleSaveToLocal();                                                 // await allows the save to finish before creating a new line
+
+
             const newDiv = { id: divs.length + 1, text: '', ref: createRef() };         // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data
             const index = divs.findIndex(div => div.id === id);
             setDivs([...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)]);
@@ -40,7 +47,11 @@ export default function NoteHomePage() {
             const index = divs.findIndex(div => div.id === id);
             if (divs[index].text === '') {
                 e.preventDefault();                                                     // prevents the default delete action
-                await handleSaveNoteBody();                                             // await allows the delete to be saved
+
+
+                handleSaveToLocal();                                                // await allows the delete to be saved
+
+
                 const newDivs = [...divs];
                 newDivs.splice(index, 1);
                 setDivs(newDivs);
@@ -51,10 +62,12 @@ export default function NoteHomePage() {
                 }
             }
         }
-
+        if(e.key){
+            handleSaveToLocal()
+            console.log('divs', divs)
+        }
     };
 
-    // This is chagned to try out text area
     const handleTextChange = (e, id) => {
         e.target.style.height = 'inherit';                     // Resets the height when we add text to the textarea
         e.target.style.height = `${e.target.scrollHeight}px`; // Set the height based on scroll height
@@ -85,7 +98,7 @@ export default function NoteHomePage() {
     }
 
     const handleSaveNoteBody = async() => {
-
+        console.log("Uploading data to the database...");
         dispatch(thunkDeleteAllNoteBody(noteid)) // Deletes old data in the db to keep duplicates from occuring
 
         const divTexts = divs.map(div => div.text);
@@ -95,14 +108,21 @@ export default function NoteHomePage() {
             }
 
             await dispatch(thunkPostNotebody(noteid, newNoteBody))
-            setDivs(divs) // this Allows me to hit the save button and it wont cause the page to lose the new data until refresh.
+            // setDivs(divs) // this Allows me to hit the save button and it wont cause the page to lose the new data until refresh.
         }
+    }
+
+    const handleSaveToLocal = async() => {
+        const divTexts = divs.map(div => div.text)
+        console.log("🚀 ~ handleSaveToLocal ~ divTexts:", divTexts)
+        localStorage.setItem(`Note ${noteid}'s Body `, JSON.stringify(divTexts))
     }
 
     useEffect(() => {
         dispatch(thunkGetAllNotebody(noteid))
         dispatch(thunkGetNote(noteid));
         dispatch(thunkGetCurrentUser);
+
     }, [dispatch, noteid]);
 
     useEffect(() => {
@@ -111,21 +131,55 @@ export default function NoteHomePage() {
         }
     }, [currentNote]);
 
+
     useEffect(() => {
-        if (currentNoteBody && JSON.stringify(prevNoteBody) !== JSON.stringify(currentNoteBody)) {
-            const noteBodiesArray = Object.values(currentNoteBody);
-            console.log("🚀 ~ useEffect ~ noteBodiesArray:", noteBodiesArray)
-            const noteBodies = noteBodiesArray.map((body, index) => ({
+        // Try to retrieve the divTexts from local storage
+        let divTexts = JSON.parse(localStorage.getItem(`Note ${noteid}'s Body `));
+
+        console.log("🚀 ~ useEffect ~ divTexts:", divTexts)
+
+        if (!divTexts && currentNoteBody) {  // If there's no data in local storage, use the data from the database
+            console.log('here')
+            console.log("🚀 ~ useEffect ~ currentNoteBody:", currentNoteBody)
+            divTexts = Object.values(currentNoteBody).map(body => body.body);
+            const noteBodies = divTexts.map((text, index) => ({
                 id: index + 1,
-                text: body.body,
+                text: text,
                 ref: createRef()
             }));
             console.log("🚀 ~ noteBodies ~ noteBodies:", noteBodies)
-            if (noteBodies) setDivs(noteBodies);
-            setPrevNoteBody(currentNoteBody); // Update prevvNoteBody to the currentNoteBody
 
+            if (noteBodies.length > 0){
+                setDivs(noteBodies);
+            }
+            setPrevNoteBody(divTexts);
+
+        } else if (divTexts && JSON.stringify(prevNoteBody) !== JSON.stringify(divTexts)) {
+            const noteBodies = divTexts.map((text, index) => ({
+                id: index + 1,
+                text: text,
+                ref: createRef()
+            }));
+
+            if (noteBodies.length > 0) setDivs(noteBodies); // this prevents any empty spaces from being downloaded from the db if there was no notebodies found
+            setPrevNoteBody(divTexts); // Update prevNoteBody to the divTexts
+        } else {
+            // keepiing this empty allows a new note to have one div to let users to start
         }
-    }, [currentNoteBody]);
+    }, [currentNoteBody, noteid]); // Run the effect when either currentNoteBody or noteid changes
+
+
+    useEffect(() => {
+        const timeoutId = setTimeout(handleSaveNoteBody, 1000); // Save every 5 seconds
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [divs]);
+
+    useEffect(() => {
+        setTimeout(handleSaveToLocal, 0);
+    }, [divs]);
 
 
     return (
@@ -144,6 +198,7 @@ export default function NoteHomePage() {
                             Editing note bar
                         </div>
                     </div> */}
+                                                                        <button onClick={handleSaveNoteBody}>Save Note to DB</button>
                     <div className="notesinfocontainer">
                         <div className="notesinfo">
                             <div className="titleinfo-needsmargin">
@@ -188,9 +243,9 @@ export default function NoteHomePage() {
                                     </div>
                                 </div>
 
-                                <div className="attachment-store-container">
+                                {/* <div className="attachment-store-container">
                                     <h2 className="task-store">Attachments</h2>
-                                </div>
+                                </div> */}
 
                             </div>
 

@@ -20,6 +20,8 @@ export default function HomeLayout({ children }) {
     const allNotes = useSelector((state) => state.notes);
     const sessionUser = useSelector((state) => state.session.user);
 
+    // if (!sessionUser) navigate('/')
+
     const [showProfile, setShowProfile] = useState(false)
 
     const [showSecondContainer, setShowSecondContainer] = useState(false)

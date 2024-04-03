@@ -9,7 +9,6 @@ import DeleteTask from "./DeleteTask"
 
 
 export default function SingleNoteTask({ noteId }) {
-    console.log("🚀 ~ SingleNoteTask ~ noteId:", noteId)
     const dispatch = useDispatch()
     const { closeModal } = useModal()
     const { setModalContent } = useModal()
@@ -33,7 +32,6 @@ export default function SingleNoteTask({ noteId }) {
     }
 
     const changeComplete = async(e, taskBody, taskDueDate, noteId, taskId, taskComplete) => {
-        console.log("🚀 ~ changeComplete ~ taskComplete:", taskComplete)
         e.preventDefault();
 
         const updateComplete = {
@@ -44,7 +42,6 @@ export default function SingleNoteTask({ noteId }) {
         }
 
         const res = await dispatch(thunkUpdateTask(noteId, taskId, updateComplete))
-        console.log("🚀 ~ changeComplete ~ res:", res)
 
         if (res && res.errors) {
             return res

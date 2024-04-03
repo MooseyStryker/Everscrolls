@@ -92,9 +92,7 @@ export const thunkDeleteNote = (note_id) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     });
-    console.log("🚀 ~ thunkDeleteNote ~ response:", response)
     const data = await response.json();
-    console.log("🚀 ~ thunkDeleteNote ~ data:", data)
     if (data.errors) {
       return data;
     }

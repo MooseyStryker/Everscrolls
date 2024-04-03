@@ -8,8 +8,6 @@ export default function AllNotebooks() {
     const navigate = useNavigate();
     const allNotebooks = useSelector((state) => state.notebook);
     const notebooksObj = Object.values(allNotebooks)
-    console.log("🚀 ~ AllNotebooks ~ notebooksObj:", notebooksObj)
-    console.log("🚀 ~ AllNotebooks ~ allNotebooks:", allNotebooks)
 
     useEffect(() => {
         dispatch(thunkGetAllNotebooks());
