@@ -242,6 +242,11 @@ export default function NoteHomePage() {
                                         value={title}
                                         onChange={handleTitleChange}
                                         onBlur={handleBlur}
+                                        onKeyDown={(event) => {
+                                            if (event.key === 'Enter') {
+                                                handleBlur();
+                                            }
+                                        }}
                                         autoFocus
                                     />
                                 ) : (

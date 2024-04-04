@@ -12,6 +12,7 @@
     font-weight: 700;
     margin-top: 21.440px;
     margin-bottom: 21.440px;
+    width: 100%;
 }
 .titleinfo-needsmargin{
     margin-bottom: 30px;
@@ -37,6 +38,9 @@
     width: 100%;
     padding-left: 40px;
     padding-right: 40px;
+
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .notesinfo{
@@ -55,14 +59,15 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.notebody-container{
+/* .notebody-container{
     overflow-x: hidden;
     overflow-y: scroll;
-}
+} */
 
 .taskandattachmentscontainer{
     /* border: 1px solid red; */
     display: flex;
+    padding-bottom: 30px;
 }
 
 .task-store-container{
