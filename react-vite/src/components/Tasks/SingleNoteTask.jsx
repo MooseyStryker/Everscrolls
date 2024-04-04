@@ -6,9 +6,10 @@ import PostTask from "./PostTask"
 import PutTask from "./PutTask"
 import './Task.css'
 import DeleteTask from "./DeleteTask"
+import PostTaskInNote from "./PostTaskInNote"
 
 
-export default function SingleNoteTask({ noteId }) {
+export default function SingleNoteTask({ noteId, noteTitle }) {
     const dispatch = useDispatch()
     const { closeModal } = useModal()
     const { setModalContent } = useModal()
@@ -18,7 +19,7 @@ export default function SingleNoteTask({ noteId }) {
 
 
     const postTaskModal = () => {
-        setModalContent(<PostTask closeModal={closeModal} singleNoteId={noteId}/>)
+        setModalContent(<PostTaskInNote closeModal={closeModal} singleNoteId={noteId} noteTitle={noteTitle}/>)
     }
 
     const putTaskModal = (task) => {
@@ -92,7 +93,7 @@ export default function SingleNoteTask({ noteId }) {
 
             </div>
             <div>
-                <button onClick={postTaskModal}>Add a new Task</button>
+                <button onClick={postTaskModal}>Add a new Task to "{noteTitle}"</button>
             </div>
         </div>
     )

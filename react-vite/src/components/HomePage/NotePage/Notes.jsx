@@ -193,6 +193,16 @@ export default function NoteHomePage() {
         if(localStorageTest && dbUpload == true) setTimeout(handleSaveToLocal, 0);
     }, [divs]);
 
+    useEffect(() => {       // This ensures the size of the div remains even if the webpage refreshes, instead of shrinking
+        divs.forEach(div => {
+            if (div.ref.current) {
+                div.ref.current.style.height = 'inherit';
+                div.ref.current.style.height = `${div.ref.current.scrollHeight}px`;
+            }
+        });
+    }, [divs]);
+
+
 
     return (
         <div className="note-notes-container">
@@ -258,7 +268,7 @@ export default function NoteHomePage() {
                                     {/* {tasksObj.map((task, index) => (
                                         <p key={index}>{task.description}</p>
                                     ))} */}
-                                        <SingleNoteTask noteId={noteid} />
+                                        <SingleNoteTask noteId={noteid} noteTitle={title} />
                                     </div>
                                 </div>
 
