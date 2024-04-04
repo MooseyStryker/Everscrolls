@@ -44,25 +44,25 @@ export default function NoteHomePage() {
             setDivs([...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)]);
             setTimeout(() => newDiv.ref.current.focus(), 0);                            // focus the new input element
         }
-        // if (e.key === 'Backspace') {
-        //     const index = divs.findIndex(div => div.id === id);
-        //     if (divs[index].text === '') {
-        //         e.preventDefault();                                                     // prevents the default delete action
+        if (e.key === 'Backspace') {
+            const index = divs.findIndex(div => div.id === id);
+            if (divs[index].text === '') {
+                e.preventDefault();                                                     // prevents the default delete action
 
 
-        //         handleSaveToLocal();                                                // await allows the delete to be saved
+                handleSaveToLocal();                                                // await allows the delete to be saved
 
 
-        //         const newDivs = [...divs];
-        //         newDivs.splice(index, 1);
-        //         setDivs(newDivs);
-        //         if (newDivs[index]) {
-        //             setTimeout(() => newDivs[index].ref.current.focus(), 0);            // focus the next input element
-        //         } else if (newDivs[index - 1]) {
-        //             setTimeout(() => newDivs[index - 1].ref.current.focus(), 0);        // focus the previous input element
-        //         }
-        //     }
-        // }
+                const newDivs = [...divs];
+                newDivs.splice(index, 1);
+                setDivs(newDivs);
+                if (newDivs[index]) {
+                    setTimeout(() => newDivs[index].ref.current.focus(), 0);            // focus the next input element
+                } else if (newDivs[index - 1]) {
+                    setTimeout(() => newDivs[index - 1].ref.current.focus(), 0);        // focus the previous input element
+                }
+            }
+        }
         if (e.key === 'Backspace') {
             const index = divs.findIndex(div => div.id === id);
             if (divs[index].text === '' && divs.length > 1) { // Check if divs length is greater than 1
@@ -224,12 +224,14 @@ export default function NoteHomePage() {
                     </div> */}
                 </div>
                 <div className="main-notes-page">
+
                     {/* <div className="edit-bar-notes">
                         <div>
                             Editing note bar
                         </div>
                     </div> */}
-                                                                        <button onClick={handleSaveNoteBody}>Save Note to DB</button>
+
+                    {/* <button onClick={handleSaveNoteBody}>Save Note to DB</button> */}
                     <div className="notesinfocontainer">
                         <div className="notesinfo">
                             <div className="titleinfo-needsmargin">
