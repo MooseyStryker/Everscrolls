@@ -140,7 +140,7 @@ export default function HomeLayout({ children }) {
                         {showNotebookContainer && (
                             <div className="notebookcontainersidebar">
                                 <AllNotebooks />
-                            </div>
+                            </div>         
                         )}
                     </div>
                 )}
