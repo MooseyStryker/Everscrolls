@@ -7,11 +7,15 @@ import NotesBody from "../Notes_body/NoteBody";
 import { FaTimes } from 'react-icons/fa';
 import { thunkPostNote } from "../../redux/notes";
 import { thunkDeleteAllNoteBody } from "../../redux/notebody";
+import { useModal } from "../../context/Modal";
+import DeleteNoteModal from "./DeleteNoteModal";
 
 
 export default function AllNotes() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { closeModal } = useModal()
+    const { setModalContent } = useModal()
     const allNotes = useSelector((state) => state.notes);
     const notesObj = Object.values(allNotes);
     const [noteUpdate, setNoteUpdate] = useState(false)
@@ -33,14 +37,20 @@ export default function AllNotes() {
     }
 
 
-    const handleDelete = async(noteId) => {
-        const res = await dispatch(thunkDeleteNote(noteId))
+    // const handleDelete = async(noteId) => {
+    //     const res = await dispatch(thunkDeleteNote(noteId))
 
-        // delete the data from the notes since if i make another note, it will auto populate with the old notes data
-        dispatch(thunkDeleteAllNoteBody(noteId))
-        localStorage.removeItem(`Note ${noteId}'s Body `);
+    //     // delete the data from the notes since if i make another note, it will auto populate with the old notes data
+    //     dispatch(thunkDeleteAllNoteBody(noteId))
+    //     localStorage.removeItem(`Note ${noteId}'s Body `);
 
-        setNoteUpdate(!noteUpdate)
+    //     setNoteUpdate(!noteUpdate)
+
+    // }
+
+    const handleDeleteNoteModal = (e, noteId) => {
+        e.stopPropagation()
+        setModalContent(<DeleteNoteModal noteId={noteId} closeModal={closeModal} />)
 
     }
 
@@ -58,7 +68,7 @@ export default function AllNotes() {
             {notesObj?.map((note) => (
                 <div className="singlenotecontainer">
 
-                    <div onClick={() => handleDelete(note.id)} style={{ cursor: 'pointer' }}>
+                    <div onClick={(e) => handleDeleteNoteModal(e, note.id)} style={{ cursor: 'pointer' }}>
                         <FaTimes />
                     </div>
 

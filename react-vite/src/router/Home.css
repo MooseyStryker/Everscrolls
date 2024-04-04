@@ -67,7 +67,8 @@
 }
 
 .home-buttons {
-    margin: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
     /* background-color: aqua; */
 }
 

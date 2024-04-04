@@ -31,7 +31,10 @@
 
 .home-page-text{
     /* border: 1px solid orange; */
-    margin: 4px;
+    margin-right: 15px;
+    margin-left: 15px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -67,4 +70,8 @@
 .creatinganewnote{
     /* border: 1px solid pink; */
     margin: 4px;
+}
+
+.scratchinhome{
+    margin-top: 50px;
 }
