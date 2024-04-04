@@ -6,6 +6,7 @@ import "./HomeNotes.css"
 import NotesBody from "../Notes_body/NoteBody";
 import { FaTimes } from 'react-icons/fa';
 import { thunkPostNote } from "../../redux/notes";
+import { thunkDeleteAllNoteBody } from "../../redux/notebody";
 
 
 export default function AllNotes() {
@@ -34,7 +35,11 @@ export default function AllNotes() {
 
     const handleDelete = async(noteId) => {
         const res = await dispatch(thunkDeleteNote(noteId))
-        
+
+        // delete the data from the notes since if i make another note, it will auto populate with the old notes data
+        dispatch(thunkDeleteAllNoteBody(noteId))
+        localStorage.removeItem(`Note ${noteId}'s Body `);
+
         setNoteUpdate(!noteUpdate)
 
     }
