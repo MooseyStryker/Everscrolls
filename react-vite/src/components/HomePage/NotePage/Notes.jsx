@@ -24,6 +24,7 @@ export default function NoteHomePage() {
     const [prevNoteBody, setPrevNoteBody] = useState({});
     const [title, setTitle] = useState()
     const [isEditing, setIsEditing] = useState(false);
+    const [dbUpload, setDbUpload] = useState(false)
 
     const [divs, setDivs] = useState([{ id: 1, text: 'Hi! Start Here!', ref: createRef() }]);
 
@@ -62,6 +63,24 @@ export default function NoteHomePage() {
                 }
             }
         }
+        if (e.key === 'Backspace') {
+            const index = divs.findIndex(div => div.id === id);
+            if (divs[index].text === '' && divs.length > 1) { // Check if divs length is greater than 1
+                e.preventDefault(); // prevents the default delete action
+
+                handleSaveToLocal(); // await allows the delete to be saved
+
+                const newDivs = [...divs];
+                newDivs.splice(index, 1);
+                setDivs(newDivs);
+                if (newDivs[index]) {
+                    setTimeout(() => newDivs[index].ref.current.focus(), 0); // focus the next input element
+                } else if (newDivs[index - 1]) {
+                    setTimeout(() => newDivs[index - 1].ref.current.focus(), 0); // focus the previous input element
+                }
+            }
+        }
+
         if(e.key){
             handleSaveToLocal()
             console.log('divs', divs)
@@ -138,9 +157,10 @@ export default function NoteHomePage() {
 
         console.log("🚀 ~ useEffect ~ divTexts:", divTexts)
 
-        if (!divTexts && currentNoteBody) {  // If there's no data in local storage, use the data from the database
-            console.log('here')
+        if (!divTexts) {  // If there's no data in local storage, use the data from the database
+            console.log("🚀 ~ testing here:")
             console.log("🚀 ~ useEffect ~ currentNoteBody:", currentNoteBody)
+
             divTexts = Object.values(currentNoteBody).map(body => body.body);
             const noteBodies = divTexts.map((text, index) => ({
                 id: index + 1,
@@ -150,9 +170,13 @@ export default function NoteHomePage() {
             console.log("🚀 ~ noteBodies ~ noteBodies:", noteBodies)
 
             if (noteBodies.length > 0){
+                console.log('Pushing data to Divs...')
                 setDivs(noteBodies);
             }
             setPrevNoteBody(divTexts);
+
+            setDbUpload(true)
+
 
         } else if (divTexts && JSON.stringify(prevNoteBody) !== JSON.stringify(divTexts)) {
             const noteBodies = divTexts.map((text, index) => ({
@@ -161,24 +185,31 @@ export default function NoteHomePage() {
                 ref: createRef()
             }));
 
-            if (noteBodies.length > 0) setDivs(noteBodies); // this prevents any empty spaces from being downloaded from the db if there was no notebodies found
-            setPrevNoteBody(divTexts); // Update prevNoteBody to the divTexts
+            if (noteBodies.length > 0) setDivs(noteBodies);                                      // this prevents any empty spaces from being downloaded from the db if there was no notebodies found
+            setPrevNoteBody(divTexts);                                                           // Update prevNoteBody to the divTexts
         } else {
-            // keepiing this empty allows a new note to have one div to let users to start
+                                                                                                 // keepiing this empty allows a new note to have one div to let users to start
         }
     }, [currentNoteBody, noteid]); // Run the effect when either currentNoteBody or noteid changes
 
 
     useEffect(() => {
-        const timeoutId = setTimeout(handleSaveNoteBody, 1000); // Save every 5 seconds
+        const localStorageTest = JSON.parse(localStorage.getItem(`Note ${noteid}'s Body `));
+        if(localStorageTest){
+            const timeoutId = setTimeout(handleSaveNoteBody, 2000); // Save every 5 seconds
 
-        return () => {
-            clearTimeout(timeoutId);
-        };
+            return () => {
+                clearTimeout(timeoutId);
+            };
+        }
     }, [divs]);
 
+
+    // We see if localstorage exists and if the backend finished uploading the data, this is incase the user logged in to another device and theres no local storage
+    // The check is needed because it will upload the empty divs into local storage, preventing the backend from uploading
     useEffect(() => {
-        setTimeout(handleSaveToLocal, 0);
+        const localStorageTest = JSON.parse(localStorage.getItem(`Note ${noteid}'s Body `));
+        if(localStorageTest && dbUpload == true) setTimeout(handleSaveToLocal, 0);
     }, [divs]);
 
 
@@ -193,12 +224,14 @@ export default function NoteHomePage() {
                     </div> */}
                 </div>
                 <div className="main-notes-page">
+
                     {/* <div className="edit-bar-notes">
                         <div>
                             Editing note bar
                         </div>
                     </div> */}
-                                                                        <button onClick={handleSaveNoteBody}>Save Note to DB</button>
+
+                    {/* <button onClick={handleSaveNoteBody}>Save Note to DB</button> */}
                     <div className="notesinfocontainer">
                         <div className="notesinfo">
                             <div className="titleinfo-needsmargin">
