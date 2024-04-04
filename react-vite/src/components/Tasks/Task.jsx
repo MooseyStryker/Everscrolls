@@ -53,7 +53,7 @@ export default function TaskBar() {
 
     useEffect(() => {
         dispatch(thunkGettingAllOfTheTasks())
-    }, [dispatch])
+    }, [])
 
     return(
         <div className="taskcontainer">
