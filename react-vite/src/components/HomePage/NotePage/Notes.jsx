@@ -44,25 +44,43 @@ export default function NoteHomePage() {
             setDivs([...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)]);
             setTimeout(() => newDiv.ref.current.focus(), 0);                            // focus the new input element
         }
+        // if (e.key === 'Backspace') {
+        //     const index = divs.findIndex(div => div.id === id);
+        //     if (divs[index].text === '') {
+        //         e.preventDefault();                                                     // prevents the default delete action
+
+
+        //         handleSaveToLocal();                                                // await allows the delete to be saved
+
+
+        //         const newDivs = [...divs];
+        //         newDivs.splice(index, 1);
+        //         setDivs(newDivs);
+        //         if (newDivs[index]) {
+        //             setTimeout(() => newDivs[index].ref.current.focus(), 0);            // focus the next input element
+        //         } else if (newDivs[index - 1]) {
+        //             setTimeout(() => newDivs[index - 1].ref.current.focus(), 0);        // focus the previous input element
+        //         }
+        //     }
+        // }
         if (e.key === 'Backspace') {
             const index = divs.findIndex(div => div.id === id);
-            if (divs[index].text === '') {
-                e.preventDefault();                                                     // prevents the default delete action
+            if (divs[index].text === '' && divs.length > 1) { // Check if divs length is greater than 1
+                e.preventDefault(); // prevents the default delete action
 
-
-                handleSaveToLocal();                                                // await allows the delete to be saved
-
+                handleSaveToLocal(); // await allows the delete to be saved
 
                 const newDivs = [...divs];
                 newDivs.splice(index, 1);
                 setDivs(newDivs);
                 if (newDivs[index]) {
-                    setTimeout(() => newDivs[index].ref.current.focus(), 0);            // focus the next input element
+                    setTimeout(() => newDivs[index].ref.current.focus(), 0); // focus the next input element
                 } else if (newDivs[index - 1]) {
-                    setTimeout(() => newDivs[index - 1].ref.current.focus(), 0);        // focus the previous input element
+                    setTimeout(() => newDivs[index - 1].ref.current.focus(), 0); // focus the previous input element
                 }
             }
         }
+
         if(e.key){
             handleSaveToLocal()
             console.log('divs', divs)
