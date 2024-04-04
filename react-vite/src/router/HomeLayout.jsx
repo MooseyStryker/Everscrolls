@@ -16,11 +16,9 @@ import PostTask from "../components/Tasks/PostTask";
 export default function HomeLayout({ children }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const allNotebooks = useSelector((state) => state.notebook);
-    const allNotes = useSelector((state) => state.notes);
+    // const allNotebooks = useSelector((state) => state.notebook);
+    // const allNotes = useSelector((state) => state.notes);
     const sessionUser = useSelector((state) => state.session.user);
-
-    // if (!sessionUser) navigate('/')
 
     const [showProfile, setShowProfile] = useState(false)
 
@@ -69,7 +67,12 @@ export default function HomeLayout({ children }) {
 
 
     useEffect(() => {
-        dispatch(thunkGetCurrentUser())
+        const fetchData = async () => {
+            const res = await dispatch(thunkGetCurrentUser());
+            if (res.errors) navigate('/') // If no user found, navigate. Tried if(!sessionUser) but randomly would navigate if refreshed enough
+        };
+
+        fetchData();
         dispatch(thunkGetAllNotebooks())
         dispatch(thunkGetAllNotes());
     }, [dispatch]);

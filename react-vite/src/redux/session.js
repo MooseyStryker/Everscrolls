@@ -21,6 +21,7 @@ export const thunkGetCurrentUser = () => async(dispatch) => {
   const res = await fetch(`/api/users/current`)
 
 	const data = await res.json();
+	console.log("🚀 ~ thunkGetCurrentUser ~ data:", data)
 	if (data.errors) {
 		return data;
 	}

@@ -95,19 +95,22 @@ export default function LoginPage() {
     }
 
     const handleDemoUser = async() => {
-        const demoUser = {
-            email: 'user1@aa.io',
-            password: 'password'
-        };
+        setEmail('user1@aa.io')
+        setPassword('password')
+        // const demoUser = {
+        //     email: email,
+        //     password: password
+        // };
 
-        const serverResponse = await dispatch(thunkLogin(demoUser));
 
-        if (serverResponse) {
-           
-            setErrors(serverResponse);
-        } else {
-            navigate("/home");
-        }
+        // const serverResponse = await dispatch(thunkLogin(demoUser));
+
+        // if (serverResponse) {
+
+        //     setErrors(serverResponse);
+        // } else {
+        //     navigate("/home");
+        // }
     }
 
 
@@ -116,7 +119,7 @@ export default function LoginPage() {
 
         if (!validateLoginInput()) return;
 
-     
+
 
         const serverResponse = await dispatch(
           thunkLogin({
@@ -178,32 +181,33 @@ export default function LoginPage() {
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                         />
-                        {errors.username && <p className='p-errors'>{errors.username}</p>}
+                        <p className={`p-errors ${errors.username ? 'visible' : ''}`}>{errors.username}</p>
+
                     </label>
                     <label className='input-group'>
                         First Name:
                         <input className='input-indiv' style={{ border: errors.firstName ? '1px solid red' : '1px solid black' }} type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                        {errors.firstName && <p className='p-errors'>{errors.firstName}</p>}
+                        <p className={`p-errors ${errors.firstName ? 'visible' : ''}`}>{errors.firstName}</p>
                     </label>
                     <label className='input-group'>
                         Last Name:
                         <input className='input-indiv' style={{ border: errors.lastName ? '1px solid red' : '1px solid black' }} type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                        {errors.lastName && <p className='p-errors'>{errors.lastName}</p>}
+                        <p className={`p-errors ${errors.lastName ? 'visible' : ''}`}>{errors.lastName}</p>
                     </label>
                     <label className='input-group'>
                         Email:
                         <input className='input-indiv' style={{ border: errors.email ? '1px solid red' : '1px solid black' }} type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-                        {errors.email && <p className='p-errors'>{errors.email}</p>}
+                        <p className={`p-errors ${errors.email ? 'visible' : ''}`}>{errors.email}</p>
                     </label>
                     <label className='input-group'>
                         Password:
                         <input className='input-indiv' style={{ border: errors.password ? '1px solid red' : '1px solid black' }} type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                        {errors.password && <p className='p-errors'>{errors.password}</p>}
+                        <p className={`p-errors ${errors.password ? 'visible' : ''}`}>{errors.password}</p>
                     </label>
                     <label className='input-group'>
                         Confirm Password:
                         <input className='input-indiv' style={{ border: errors.confirmPassword ? '1px solid red' : '1px solid black' }} type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-                        {errors.confirmPassword && <p className='p-errors'>{errors.confirmPassword}</p>}
+                        <p className={`p-errors ${errors.confirmPassword ? 'visible' : ''}`}>{errors.confirmPassword}</p>
                     </label>
                     <input className='input-indiv' type="submit" value="Signup" />
                     <button onClick={() => switchLoginSignup()}>Existing User? Login
@@ -217,15 +221,17 @@ export default function LoginPage() {
                     <label className='input-group'>
                         Email:
                         <input className='input-indiv' style={{ border: errors.email ? '1px solid red' : '1px solid black' }} type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-                        {errors.email && <p className='p-errors'>{errors.email}</p>}
+                        {/* {errors.email && <p className='p-errors'>{errors.email}</p>} */}
+                        <p className={`p-errors ${errors.email ? 'visible' : ''}`}>{errors.email}</p>
                     </label>
                     <label className='input-group'>
                         Password:
                         <input className='input-indiv' style={{ border: errors.password ? '1px solid red' : '1px solid black' }} type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                        {errors.password && <p className='p-errors'>{errors.password}</p>}
+                        <p className={`p-errors ${errors.password ? 'visible' : ''}`}>{errors.password}</p>
                     </label>
                     <input type="submit" value="Login" />
                     <button onClick={() => switchLoginSignup()}>New User? Signup</button>
+                    <p style={{borderBottom:'1px solid grey'}}></p>
                     <button onClick={() => handleDemoUser()}>Login as Demo User</button>
                 </form>
 

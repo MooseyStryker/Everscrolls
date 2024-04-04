@@ -31,16 +31,9 @@ def get_current_user():
     Query for the currently logged in user and returns that user in a dictionary
     """
 
-    print('Am i getting here???')
-    print('Am i getting here???')
-    print('Am i getting here???')
-    print('Am i getting here???')
-    print('Am i getting here???')
-    print('Am i getting here???')
-    print('Am i getting here???')
-    print('Am i getting here???')
-    print('Am i getting here???')
     user = User.query.get(current_user.id)
+    if user is None:
+        return {"message": "User not found"}
     return user.to_dict()
 
 @user_routes.route('/search', methods=['POST'])
