@@ -37,16 +37,16 @@ export default function AllNotes() {
     }
 
 
-    // const handleDelete = async(noteId) => {
-    //     const res = await dispatch(thunkDeleteNote(noteId))
+    const handleDelete = async(noteId) => {
+        const res = await dispatch(thunkDeleteNote(noteId))
 
-    //     // delete the data from the notes since if i make another note, it will auto populate with the old notes data
-    //     dispatch(thunkDeleteAllNoteBody(noteId))
-    //     localStorage.removeItem(`Note ${noteId}'s Body `);
+        // delete the data from the notes since if i make another note, it will auto populate with the old notes data
+        dispatch(thunkDeleteAllNoteBody(noteId))
+        localStorage.removeItem(`Note ${noteId}'s Body `);
 
-    //     setNoteUpdate(!noteUpdate)
+        setNoteUpdate(!noteUpdate)
 
-    // }
+    }
 
     const handleDeleteNoteModal = (e, noteId) => {
         e.stopPropagation()
@@ -68,7 +68,7 @@ export default function AllNotes() {
             {notesObj?.map((note) => (
                 <div className="singlenotecontainer">
 
-                    <div onClick={(e) => handleDeleteNoteModal(e, note.id)} style={{ cursor: 'pointer' }}>
+                    <div onClick={() => handleDelete(note.id)} style={{ cursor: 'pointer' }}>
                         <FaTimes />
                     </div>
 
