@@ -51,7 +51,7 @@ export default function SingleNoteTask({ noteId }) {
 
     useEffect(() => {
         dispatch(thunkGettingAllOfTheTasks())
-    }, [dispatch])
+    }, [])
 
     return(
         <div className="taskcontainer">

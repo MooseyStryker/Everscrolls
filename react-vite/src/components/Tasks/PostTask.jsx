@@ -38,8 +38,13 @@ export default function PostTask({ closeModal, singleNoteId }){
             setNoteId(noteObj[0].id);
         }
 
-        dispatch(thunkGetAllNotes())
     }, [noteObj, singleNoteId]);
+
+    useEffect(() => {
+        dispatch(thunkGetAllNotes())
+    }, []) // Run only on mount
+
+
 
 
 
