@@ -19,21 +19,6 @@ export default function AllNotesAndTasks() {
         dispatch(thunkGetCurrentUser)
     }, [dispatch])
 
-    const handleNewNote = async() => {
-        const newNote = {
-            title: "Untitled"
-        }
-
-        const res = await dispatch(thunkPostNote(newNote))
-
-        if (res && res.errors){
-            return setErrors(res.errors)
-          }
-
-        navigate(`/home/note/${res.id}`)
-
-    }
-
     return (
         <>
             <div className="main-container-home">

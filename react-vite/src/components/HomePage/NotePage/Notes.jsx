@@ -46,26 +46,7 @@ export default function NoteHomePage() {
         }
         if (e.key === 'Backspace') {
             const index = divs.findIndex(div => div.id === id);
-            if (divs[index].text === '') {
-                e.preventDefault();                                                     // prevents the default delete action
-
-
-                handleSaveToLocal();                                                // await allows the delete to be saved
-
-
-                const newDivs = [...divs];
-                newDivs.splice(index, 1);
-                setDivs(newDivs);
-                if (newDivs[index]) {
-                    setTimeout(() => newDivs[index].ref.current.focus(), 0);            // focus the next input element
-                } else if (newDivs[index - 1]) {
-                    setTimeout(() => newDivs[index - 1].ref.current.focus(), 0);        // focus the previous input element
-                }
-            }
-        }
-        if (e.key === 'Backspace') {
-            const index = divs.findIndex(div => div.id === id);
-            if (divs[index].text === '' && divs.length > 1) { // Check if divs length is greater than 1
+            if (divs[index].text === '' && divs.length > 1) { // Check if divs length is greater than 1 which prevents user from deleting all the divs
                 e.preventDefault(); // prevents the default delete action
 
                 handleSaveToLocal(); // await allows the delete to be saved

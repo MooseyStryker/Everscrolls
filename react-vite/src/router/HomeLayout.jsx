@@ -62,6 +62,7 @@ export default function HomeLayout({ children }) {
           }
 
         navigate(`/home/note/${res.id}`)
+        window.location.reload();  // This keeps data from the previous note from appearing on the new note.
 
     }
 
@@ -69,7 +70,7 @@ export default function HomeLayout({ children }) {
     useEffect(() => {
         const fetchData = async () => {
             const res = await dispatch(thunkGetCurrentUser());
-            if (res.errors) navigate('/') // If no user found, navigate. Tried if(!sessionUser) but randomly would navigate if refreshed enough
+            if (res.errors) navigate('/') // If no user found, navigate. Tried if(!sessionUser) but randomly would navigate if refreshed enough times
         };
 
         fetchData();
@@ -140,7 +141,7 @@ export default function HomeLayout({ children }) {
                         {showNotebookContainer && (
                             <div className="notebookcontainersidebar">
                                 <AllNotebooks />
-                            </div>         
+                            </div>
                         )}
                     </div>
                 )}
