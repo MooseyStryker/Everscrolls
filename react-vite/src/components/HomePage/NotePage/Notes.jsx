@@ -17,7 +17,6 @@ export default function NoteHomePage() {
     const sessionUser = useSelector((state) => state.session.user);
     const currentNote = useSelector((state) => state.notes[noteid]);
     const currentNoteBody = useSelector((state) => state.notebody)
-    console.log("🚀 ~ NoteHomePage ~ currentNoteBody:", currentNoteBody)
     const tasks = useSelector((state) => state.tasks)
     const tasksObj = Object.values(tasks)
 
@@ -25,6 +24,7 @@ export default function NoteHomePage() {
     const [title, setTitle] = useState()
     const [isEditing, setIsEditing] = useState(false);
     const [dbUpload, setDbUpload] = useState(false)
+    console.log("🚀 ~ NoteHomePage ~ dbUpload:", dbUpload)
 
     const [divs, setDivs] = useState([{ id: 1, text: 'Hi! Start Here!', ref: createRef() }]);
 
@@ -64,7 +64,6 @@ export default function NoteHomePage() {
 
         if(e.key){
             handleSaveToLocal()
-            console.log('divs', divs)
         }
     };
 
@@ -114,7 +113,6 @@ export default function NoteHomePage() {
 
     const handleSaveToLocal = async() => {
         const divTexts = divs.map(div => div.text)
-        console.log("🚀 ~ handleSaveToLocal ~ divTexts:", divTexts)
         localStorage.setItem(`Note ${noteid}'s Body `, JSON.stringify(divTexts))
     }
 
@@ -136,19 +134,14 @@ export default function NoteHomePage() {
         // Try to retrieve the divTexts from local storage
         let divTexts = JSON.parse(localStorage.getItem(`Note ${noteid}'s Body `));
 
-        console.log("🚀 ~ useEffect ~ divTexts:", divTexts)
 
         if (!divTexts) {  // If there's no data in local storage, use the data from the database
-            console.log("🚀 ~ testing here:")
-            console.log("🚀 ~ useEffect ~ currentNoteBody:", currentNoteBody)
-
             divTexts = Object.values(currentNoteBody).map(body => body.body);
             const noteBodies = divTexts.map((text, index) => ({
                 id: index + 1,
                 text: text,
                 ref: createRef()
             }));
-            console.log("🚀 ~ noteBodies ~ noteBodies:", noteBodies)
 
             if (noteBodies.length > 0){
                 console.log('Pushing data to Divs...')
@@ -192,6 +185,7 @@ export default function NoteHomePage() {
         const localStorageTest = JSON.parse(localStorage.getItem(`Note ${noteid}'s Body `));
         if(localStorageTest && dbUpload == true) setTimeout(handleSaveToLocal, 0);
     }, [divs]);
+
 
     useEffect(() => {       // This ensures the size of the div remains even if the webpage refreshes, instead of shrinking
         divs.forEach(div => {

@@ -61,7 +61,8 @@ export default function AllNotes() {
                     </div>
 
                     <div onClick={() => handleNavigate(note.id)} className="singlenote" key={note.id}>
-                        <h2>Note Title: {note.note_title}</h2>
+                        <h2 style={{marginBottom:'15px'}}>{note.note_title && note.note_title.length > 20 ? `${note.note_title.substring(0, 14)}...` : note.note_title}</h2>
+
                         {/* <div>
                             First two bodies:
                             {note.bodies && note.bodies.slice(0, 2).map((body, index) => (
@@ -71,7 +72,7 @@ export default function AllNotes() {
                         <div>
                             {note.bodies && note.bodies.slice(0, 4).map((body, index) => (
                                 <p key={index}>
-                                    • {body.body.length > 20 ? `${body.body.substring(0, 20)}...` : body.body}    {/* This keeps super long strings from bleeding over the div  */}
+                                    • {body.body.length > 20 ? `${body.body.substring(0, 18)}...` : body.body}    {/* This keeps super long strings from bleeding over the div  */}
                                 </p>
                             ))}
                         </div>

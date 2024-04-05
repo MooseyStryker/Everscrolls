@@ -3,7 +3,13 @@
     display: flex;
     justify-content: center;
 }
+
+.titleinfo-needsmargin{
+    /* border: 1px solid red; */
+    width: 802;
+}
 .titleinputedit{
+    /* border: 1px solid red; */
     background: none;
     border: none;
     font-size: 31px;
@@ -16,6 +22,7 @@
 }
 .titleinfo-needsmargin{
     margin-bottom: 30px;
+    word-wrap: break-word;
 }
 
 
