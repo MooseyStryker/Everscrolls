@@ -32,12 +32,9 @@ export default function PostTask({ closeModal, singleNoteId }){
     }
 
     useEffect(() => {
-        if (singleNoteId) {
-            setNoteId(singleNoteId);
-        } else if (noteObj && noteObj.length > 0) {
-            setNoteId(noteObj[0].id);
+        if (!noteId && noteObj && noteObj.length > 0) {
+            setNoteId(singleNoteId || noteObj[0].id);
         }
-
     }, [noteObj, singleNoteId]);
 
     useEffect(() => {

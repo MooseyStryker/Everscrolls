@@ -55,6 +55,10 @@ export const router = createBrowserRouter([
         element: <AllNotesAndTasks />,
       },
       {
+        path: "/home/notebook/:notebookid",
+        element: <s />,
+      },
+      {
         path: "/home/note/:noteid",
         element: <NoteHomePage />,
       },

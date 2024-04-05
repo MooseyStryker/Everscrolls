@@ -80,7 +80,8 @@ export default function AllNotebooks() {
                                 </div>
                             )}
                         </div>
-                        <div>
+                        <div className="opendeletebuttons">
+                            <button style={{marginRight:'5px'}} >Open</button>
                             <button onClick={() =>deleteNotebook(notebook.id)}>Delete</button>
                         </div>
                     </div>

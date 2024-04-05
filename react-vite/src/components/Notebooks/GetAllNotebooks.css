@@ -12,6 +12,7 @@
 
 }
 .notebooknameinput{
+    width: 100%;
     border-radius: 5px;
     margin-bottom: 20px;
     padding: 10px;
@@ -20,6 +21,7 @@
     font-size: 1.17em; /* Similar to h3 */
     font-weight: bold; /* Make the text bold like h3 */
     font-family: Arial, sans-serif; /* Adjust as needed */
+    margin-right: 10px;
 }
 
 
@@ -39,4 +41,9 @@
 
 .notebookstuffcontainer:hover button {
     display: block; /* Show the button on hover */
+}
+
+.opendeletebuttons{
+    display: flex;
+    height: 40px;
 }
