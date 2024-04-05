@@ -15,11 +15,13 @@
 
 .pictureontop{
     /* border: 1px solid green; */
-    margin: 4px;
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
 }
 
 .shipview{
-    width: 100%;
+    width: 99%;
 
 }
 
