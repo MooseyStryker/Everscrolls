@@ -23,6 +23,7 @@ def view_note():
         results_info = {                                                    # Create a dictionary with the note details
             "id": results.id,
             "creator_id": results.creator_id,
+            "notebook_id": results.notebook_id,
             "note_title": results.title,
             "updated_at": results.updated_at,
             "created_at": results.created_at,

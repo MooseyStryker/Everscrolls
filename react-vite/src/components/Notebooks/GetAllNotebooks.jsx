@@ -19,9 +19,15 @@ export default function AllNotebooks() {
     const allNotebooks = useSelector((state) => state.notebook);
     const notebooksObj = Object.values(allNotebooks)
 
+    let takenNotebookNames = [];
+    notebooksObj.forEach(notebook => {
+        takenNotebookNames.push(notebook.notebook_name);
+    });
+    console.log("🚀 ~ AllNotebooks ~ takenNotebookNames:", takenNotebookNames)
+
 
     const postNotebooks = () => {
-        setModalContent(<CreateNotebook closeModal={closeModal} />)
+        setModalContent(<CreateNotebook closeModal={closeModal} nameCheck={takenNotebookNames} />)
     }
 
 
@@ -59,6 +65,9 @@ export default function AllNotebooks() {
             <div className="titlecontainernotebook">
                 <h1>Notebooks</h1>
             </div>
+            <div className="idkanymore">
+                <h6>Double click the name to edit!</h6>
+            </div>
                 {allNotebooks && notebooksObj.map((notebook) => (
                     <div className="notebookstuffcontainer" key={notebook.user_id}>
                         <div>
@@ -81,7 +90,7 @@ export default function AllNotebooks() {
                             )}
                         </div>
                         <div className="opendeletebuttons">
-                            <button style={{marginRight:'5px'}} >Open</button>
+                            <button onClick={() => navigate(`/home/notebook/${notebook.id}`)} style={{marginRight:'5px'}} >Open</button>
                             <button onClick={() =>deleteNotebook(notebook.id)}>Delete</button>
                         </div>
                     </div>

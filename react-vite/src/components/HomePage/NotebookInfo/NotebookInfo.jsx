@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
-import './AllNotesAndTasks.css'
+// import './AllNotesAndTasks.css'
 import shipView from '../../../../../images/website_images/bow.png'
 import { thunkGetCurrentUser } from "../../../redux/session";
-import AllNotes from "../../Notes/HomeNotesContainer";
-import { thunkPostNote } from "../../redux/notes";
+import { thunkPostNote } from "../../../redux/notes";
 import ScratchPad from "../../Scratch/ScratchPad";
+import { useParams } from "react-router-dom";
+import AllNotesInNotebook from "../NotesInNoteBook/NotesinNotebook";
 
-export default function AllNotesAndTasks() {
+export default function IndividualNotebookInfo() {
+    const {notebookId} = useParams()
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const sessionUser = useSelector((state) => state.session.user);
-    const allNotebooks = useSelector((state) => state.notebook);
+    const singleNotebook = useSelector((state) => state.notebook[notebookId]);
+    console.log("🚀 ~ IndividualNotebookInfo ~ singleNotebook:", singleNotebook)
 
 
     useEffect(() => {
@@ -31,7 +34,7 @@ export default function AllNotesAndTasks() {
 
                         <div className="home-page-text">
                             <div>
-                                <div><h5>Let's get this journey started</h5></div>
+                                <div><h5>This is the notes in notebook: {singleNotebook?.notebook_name}</h5></div>
                                 <div>
                                 <h2>{sessionUser?.first_name} Mariner's Jorunal</h2>
                                 </div>
@@ -44,13 +47,12 @@ export default function AllNotesAndTasks() {
 
                                 <div className="notesinhome">
                                     <div className="note-individual">
-                                        <AllNotes />
+                                        <AllNotesInNotebook notebook={singleNotebook} />
                                     </div>
                                 </div>
                             </div>
                             <div className="scratchpad-cal">
                                 <div className="scratchinhome"><ScratchPad /></div>
-                                {/* <div className="bonus-calendar">calendar Container</div> */}
                             </div>
                         </div>
 

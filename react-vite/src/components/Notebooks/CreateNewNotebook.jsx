@@ -5,35 +5,40 @@ import { thunkPostNotebook } from "../../redux/notebook"
 
 
 
-export default function CreateNotebook({ closeModal }) {
+export default function CreateNotebook({ closeModal, nameCheck }) {
+    console.log("🚀 ~ CreateNotebook ~ nameCheck:", nameCheck)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [notebookName, setNootbookName] = useState("")
     const [errors, setErrors] = useState({})
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
-        if (notebookName.length == 0 ) {
+        if (notebookName.length === 0) {
             setErrors({ notebookName: "Notebook's name is required" });
             return;
-          } else if (notebookName.length > 50) {
+        } else if (notebookName.length > 50) {
             setErrors({ notebookName: "Notebook's name must be shorter than 100 characters long." });
             return;
-          }
+        } else if (nameCheck.includes(notebookName)) {
+            setErrors({ notebookName: "This notebook name is already taken." });
+            return;
+        }
 
-          const createNotebook = {
+        const createNotebook = {
             notebook_name: notebookName
-          }
+        }
 
-          const res = await dispatch(thunkPostNotebook(createNotebook))
+        const res = await dispatch(thunkPostNotebook(createNotebook))
 
-          if (res && res.errors){
+        if (res && res.errors){
             return setErrors(res.errors)
-          }
+        }
 
-          closeModal()
+        closeModal()
     }
+
 
 
     return (

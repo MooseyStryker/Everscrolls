@@ -1,6 +1,9 @@
 .titlecontainernotebook{
-    margin-bottom: 30px;
     border-bottom: 1px dotted grey;
+}
+.idkanymore{
+    margin-bottom: 30px;
+
 }
 
 .notebookname{
@@ -47,3 +50,5 @@
     display: flex;
     height: 40px;
 }
+
+

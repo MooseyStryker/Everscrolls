@@ -10,6 +10,7 @@ import AllNotesAndTasks from '../components/HomePage/AllNotesAndTasks';
 import NoteHomePage from '../components/HomePage/NotePage/Notes';
 import HomeLayout from './HomeLayout';
 import { ModalProvider, Modal } from '../context/Modal';
+import IndividualNotebookInfo from '../components/HomePage/NotebookInfo/NotebookInfo';
 
 export const router = createBrowserRouter([
   {
@@ -55,8 +56,8 @@ export const router = createBrowserRouter([
         element: <AllNotesAndTasks />,
       },
       {
-        path: "/home/notebook/:notebookid",
-        element: <s />,
+        path: "/home/notebook/:notebookId",
+        element: <IndividualNotebookInfo />,
       },
       {
         path: "/home/note/:noteid",
