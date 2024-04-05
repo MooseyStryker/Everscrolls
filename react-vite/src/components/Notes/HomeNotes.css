@@ -9,7 +9,7 @@
     flex-direction: row;
     overflow-x: scroll;
     overflow-y: hidden;
-    width: 1800px; /* For some reason this needs to be fixed, otherwise when the notebook/task second container, this container will go outside it's bounds */
+    width: 98%;
 
 }
 
