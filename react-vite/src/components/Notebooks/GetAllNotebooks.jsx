@@ -47,7 +47,7 @@ export default function AllNotebooks() {
         const res = dispatch(thunkPutNotebook(newChanges, notebookId))
     }
 
-    
+
 
 
     useEffect(() => {
@@ -75,7 +75,7 @@ export default function AllNotebooks() {
                                     }}
                                 />
                             ) : (
-                                <div className="notebookname" onClick={() => handleEdit(notebook)}>
+                                <div className="notebookname" onDoubleClick={() => handleEdit(notebook)}>
                                     <h3>{notebook.notebook_name}</h3>
                                 </div>
                             )}
