@@ -81,6 +81,20 @@ export const thunkPostNotebook = (notebook) => async (dispatch) => {
     }
   };
 
+export const thunkPostNoteToNotebook = (notebookId, note) => async (dispatch) => {
+  const response = await fetch(`/api/notebooks/${notebookId}/note`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(note),
+  });
+  const data = await response.json();
+  if (data.errors) {
+    return data;
+  } else {
+    dispatch(postNoteToNotebook(notebookId,data));
+  }
+};
+
 export const thunkPutNotebook = (notebook, notebook_id) => async (dispatch) => {
     const response = await fetch(`/api/notebooks/${notebook_id}`, {
       method: "PUT",
@@ -95,7 +109,7 @@ export const thunkPutNotebook = (notebook, notebook_id) => async (dispatch) => {
     }
   };
 
-export const thunkDeleteNotebook = (notebook_id) => async (dispatch) => {
+  export const thunkDeleteNotebook = (notebook_id) => async (dispatch) => {
     const response = await fetch(`/api/notebooks/${notebook_id}`, {
       method: "DELETE",
       headers: {
@@ -106,23 +120,8 @@ export const thunkDeleteNotebook = (notebook_id) => async (dispatch) => {
     if (data.errors) {
       return data;
     }
-    dispatch(deleteNotebook(data));
+    dispatch(deleteNotebook(notebook_id));
   };
-
-export const thunkPostNoteToNotebook = (notebookId, note) => async (dispatch) => {
-    const response = await fetch(`/api/notebooks/${notebookId}/note`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(note),
-    });
-    const data = await response.json();
-    if (data.errors) {
-      return data;
-    } else {
-      dispatch(postNoteToNotebook(notebookId, data));
-    }
-  };
-
 
 
 const initialState = {};

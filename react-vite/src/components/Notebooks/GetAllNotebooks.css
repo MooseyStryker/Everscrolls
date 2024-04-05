@@ -1,0 +1,42 @@
+.titlecontainernotebook{
+    margin-bottom: 30px;
+    border-bottom: 1px dotted grey;
+}
+
+.notebookname{
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 10px;
+    transition: background-color 0.3s ease; /* Add transition effect */
+    width: 100%;
+
+}
+.notebooknameinput{
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #ADD8E6;
+    border: none;
+    font-size: 1.17em; /* Similar to h3 */
+    font-weight: bold; /* Make the text bold like h3 */
+    font-family: Arial, sans-serif; /* Adjust as needed */
+}
+
+
+.notebookname:hover {
+    background-color: #f5f5f5; /* change this to your preferred color */
+}
+.notebookstuffcontainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.notebookstuffcontainer button {
+    display: none; /* Hide the button by default */
+}
+
+.notebookstuffcontainer:hover button {
+    display: block; /* Show the button on hover */
+}

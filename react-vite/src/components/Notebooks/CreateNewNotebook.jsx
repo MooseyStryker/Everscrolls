@@ -5,7 +5,7 @@ import { thunkPostNotebook } from "../../redux/notebook"
 
 
 
-export default function CreateNotebook() {
+export default function CreateNotebook({ closeModal }) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [notebookName, setNootbookName] = useState("")
@@ -31,6 +31,8 @@ export default function CreateNotebook() {
           if (res && res.errors){
             return setErrors(res.errors)
           }
+
+          closeModal()
     }
 
 
