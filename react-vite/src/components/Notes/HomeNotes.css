@@ -10,6 +10,7 @@
     overflow-x: scroll;
     overflow-y: hidden;
     width: 1800px; /* For some reason this needs to be fixed, otherwise when the notebook/task second container, this container will go outside it's bounds */
+
 }
 
 .singlenotecontainer{
@@ -24,6 +25,7 @@
     padding: 20px;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Add subtle box shadow */
     transition: transform 0.3s ease; /* Add transition effect */
+    cursor: pointer;
 }
 
 .singlenotecontainer:hover {
@@ -49,4 +51,12 @@
 
 .creatinganewnote:hover {
     border: 1px solid black;
+}
+
+.tasksneedsmargin{
+    border-top: 1px solid grey;
+    margin-top: 10px;
+}
+.thistoo{
+    margin-top: 10px;
 }

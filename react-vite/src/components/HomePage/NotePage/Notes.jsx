@@ -265,9 +265,6 @@ export default function NoteHomePage() {
                                 <div className="task-store-container">
 
                                     <div>
-                                    {/* {tasksObj.map((task, index) => (
-                                        <p key={index}>{task.description}</p>
-                                    ))} */}
                                         <SingleNoteTask noteId={noteid} noteTitle={title} />
                                     </div>
                                 </div>

@@ -20,22 +20,23 @@
 
 
 .home-notes{
-    /* border: 1px solid red; */
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
+    width: 100%;
+    /* background-color: white; */
 
 }
 
 .notesinfocontainer{
     /* margin-top: 40px; */
-    padding-top: 40px;
+    padding-top: 70px;
     display: flex;
     justify-content: center;
     background-color: white;
     height:89vh;
-    width: 100%;
+    width: 1200px;
     padding-left: 40px;
     padding-right: 40px;
 
@@ -44,7 +45,6 @@
 }
 
 .notesinfo{
-    /* border: 1px solid green; */
     display: flex;
     flex-direction: column;
     width: 1000px;
@@ -52,17 +52,14 @@
 }
 
 .noteinput{
-    width: 90%;
+    border: 3px solid rgb(38, 0, 128);
+    width: 100%;
     border: none;
     resize: none; /* Prevents the user from resizing the textarea */
     outline: none; /* Removes the blue border on focus */
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* .notebody-container{
-    overflow-x: hidden;
-    overflow-y: scroll;
-} */
 
 .taskandattachmentscontainer{
     /* border: 1px solid red; */
