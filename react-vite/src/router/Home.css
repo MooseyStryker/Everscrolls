@@ -155,9 +155,6 @@ button {
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #187bcd;
-}
 
 button:active {
     transform: translateY(2px);

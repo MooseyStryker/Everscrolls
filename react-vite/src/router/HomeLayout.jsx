@@ -12,13 +12,15 @@ import AllNotebooks from "../components/Notebooks/GetAllNotebooks";
 import { thunkPostNote } from "../redux/notes";
 import { useModal } from "../context/Modal";
 import PostTask from "../components/Tasks/PostTask";
+import PostNoteModal from "../components/Notes/PostNoteModal";
 
 export default function HomeLayout({ children }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const allNotebooks = useSelector((state) => state.notebook);
-    // const allNotes = useSelector((state) => state.notes);
+    const allNotes = useSelector((state) => state.notes);
     const sessionUser = useSelector((state) => state.session.user);
+    const allNotebooks = useSelector((state) => state.notebook);
+    const allNoteBooksObj = Object.values(allNotebooks)
 
     const [showProfile, setShowProfile] = useState(false)
 
@@ -51,19 +53,7 @@ export default function HomeLayout({ children }) {
     }
 
     const handleNewNote = async() => {
-        const newNote = {
-            title: "Untitled"
-        }
-
-        const res = await dispatch(thunkPostNote(newNote))
-
-        if (res && res.errors){
-            return setErrors(res.errors)
-          }
-
-        navigate(`/home/note/${res.id}`)
-        window.location.reload();  // This keeps data from the previous note from appearing on the new note.
-
+        setModalContent(<PostNoteModal closeModal={closeModal} notebooks={allNoteBooksObj} />)
     }
 
 

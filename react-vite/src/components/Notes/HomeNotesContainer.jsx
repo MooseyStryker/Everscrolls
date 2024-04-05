@@ -9,6 +9,8 @@ import { thunkPostNote } from "../../redux/notes";
 import { thunkDeleteAllNoteBody } from "../../redux/notebody";
 import { useModal } from "../../context/Modal";
 import DeleteNoteModal from "./DeleteNoteModal";
+import PostNoteModal from "./PostNoteModal";
+
 
 
 export default function AllNotes() {
@@ -19,21 +21,12 @@ export default function AllNotes() {
     const allNotes = useSelector((state) => state.notes);
     const notesObj = Object.values(allNotes);
     const [noteUpdate, setNoteUpdate] = useState(false)
+    const allNotebooks = useSelector((state) => state.notebook);
+    const allNoteBooksObj = Object.values(allNotebooks)
 
 
     const handleNewNote = async() => {
-        const newNote = {
-            title: "Untitled"
-        }
-
-        const res = await dispatch(thunkPostNote(newNote))
-
-        if (res && res.errors){
-            return setErrors(res.errors)
-          }
-
-        navigate(`/home/note/${res.id}`)
-        window.location.reload(); // This keeps data from the previous note from appearing on the new note.
+        setModalContent(<PostNoteModal closeModal={closeModal} notebooks={allNoteBooksObj} />)
     }
 
     const handleDeleteNoteModal = (e, noteId) => {

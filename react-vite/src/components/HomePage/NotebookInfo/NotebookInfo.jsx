@@ -15,7 +15,6 @@ export default function IndividualNotebookInfo() {
     const navigate = useNavigate();
     const sessionUser = useSelector((state) => state.session.user);
     const singleNotebook = useSelector((state) => state.notebook[notebookId]);
-    console.log("🚀 ~ IndividualNotebookInfo ~ singleNotebook:", singleNotebook)
 
 
     useEffect(() => {
@@ -52,7 +51,7 @@ export default function IndividualNotebookInfo() {
                                 </div>
                             </div>
                             <div className="scratchpad-cal">
-                                <div className="scratchinhome"><ScratchPad /></div>
+                                <div className="scratchinhome"><ScratchPad notebook={singleNotebook} /></div>
                             </div>
                         </div>
 

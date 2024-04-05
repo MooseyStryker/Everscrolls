@@ -2,11 +2,11 @@ import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { thunkPostNotebook } from "../../redux/notebook"
+import './CreateNewNotebookModal.css'
 
 
 
 export default function CreateNotebook({ closeModal, nameCheck }) {
-    console.log("🚀 ~ CreateNotebook ~ nameCheck:", nameCheck)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [notebookName, setNootbookName] = useState("")
@@ -43,25 +43,32 @@ export default function CreateNotebook({ closeModal, nameCheck }) {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <h2> New Notebook </h2>
-                <label>
+            <form onSubmit={handleSubmit} className="cnnm-form-container">
+                <h2 className="cnnm-form-title">New Notebook</h2>
+                <label className="cnnm-form-label">
                     <input
                         type="text"
                         value={notebookName}
                         onChange={(e) => setNootbookName(e.target.value)}
+                        className="cnnm-form-input"
                     />
                 </label>
 
                 {/* Display errors */}
                 {Object.keys(errors).map((key, i) => (
-                    <p key={i} style={{ color: 'red' }}>
+                    <p key={i} className="cnnm-form-error">
                         {errors[key]}
                     </p>
                 ))}
 
-                <button>Create New Notebook</button>
+                <div className="cnnm-form-buttoncont">
+                    <button className="cnnm-form-button">Create New Notebook</button>
+                    <button onClick={() => closeModal()} className="cnnm-form-button">Cancel</button>
+
+                </div>
+
             </form>
         </>
-    );
+    )
+
 }

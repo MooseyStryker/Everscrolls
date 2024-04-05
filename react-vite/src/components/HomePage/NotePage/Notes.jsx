@@ -24,7 +24,6 @@ export default function NoteHomePage() {
     const [title, setTitle] = useState()
     const [isEditing, setIsEditing] = useState(false);
     const [dbUpload, setDbUpload] = useState(false)
-    console.log("🚀 ~ NoteHomePage ~ dbUpload:", dbUpload)
 
     const [divs, setDivs] = useState([{ id: 1, text: 'Hi! Start Here!', ref: createRef() }]);
 

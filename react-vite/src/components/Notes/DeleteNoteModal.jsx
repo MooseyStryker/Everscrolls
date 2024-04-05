@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { thunkDeleteTask, thunkPostTask, thunkUpdateTask } from "../../redux/tasks"
 import { thunkDeleteNote } from "../../redux/notes"
 import { thunkDeleteAllNoteBody } from "../../redux/notebody"
+import './DeleteNoteModal.css'
 
 export default function DeleteNoteModal({ noteId, closeModal }){
     const dispatch = useDispatch()
@@ -15,17 +16,19 @@ export default function DeleteNoteModal({ noteId, closeModal }){
         localStorage.removeItem(`Note ${noteId}'s Body `);
 
         closeModal()
-        
+
         setNoteUpdate(!noteUpdate)
 
     }
 
-    return(
-        <>
-            <h1>Delete this Note?</h1>
-            <p>This action cannot be undone. Please confirm your decision.</p>
-            <button onClick={handleDelete}>Delete</button>
-            <button onClick={closeModal}>Cancel</button>
-        </>
+    return (
+        <div className="cnnm-modal-container">
+            <h1 style={{margin:'20px'}}>Delete this Note?</h1>
+            <p style={{marginBottom:'20px'}}>This action cannot be undone. Please confirm your decision.</p>
+            <div className="cnnm-button-container">
+                <button onClick={handleDelete} className="cnnm-button-delete">Delete</button>
+                <button onClick={closeModal} className="cnnm-button-cancel">Cancel</button>
+            </div>
+        </div>
     )
 }

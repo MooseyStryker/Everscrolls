@@ -17,14 +17,12 @@ export default function AllNotesInNotebook({ notebook }) {
     const { setModalContent } = useModal()
     const allNotes = useSelector((state) => state.notes);
     const notesObj = Object.values(allNotes);
-    console.log("🚀 ~ AllNotesInNotebook ~ notesObj:", notesObj)
     const [noteUpdate, setNoteUpdate] = useState(false)
 
-    const test = notesObj.filter(note => note.notebook_id == notebook.id)
-    console.log("🚀 ~ AllNotesInNotebook ~ test:", test)
 
     const handleNewNote = async() => {
         const newNote = {
+            notebook_id: notebook.id,
             title: "Untitled"
         }
 
@@ -85,7 +83,7 @@ export default function AllNotesInNotebook({ notebook }) {
             ))}
             <div>
                 <div className="creatinganewnote" onClick={handleNewNote}>
-                    Create a New Note!
+                    Create a New Note in notebook: {notebook?.notebook_name}
                 </div>
                 </div>
         </div>

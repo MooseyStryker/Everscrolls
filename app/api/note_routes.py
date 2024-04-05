@@ -52,6 +52,7 @@ def new_note():
     if form.validate_on_submit():
         newNote = Note(                                         # Create a new note with the form data
             creator_id = current_user.id,
+            notebook_id = form.notebook_id.data,
             title = form.title.data,
         )
         db.session.add(newNote)                                 # Add the new note to the database session

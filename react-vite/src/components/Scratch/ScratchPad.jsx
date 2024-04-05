@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import './ScratchPad.css'
 
-function ScratchPad() {
+function ScratchPad({ notebook }) {
     const divRef = useRef();
 
     // Load saved content from local storage when component mounts
     useEffect(() => {
-        const savedContent = localStorage.getItem('scratchPadContent');
+        const savedContent = localStorage.getItem(`Scratch Pad in Notebook ${notebook?.id}`);
         if (savedContent) {
             divRef.current.innerText = savedContent;
         } else {
@@ -19,7 +19,7 @@ function ScratchPad() {
         if (divRef.current.innerText === 'Click here to start writing...') {
             divRef.current.innerText = '';
         }
-        localStorage.setItem('scratchPadContent', divRef.current.innerText);
+        localStorage.setItem(`Scratch Pad in Notebook ${notebook?.id}`, divRef.current.innerText);
     };
 
     const handleFocus = () => {

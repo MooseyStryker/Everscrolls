@@ -4,8 +4,8 @@ import { thunkGetAllNotebooks, thunkPostNotebook, thunkPutNotebook } from "../..
 import { useNavigate } from "react-router-dom";
 import { useModal } from "../../context/Modal";
 import './GetAllNotebooks.css'
-import CreateNotebook from "./CreateNewNotebook";
-import DeleteNotebook from "./DeleteNotebook";
+import CreateNotebook from "./CreateNewNotebookModal";
+import DeleteNotebook from "./DeleteNotebookModal";
 
 export default function AllNotebooks() {
     const dispatch = useDispatch();
@@ -23,8 +23,6 @@ export default function AllNotebooks() {
     notebooksObj.forEach(notebook => {
         takenNotebookNames.push(notebook.notebook_name);
     });
-    console.log("🚀 ~ AllNotebooks ~ takenNotebookNames:", takenNotebookNames)
-
 
     const postNotebooks = () => {
         setModalContent(<CreateNotebook closeModal={closeModal} nameCheck={takenNotebookNames} />)
