@@ -133,6 +133,7 @@ export default function LoginPage() {
           setErrors(serverResponse);
         } else {
           navigate("/home");
+          window.location.reload();
         }
     }
 
@@ -163,6 +164,7 @@ export default function LoginPage() {
           setErrors(serverResponse);
         } else {
           navigate("/home");
+          window.location.reload();
         }
     }
 
