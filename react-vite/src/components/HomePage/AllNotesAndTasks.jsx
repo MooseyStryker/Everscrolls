@@ -14,11 +14,20 @@ export default function AllNotesAndTasks() {
     const sessionUser = useSelector((state) => state.session.user);
     const allNotebooks = useSelector((state) => state.notebook);
 
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        dispatch(thunkGetCurrentUser)
-    }, [dispatch])
+        const fetchUser = async () => {
+            const res = await dispatch(thunkGetCurrentUser());
+            setLoading(false);
+        };
 
+        fetchUser();
+    }, [dispatch]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
     return (
         <>
             <div className="main-container-home">

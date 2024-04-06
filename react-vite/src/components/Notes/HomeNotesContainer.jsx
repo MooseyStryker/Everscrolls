@@ -24,6 +24,9 @@ export default function AllNotes() {
     const allNotebooks = useSelector((state) => state.notebook);
     const allNoteBooksObj = Object.values(allNotebooks)
 
+    const [loading, setLoading] = useState(true);
+
+
 
     const handleNewNote = async() => {
         setModalContent(<PostNoteModal closeModal={closeModal} notebooks={allNoteBooksObj} />)
@@ -42,8 +45,18 @@ export default function AllNotes() {
 
     useEffect(() => {
         if (noteUpdate === true) setNoteUpdate(!noteUpdate)
-        dispatch(thunkGetAllNotes());
+        const fetchCheck = async() => {
+            dispatch(thunkGetAllNotes());
+            setLoading(false);
+        };
+
+        fetchCheck();
     }, [dispatch, noteUpdate]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+    
     return (
         <div className="homenotescontainer">
             {notesObj?.map((note) => (
