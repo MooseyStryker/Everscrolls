@@ -16,8 +16,8 @@ export default function DeleteTask({ taskId, closeModal }){
             <h1 style={{margin:'20px'}}>Delete this Task?</h1>
             <p style={{marginBottom:'20px'}}>This action cannot be undone. Please confirm your decision.</p>
             <div className="cnnm-button-container">
-                <button onClick={handleDelete} className="cnnm-button-cancel">Delete</button>
-                <button onClick={closeModal} className="cnnm-button-delete">Cancel</button>
+                <button onClick={handleDelete} className="cnnm-button-delete">Delete</button>
+                <button onClick={closeModal} className="cnnm-button-cancel">Cancel</button>
             </div>
         </div>
     )

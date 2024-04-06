@@ -31,11 +31,10 @@
 }
 
 .cnnm-button-delete {
-    background-color: #007BFF;
+    background-color: #dc3545
 }
 
 
 .cnnm-button-cancel {
-    background-color: #dc3545;
+    background-color: #007BFF;
 }
-

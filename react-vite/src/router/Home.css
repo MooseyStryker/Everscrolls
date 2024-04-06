@@ -15,6 +15,8 @@
 
 
 .leftinfo{
+    position: relative;
+    left: 2%;
     border: 1px solid rgb(181, 181, 181);
     background-color: #F2F2F2;
     border-radius: 10px;
@@ -106,10 +108,12 @@
 
 
 .secondcontainer {
+    position: relative;
+    left: .4%;
     padding: 15px;
     background-color: lightblue;
     border: 1px solid rgb(197, 197, 197);
-    height: 94.8vh;
+    height: 96.8vh;
     border-radius: 10px;
     width: 350px;
     margin-top: 5px; /* aligns with the left task bar */

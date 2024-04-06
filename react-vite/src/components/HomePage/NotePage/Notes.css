@@ -36,6 +36,13 @@
 
 }
 
+.main-notes-page{
+    border: 1px solid rgb(178, 178, 178);
+    background-color: white;
+    height: 97vh;
+    width: auto;
+}
+
 .notesinfocontainer{
     /* margin-top: 40px; */
     padding-top: 70px;

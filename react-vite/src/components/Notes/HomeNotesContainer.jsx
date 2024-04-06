@@ -47,13 +47,13 @@ export default function AllNotes() {
     return (
         <div className="homenotescontainer">
             {notesObj?.map((note) => (
-                <div className="singlenotecontainer">
+                <div className="singlenotecontainer" onClick={() => handleNavigate(note.id)}>
 
                     <div onClick={(e) => handleDeleteNoteModal(e,note.id)} style={{ cursor: 'pointer' }}>
                         <FaTimes />
                     </div>
 
-                    <div onClick={() => handleNavigate(note.id)} className="singlenote" key={note.id}>
+                    <div className="singlenote" key={note.id}>
                         <h2 style={{marginBottom:'15px'}}>{note.note_title && note.note_title.length > 20 ? `${note.note_title.substring(0, 14)}...` : note.note_title}</h2>
 
                         {/* <div>
