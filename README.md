@@ -2,7 +2,7 @@
 
 ## Check out my live site here: https://everscrolls.onrender.com
 
-“EverScrolls is a gamified platform for note-taking, designed to transform every journal into an engaging and fun experience. Drawing inspiration from the seafaring journeys that led Charles Darwin to remarkable discoveries, EverScrolls aims to guide its users from simple note-taking to achieving significant goals. Whether it’s jotting down life’s events, capturing fleeting inspirations, or recording favorite recipes, EverScrolls provides a unique and enjoyable way to organize thoughts and ideas. With a commitment to continuous technological innovation, my goal is to enhance user experience with more technologies in the future, making note-keeping with EverScrolls not just useful, but also entertaining and engaging.”
+EverScrolls is a gamified platform for note-taking, designed to transform every journal into an engaging and fun experience. Drawing inspiration from the seafaring journeys that led Charles Darwin to remarkable discoveries, EverScrolls aims to guide its users from simple note-taking to achieving significant goals. Whether it’s jotting down life’s events, capturing fleeting inspirations, or recording favorite recipes, EverScrolls provides a unique and enjoyable way to organize thoughts and ideas. With a commitment to continuous technological innovation, my goal is to enhance user experience with more technologies in the future, making note-keeping with EverScrolls not just useful, but also entertaining and engaging.
 
 ## Preview
 
