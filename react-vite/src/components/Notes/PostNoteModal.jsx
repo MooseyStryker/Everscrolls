@@ -25,6 +25,7 @@ export default function PostNoteModal({ closeModal, notebooks }) {
 
         navigate(`/home/note/${res.id}`)
         window.location.reload();  // This keeps data from the previous note from appearing on the new note.
+        // closeModal()
     }
 
     return (

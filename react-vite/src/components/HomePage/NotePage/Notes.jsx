@@ -17,6 +17,7 @@ export default function NoteHomePage() {
     const sessionUser = useSelector((state) => state.session.user);
     const currentNote = useSelector((state) => state.notes[noteid]);
     const currentNoteBody = useSelector((state) => state.notebody)
+    console.log("🚀 ~ NoteHomePage ~ currentNoteBody:", currentNoteBody)
     const tasks = useSelector((state) => state.tasks)
     const tasksObj = Object.values(tasks)
 
@@ -26,10 +27,7 @@ export default function NoteHomePage() {
     const [dbUpload, setDbUpload] = useState(false)
 
     const [divs, setDivs] = useState([{ id: 1, text: 'Hi! Start Here!', ref: createRef() }]);
-
-    if (!divs){ // This will prevent an issue occuring where the user deletes all the divs and now doesn't have a place to start
-        setDivs({ id: 1, text: 'Hi! Start Here!', ref: createRef() })
-    }
+    console.log("🚀 ~ NoteHomePage ~ divs:", divs)
 
     const handleKeyPress = async(e, id) => {
         if (e.key === 'Enter') {
@@ -95,7 +93,7 @@ export default function NoteHomePage() {
         const res = await dispatch(thunkPutNote(edittedNote, noteid))
     }
 
-    const handleSaveNoteBody = async() => {
+    const handleSaveNoteBody = async() => { // uploads to database
         console.log("Uploading data to the database...");
         dispatch(thunkDeleteAllNoteBody(noteid)) // Deletes old data in the db to keep duplicates from occuring
 
@@ -106,7 +104,6 @@ export default function NoteHomePage() {
             }
 
             await dispatch(thunkPostNotebody(noteid, newNoteBody))
-            // setDivs(divs) // this Allows me to hit the save button and it wont cause the page to lose the new data until refresh.
         }
     }
 
@@ -132,10 +129,13 @@ export default function NoteHomePage() {
     useEffect(() => {
         // Try to retrieve the divTexts from local storage
         let divTexts = JSON.parse(localStorage.getItem(`Note ${noteid}'s Body `));
-
+        console.log("🚀 ~ LocalStorage check", divTexts)
 
         if (!divTexts) {  // If there's no data in local storage, use the data from the database
-            divTexts = Object.values(currentNoteBody).map(body => body.body);
+            
+            // divTexts = Object.values(currentNoteBody).map(body => body.body);
+            divTexts = Object.values(currentNoteBody).filter(body => body.note_id === noteid).map(body => body.body); // Sometimes it pull the wrong note_body info due to currentNoteBody not updating when a note has only the default setDiv with "Hi! Start Here!" this needs to be refactored
+            console.log("🚀 ~ useEffect ~ divTexts:", divTexts)
             const noteBodies = divTexts.map((text, index) => ({
                 id: index + 1,
                 text: text,
@@ -144,6 +144,7 @@ export default function NoteHomePage() {
 
             if (noteBodies.length > 0){
                 console.log('Pushing data to Divs...')
+                console.log("🚀 ~ useEffect ~ noteBodies:", noteBodies)
                 setDivs(noteBodies);
             }
             setPrevNoteBody(divTexts);
@@ -158,7 +159,7 @@ export default function NoteHomePage() {
                 ref: createRef()
             }));
 
-            if (noteBodies.length > 0) setDivs(noteBodies);                                      // this prevents any empty spaces from being downloaded from the db if there was no notebodies found
+            if (noteBodies.length > 0) setDivs(noteBodies);                                      // this prevents an empty database from deleting data in notes
             setPrevNoteBody(divTexts);                                                           // Update prevNoteBody to the divTexts
         } else {
                                                                                                  // keepiing this empty allows a new note to have one div to let users to start
