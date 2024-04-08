@@ -213,7 +213,7 @@ export default function LoginPage() {
                         <input className='input-indiv' style={{ border: errors.confirmPassword ? '1px solid red' : '1px solid black' }} type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                         <p className={`p-errors ${errors.confirmPassword ? 'visible' : ''}`}>{errors.confirmPassword}</p>
                     </label>
-                    <input className='input-indiv' type="submit" value="Signup" />
+                    <input className='input-indiv-submit' type="submit" value="Signup" />
                     <button onClick={() => switchLoginSignup()}>Existing User? Login
                     </button>
                 </form>
@@ -233,9 +233,9 @@ export default function LoginPage() {
                         <input className='input-indiv' style={{ border: errors.password ? '1px solid red' : '1px solid black' }} type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         <p className={`p-errors ${errors.password ? 'visible' : ''}`}>{errors.password}</p>
                     </label>
-                    <input type="submit" value="Login" />
+                    <input className='input-indiv-submit' type="submit" value="Login" />
                     <button onClick={() => switchLoginSignup()}>New User? Signup</button>
-                    <p style={{borderBottom:'1px solid grey'}}></p>
+                    <p style={{borderBottom:'1px solid grey', marginTop:"10px", marginBottom:'10px'}}></p>
                     <button onClick={() => handleDemoUser()}>Login as Demo User</button>
                 </form>
 
