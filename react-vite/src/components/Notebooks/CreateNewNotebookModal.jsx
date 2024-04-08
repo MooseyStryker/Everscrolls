@@ -47,6 +47,7 @@ export default function CreateNotebook({ closeModal, nameCheck }) {
                 <h2 className="cnnm-form-title">New Notebook</h2>
                 <label className="cnnm-form-label">
                     <input
+                        style={{marginBottom:"5px"}}
                         type="text"
                         value={notebookName}
                         onChange={(e) => setNootbookName(e.target.value)}
@@ -56,7 +57,7 @@ export default function CreateNotebook({ closeModal, nameCheck }) {
 
                 {/* Display errors */}
                 {Object.keys(errors).map((key, i) => (
-                    <p key={i} className="cnnm-form-error">
+                    <p key={i} style={{marginBottom:"25px"}} className="cnnm-form-error">
                         {errors[key]}
                     </p>
                 ))}
