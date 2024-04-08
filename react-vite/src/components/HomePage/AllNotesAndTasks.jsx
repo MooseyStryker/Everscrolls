@@ -45,7 +45,7 @@ export default function AllNotesAndTasks() {
                                 <h2>{sessionUser?.first_name} Mariner's Jorunal</h2>
                                 </div>
                             </div>
-                            <div>in the bottle!</div>
+                            {/* <div>in the bottle!</div> */}
                         </div>
 
                         <div className="note-cal-task">
