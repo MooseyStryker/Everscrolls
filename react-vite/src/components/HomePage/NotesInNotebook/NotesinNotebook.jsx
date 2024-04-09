@@ -8,6 +8,7 @@ import { thunkPostNote } from "../../../redux/notes";
 import { thunkDeleteAllNoteBody } from "../../../redux/notebody";
 import { useModal } from "../../../context/Modal";
 import DeleteNoteModal from "../../Notes/DeleteNoteModal";
+import './NoteInNoteBook.css'
 
 
 export default function AllNotesInNotebook({ notebook }) {
@@ -83,7 +84,7 @@ export default function AllNotesInNotebook({ notebook }) {
             ))}
             <div>
                 <div className="creatinganewnote" onClick={handleNewNote}>
-                    Create a New Note in notebook: {notebook?.notebook_name}
+                    Create a New Note in notebook: {notebook?.notebook_name.length > 15 ? `${notebook.notebook_name.substring(0,35)}...`: notebook.notebook_name}
                 </div>
                 </div>
         </div>

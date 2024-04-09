@@ -7,12 +7,10 @@ import './Notes.css'
 import { thunkDeleteAllNoteBody, thunkGetAllNotebody, thunkPostNotebody } from "../../../redux/notebody";
 import TaskBar from "../../Tasks/Task";
 import SingleNoteTask from "../../Tasks/SingleNoteTask";
-import NoteBodyDivs from "./NoteBodyDivs";
 
 
 
-export default function NoteHomePage() {
-    const { noteid } = useParams()
+export default function NoteBodyDivs({noteid}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const sessionUser = useSelector((state) => state.session.user);
@@ -28,7 +26,8 @@ export default function NoteHomePage() {
     const [dbUpload, setDbUpload] = useState(false)
 
     const [divs, setDivs] = useState([{ id: 1, text: 'Hi! Start Here!', ref: createRef() }]);
-    console.log("🚀 ~ NoteHomePage ~ divs:", divs)
+
+
 
     const handleKeyPress = async(e, id) => {
         if (e.key === 'Enter') {
@@ -71,28 +70,11 @@ export default function NoteHomePage() {
         setDivs(divs.map(div => div.id === id ? { ...div, text: e.target.value } : div));
     };
 
-
-    const handleTitleClick = () => {
-        setIsEditing(true);
-    };
-
-    const handleTitleChange = (e) => {
-        setTitle(e.target.value);
-    };
-
-    const handleBlur = () => {
-        setIsEditing(false);
-        handleEditNote(noteid)
-    };
-
-    const handleEditNote = async (noteid) => {
-
-        const edittedNote = {
-            title:title
-        }
-
-        const res = await dispatch(thunkPutNote(edittedNote, noteid))
+    const handleSaveToLocal = async() => {
+        const divTexts = divs.map(div => div.text)
+        localStorage.setItem(`Note ${noteid}'s Body `, JSON.stringify(divTexts))
     }
+
 
     const handleSaveNoteBody = async() => { // uploads to database
         console.log("Uploading data to the database...");
@@ -108,23 +90,6 @@ export default function NoteHomePage() {
         }
     }
 
-    const handleSaveToLocal = async() => {
-        const divTexts = divs.map(div => div.text)
-        localStorage.setItem(`Note ${noteid}'s Body `, JSON.stringify(divTexts))
-    }
-
-    useEffect(() => {
-        dispatch(thunkGetAllNotebody(noteid))
-        dispatch(thunkGetNote(noteid));
-        dispatch(thunkGetCurrentUser);
-
-    }, [dispatch, noteid]);
-
-    useEffect(() => {
-        if (currentNote && !title) { // This will pull data when coming in but wont keep refreshing title when dispatch new edit titl
-            setTitle(currentNote.note_title);
-        }
-    }, [currentNote]);
 
 
     useEffect(() => {
@@ -167,7 +132,6 @@ export default function NoteHomePage() {
         }
     }, [currentNoteBody, noteid]); // Run the effect when either currentNoteBody or noteid changes
 
-
     useEffect(() => {
         const localStorageTest = JSON.parse(localStorage.getItem(`Note ${noteid}'s Body `));
         if(localStorageTest){
@@ -198,86 +162,21 @@ export default function NoteHomePage() {
     }, [divs]);
 
 
-
-    return (
-        <div className="note-notes-container">
-            <div className="home-notes">
-                <div className="top-bar-in-notes">
-                    <div className="directory"></div>
-                    {/* <div className="share">
-                        <button>Share</button>
-                        <div className="directory">s</div>
-                    </div> */}
-                </div>
-                <div className="main-notes-page">
-
-                    {/* <div className="edit-bar-notes">
-                        <div>
-                            Editing note bar
-                        </div>
-                    </div> */}
-
-                    {/* <button onClick={handleSaveNoteBody}>Save Note to DB</button> */}
-                    <div className="notesinfocontainer">
-                        <div className="notesinfo">
-                            <div className="titleinfo-needsmargin">
-                                { isEditing ? (
-                                    <input
-                                        className="titleinputedit"
-                                        type="text"
-                                        value={title}
-                                        onChange={handleTitleChange}
-                                        onBlur={handleBlur}
-                                        onKeyDown={(event) => {
-                                            if (event.key === 'Enter') {
-                                                handleBlur();
-                                            }
-                                        }}
-                                        autoFocus
-                                    />
-                                ) : (
-                                    <h1 style={{color:'grey'}} onClick={handleTitleClick}>
-                                        {!title || title === "Untitled" ? "Enter a title" : title}
-                                    </h1>
-
-                                )}
-
-                            </div>
-                            <div className="notebody-container">
-                                {/* {divs.map(div => (
-                                    <div key={div.id}>
-                                        <textarea
-                                            className="noteinput"
-                                            value={div.text}
-                                            onChange={(e) => handleTextChange(e, div.id)}
-                                            onKeyDown={(e) => handleKeyPress(e, div.id)}
-                                            ref={div.ref}
-                                        />
-                                    </div>
-                                ))} */}
-
-                                <NoteBodyDivs divs={divs} noteid={noteid} />
-                            </div>
-                            <div className="taskandattachmentscontainer">
-                                <div className="task-store-container">
-
-                                    <div>
-                                        <SingleNoteTask noteId={noteid} noteTitle={title} />
-                                    </div>
-                                </div>
-
-                                {/* <div className="attachment-store-container">
-                                    <h2 className="task-store">Attachments</h2>
-                                </div> */}
-
-                            </div>
-
-                        </div>
+    return(
+        <>
+            <div>
+                {divs.map(div => (
+                    <div key={div.id}>
+                        <textarea
+                            className="noteinput"
+                            value={div.text}
+                            onChange={(e) => handleTextChange(e, div.id)}
+                            onKeyDown={(e) => handleKeyPress(e, div.id)}
+                            ref={div.ref}
+                        />
                     </div>
-                </div>
-
+                ))}
             </div>
-
-        </div>
-    );
+        </>
+    )
 }
