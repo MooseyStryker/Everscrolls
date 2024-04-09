@@ -1,12 +1,16 @@
 import { useDispatch } from "react-redux"
 import { thunkDeleteNotebook } from "../../redux/notebook"
+import { useNavigate } from "react-router-dom";
+
 import './DeleteNotebookModal.css'
 
 export default function DeleteNotebook({notebookId, closeModal}){
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const handleDelete = () => {
         dispatch(thunkDeleteNotebook(notebookId))
+        navigate('/home')
         closeModal() // Close the modal after deleting the task
     }
     return (

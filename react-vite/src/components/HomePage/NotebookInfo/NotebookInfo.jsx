@@ -15,10 +15,13 @@ export default function IndividualNotebookInfo() {
     const navigate = useNavigate();
     const sessionUser = useSelector((state) => state.session.user);
     const singleNotebook = useSelector((state) => state.notebook[notebookId]);
+    console.log("🚀 ~ IndividualNotebookInfo ~ singleNotebook:", singleNotebook)
+
 
 
     useEffect(() => {
         dispatch(thunkGetCurrentUser)
+        if (!singleNotebook) navigate('/home')
     }, [dispatch])
 
     return (
@@ -46,7 +49,9 @@ export default function IndividualNotebookInfo() {
 
                                 <div className="notesinhome">
                                     <div className="note-individual">
+                                        {singleNotebook &&
                                         <AllNotesInNotebook notebook={singleNotebook} />
+                                        }
                                     </div>
                                 </div>
                             </div>
