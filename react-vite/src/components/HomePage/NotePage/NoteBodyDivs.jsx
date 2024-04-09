@@ -1,31 +1,20 @@
 import { useEffect, useState, createRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { thunkGetCurrentUser } from "../../../redux/session";
-import { thunkGetNote, thunkPutNote } from "../../../redux/notes";
+import { Outlet, useNavigate} from "react-router-dom";
 import './Notes.css'
-import { thunkDeleteAllNoteBody, thunkGetAllNotebody, thunkPostNotebody } from "../../../redux/notebody";
-import TaskBar from "../../Tasks/Task";
-import SingleNoteTask from "../../Tasks/SingleNoteTask";
+import { thunkDeleteAllNoteBody, thunkPostNotebody } from "../../../redux/notebody";
+
 
 
 
 export default function NoteBodyDivs({noteid}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const sessionUser = useSelector((state) => state.session.user);
-    const currentNote = useSelector((state) => state.notes[noteid]);
     const currentNoteBody = useSelector((state) => state.notebody)
-
-    const tasks = useSelector((state) => state.tasks)
-    const tasksObj = Object.values(tasks)
-
     const [prevNoteBody, setPrevNoteBody] = useState({});
-    const [title, setTitle] = useState()
-    const [isEditing, setIsEditing] = useState(false);
     const [dbUpload, setDbUpload] = useState(false)
-
     const [divs, setDivs] = useState([{ id: 1, text: 'Hi! Start Here!', ref: createRef() }]);
+
 
 
 
@@ -95,13 +84,14 @@ export default function NoteBodyDivs({noteid}) {
     useEffect(() => {
         // Try to retrieve the divTexts from local storage
         let divTexts = JSON.parse(localStorage.getItem(`Note ${noteid}'s Body `));
-        console.log("🚀 ~ LocalStorage check", divTexts)
 
-        if (!divTexts) {  // If there's no data in local storage, use the data from the database
 
-            // divTexts = Object.values(currentNoteBody).map(body => body.body);
-            divTexts = Object.values(currentNoteBody).filter(body => body.note_id === noteid).map(body => body.body); // Sometimes it pull the wrong note_body info due to currentNoteBody not updating when a note has only the default setDiv with "Hi! Start Here!" this needs to be refactored
+        if (!divTexts) {                                        // If there's no data in local storage, use the data from the database
+            divTexts = Object.values(currentNoteBody)
+            .filter(body => body.note_id == noteid)             // This is needed to make sure only the notebody that is in the noteId s printed when theres no local storage. Otherwise it will add other notes data in it.
+            .map(body => body.body);                            // Sometimes it pull the wrong note_body info due to currentNoteBody not updating when a note has only the default setDiv with "Hi! Start Here!" this needs to be refactored
             console.log("🚀 ~ useEffect ~ divTexts:", divTexts)
+
             const noteBodies = divTexts.map((text, index) => ({
                 id: index + 1,
                 text: text,
@@ -109,8 +99,6 @@ export default function NoteBodyDivs({noteid}) {
             }));
 
             if (noteBodies.length > 0){
-                console.log('Pushing data to Divs...')
-                console.log("🚀 ~ useEffect ~ noteBodies:", noteBodies)
                 setDivs(noteBodies);
             }
             setPrevNoteBody(divTexts);
@@ -125,17 +113,27 @@ export default function NoteBodyDivs({noteid}) {
                 ref: createRef()
             }));
 
-            if (noteBodies.length > 0) setDivs(noteBodies);                                      // this prevents an empty database from deleting data in notes
-            setPrevNoteBody(divTexts);                                                           // Update prevNoteBody to the divTexts
+            if (noteBodies.length > 0) setDivs(noteBodies); // this prevents an empty database from deleting data in notes
+            setPrevNoteBody(divTexts);                      // Update prevNoteBody to the divTexts
         } else {
-                                                                                                 // keepiing this empty allows a new note to have one div to let users to start
+            // keepiing this empty allows a new note to have one div to let users to start
         }
-    }, [currentNoteBody, noteid]); // Run the effect when either currentNoteBody or noteid changes
+    }, [currentNoteBody, noteid]);
 
     useEffect(() => {
         const localStorageTest = JSON.parse(localStorage.getItem(`Note ${noteid}'s Body `));
+        // if(localStorageTest){
+        //     const timeoutId = setTimeout(handleSaveNoteBody, 500); // Save every 5 seconds
+
+        //     return () => {
+        //         clearTimeout(timeoutId);
+        //     };
+        // }
         if(localStorageTest){
-            const timeoutId = setTimeout(handleSaveNoteBody, 2000); // Save every 5 seconds
+            const timeoutId = setTimeout(() => {
+                handleSaveToLocal();
+                handleSaveNoteBody();
+            }, 500); // Save every 5 seconds
 
             return () => {
                 clearTimeout(timeoutId);
