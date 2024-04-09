@@ -56,43 +56,41 @@ export default function AllNotes() {
     if (loading) {
         return <div>Loading...</div>;
     }
-    
+
     return (
         <div className="homenotescontainer">
             {notesObj?.map((note) => (
                 <div className="singlenotecontainer" onClick={() => handleNavigate(note.id)}>
 
-                    <div onClick={(e) => handleDeleteNoteModal(e,note.id)} style={{ cursor: 'pointer' }}>
+                    <div className="deletenoteandhidetillhover" onClick={(e) => handleDeleteNoteModal(e,note.id)} style={{ cursor: 'pointer' }}>
                         <FaTimes />
                     </div>
+                        <div className="singlenote" key={note.id}>
+                            <h2 style={{marginBottom:'15px'}}>{note.note_title && note.note_title.length > 20 ? `${note.note_title.substring(0, 14)}...` : note.note_title}</h2>
 
-                    <div className="singlenote" key={note.id}>
-                        <h2 style={{marginBottom:'15px'}}>{note.note_title && note.note_title.length > 20 ? `${note.note_title.substring(0, 14)}...` : note.note_title}</h2>
-
-                        {/* <div>
-                            First two bodies:
-                            {note.bodies && note.bodies.slice(0, 2).map((body, index) => (
-                                <p key={index}>{body.body}</p>
-                            ))}
-                        </div> */}
-                        <div>
-                            {note.bodies && note.bodies.slice(0, 4).map((body, index) => (
-                                <p key={index}>
-                                    • {body.body.length > 20 ? `${body.body.substring(0, 18)}...` : body.body}    {/* This keeps super long strings from bleeding over the div  */}
-                                </p>
-                            ))}
-                        </div>
-                        <div className="tasksneedsmargin">
-                            <h3 className="thistoo">
-                                Tasks:
-                            </h3>
-                            {note.tasks && note.tasks.slice(0,4).map((task, index) =>(
-                                <p key={index}>{task.body}</p>
-                            ))}
+                            {/* <div>
+                                First two bodies:
+                                {note.bodies && note.bodies.slice(0, 2).map((body, index) => (
+                                    <p key={index}>{body.body}</p>
+                                ))}
+                            </div> */}
+                            <div>
+                                {note.bodies && note.bodies.slice(0, 4).map((body, index) => (
+                                    <p key={index}>
+                                        • {body.body.length > 20 ? `${body.body.substring(0, 18)}...` : body.body}    {/* This keeps super long strings from bleeding over the div  */}
+                                    </p>
+                                ))}
+                            </div>
+                            <div className="tasksneedsmargin">
+                                <h3 className="thistoo">
+                                    Tasks:
+                                </h3>
+                                {note.tasks && note.tasks.slice(0,4).map((task, index) =>(
+                                    <p key={index}>{task.body}</p>
+                                ))}
+                            </div>
                         </div>
                     </div>
-
-                </div>
             ))}
             <div>
                 <div className="creatinganewnote" onClick={handleNewNote}>

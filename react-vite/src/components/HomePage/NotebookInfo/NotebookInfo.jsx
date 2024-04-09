@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
-// import './AllNotesAndTasks.css'
+import './NotebookInfo.css'
 import shipView from '../../../../../images/website_images/bow.png'
 import { thunkGetCurrentUser } from "../../../redux/session";
 import { thunkPostNote } from "../../../redux/notes";

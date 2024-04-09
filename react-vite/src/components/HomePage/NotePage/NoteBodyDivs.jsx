@@ -9,7 +9,6 @@ import { thunkDeleteAllNoteBody, thunkPostNotebody } from "../../../redux/notebo
 
 export default function NoteBodyDivs({noteid}) {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const currentNoteBody = useSelector((state) => state.notebody)
     const [prevNoteBody, setPrevNoteBody] = useState({});
     const [dbUpload, setDbUpload] = useState(false)
@@ -19,12 +18,9 @@ export default function NoteBodyDivs({noteid}) {
 
 
     const handleKeyPress = async(e, id) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();                                                         // prevents us from going to the new line
-
-            handleSaveToLocal();                                                 // await allows the save to finish before creating a new line
-
-
+        if (e.key === 'Enter') {                                                    // Hitting return will make a new div and put a useRef to the next div
+            e.preventDefault();                                                     // prevents us from going to the new line
+            handleSaveToLocal();                                                    // await allows the save to finish before creating a new line
             const newDiv = { id: divs.length + 1, text: '', ref: createRef() };         // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data
             const index = divs.findIndex(div => div.id === id);
             setDivs([...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)]);
@@ -32,22 +28,19 @@ export default function NoteBodyDivs({noteid}) {
         }
         if (e.key === 'Backspace') {
             const index = divs.findIndex(div => div.id === id);
-            if (divs[index].text === '' && divs.length > 1) { // Check if divs length is greater than 1 which prevents user from deleting all the divs
-                e.preventDefault(); // prevents the default delete action
-
-                handleSaveToLocal(); // await allows the delete to be saved
-
+            if (divs[index].text === '' && divs.length > 1) {                           // Check if divs length is greater than 1 which prevents user from deleting all the divs
+                e.preventDefault();                                                     // prevents the default delete action
+                handleSaveToLocal();                                                    // await allows the delete to be saved
                 const newDivs = [...divs];
                 newDivs.splice(index, 1);
                 setDivs(newDivs);
                 if (newDivs[index]) {
-                    setTimeout(() => newDivs[index].ref.current.focus(), 0); // focus the next input element
+                    setTimeout(() => newDivs[index].ref.current.focus(), 0);            // focus the next input element
                 } else if (newDivs[index - 1]) {
-                    setTimeout(() => newDivs[index - 1].ref.current.focus(), 0); // focus the previous input element
+                    setTimeout(() => newDivs[index - 1].ref.current.focus(), 0);         // focus the previous input element
                 }
             }
         }
-
         if(e.key){
             handleSaveToLocal()
         }
@@ -59,13 +52,14 @@ export default function NoteBodyDivs({noteid}) {
         setDivs(divs.map(div => div.id === id ? { ...div, text: e.target.value } : div));
     };
 
-    const handleSaveToLocal = async() => {
+
+    const handleSaveToLocal = async() => {          // Saves to local storage for intuitive and fast design
         const divTexts = divs.map(div => div.text)
         localStorage.setItem(`Note ${noteid}'s Body `, JSON.stringify(divTexts))
     }
 
 
-    const handleSaveNoteBody = async() => { // uploads to database
+    const uploadToDatabase = async() => {        // Uploads data to DB
         console.log("Uploading data to the database...");
         dispatch(thunkDeleteAllNoteBody(noteid)) // Deletes old data in the db to keep duplicates from occuring
 
@@ -106,7 +100,7 @@ export default function NoteBodyDivs({noteid}) {
             setDbUpload(true)
 
 
-        } else if (divTexts && JSON.stringify(prevNoteBody) !== JSON.stringify(divTexts)) {
+        } else if (divTexts && JSON.stringify(prevNoteBody) !== JSON.stringify(divTexts)) { // If local storage exists, then use that instead.
             const noteBodies = divTexts.map((text, index) => ({
                 id: index + 1,
                 text: text,
@@ -122,17 +116,11 @@ export default function NoteBodyDivs({noteid}) {
 
     useEffect(() => {
         const localStorageTest = JSON.parse(localStorage.getItem(`Note ${noteid}'s Body `));
-        // if(localStorageTest){
-        //     const timeoutId = setTimeout(handleSaveNoteBody, 500); // Save every 5 seconds
 
-        //     return () => {
-        //         clearTimeout(timeoutId);
-        //     };
-        // }
-        if(localStorageTest){
+        if(localStorageTest){   // every .5 seconds, upload to local and database to keep data relevent
             const timeoutId = setTimeout(() => {
                 handleSaveToLocal();
-                handleSaveNoteBody();
+                uploadToDatabase();
             }, 500); // Save every 5 seconds
 
             return () => {

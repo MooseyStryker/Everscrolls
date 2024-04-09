@@ -108,7 +108,8 @@
 
 
 .secondcontainer {
-    position: relative;
+    /* position: relative; */
+    margin-left:10px ;
     left: .4%;
     padding: 15px;
     background-color: lightblue;
@@ -141,6 +142,7 @@
     padding-left: 10px;
     transition: all 0.1s ease-in-out;
     cursor: pointer;
+    margin-bottom: 10px;
 }
 
 .backoffsecond:hover {

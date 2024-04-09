@@ -70,20 +70,8 @@ export default function NoteHomePage() {
             <div className="home-notes">
                 <div className="top-bar-in-notes">
                     <div className="directory"></div>
-                    {/* <div className="share">
-                        <button>Share</button>
-                        <div className="directory">s</div>
-                    </div> */}
                 </div>
                 <div className="main-notes-page">
-
-                    {/* <div className="edit-bar-notes">
-                        <div>
-                            Editing note bar
-                        </div>
-                    </div> */}
-
-                    {/* <button onClick={handleSaveNoteBody}>Save Note to DB</button> */}
                     <div className="notesinfocontainer">
                         <div className="notesinfo">
                             <div className="titleinfo-needsmargin">
@@ -110,18 +98,6 @@ export default function NoteHomePage() {
 
                             </div>
                             <div className="notebody-container">
-                                {/* {divs.map(div => (
-                                    <div key={div.id}>
-                                        <textarea
-                                            className="noteinput"
-                                            value={div.text}
-                                            onChange={(e) => handleTextChange(e, div.id)}
-                                            onKeyDown={(e) => handleKeyPress(e, div.id)}
-                                            ref={div.ref}
-                                        />
-                                    </div>
-                                ))} */}
-
                                 <NoteBodyDivs noteid={noteid} />
                             </div>
                             <div className="taskandattachmentscontainer">
