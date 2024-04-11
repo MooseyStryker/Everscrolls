@@ -2,9 +2,16 @@
     /* border: 1px solid green; */
     display: flex;
     flex-direction: row;
-    background-color: #F5F4F8 ;
+    background: linear-gradient(135deg, #778899, #708090, #D2B48C, #F5F4F8  );
+    background-size: 200% 200%;
+    animation: Gradient 60s ease infinite;
     height: 100vh;
 
+}
+@keyframes Gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .main-container-allhands {

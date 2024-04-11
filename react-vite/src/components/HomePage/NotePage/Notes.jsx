@@ -1,10 +1,10 @@
 import { useEffect, useState, createRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { thunkGetCurrentUser } from "../../../redux/session";
 import { thunkGetNote, thunkPutNote } from "../../../redux/notes";
 import './Notes.css'
-import { thunkDeleteAllNoteBody, thunkGetAllNotebody, thunkPostNotebody } from "../../../redux/notebody";
+import { thunkGetAllNotebody } from "../../../redux/notebody";
 import TaskBar from "../../Tasks/Task";
 import SingleNoteTask from "../../Tasks/SingleNoteTask";
 import NoteBodyDivs from "./NoteBodyDivs";
