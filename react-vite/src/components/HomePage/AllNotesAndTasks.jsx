@@ -13,6 +13,8 @@ export default function AllNotesAndTasks() {
     const navigate = useNavigate();
     const sessionUser = useSelector((state) => state.session.user);
     const allNotebooks = useSelector((state) => state.notebook);
+    
+    console.log("🚀 ~ AllNotesAndTasks ~ allNotebooks:", allNotebooks)
 
     const [loading, setLoading] = useState(true);
 
@@ -58,7 +60,7 @@ export default function AllNotesAndTasks() {
                                 </div>
                             </div>
                             <div className="scratchpad-cal">
-                                <div className="scratchinhome"><ScratchPad /></div>
+                                <div className="scratchinhome"><ScratchPad notebook={allNotebooks} /></div>
                                 {/* <div className="bonus-calendar">calendar Container</div> */}
                             </div>
                         </div>

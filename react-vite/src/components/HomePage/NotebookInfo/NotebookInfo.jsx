@@ -5,9 +5,10 @@ import './NotebookInfo.css'
 import shipView from '../../../../../images/website_images/bow.png'
 import { thunkGetCurrentUser } from "../../../redux/session";
 import { thunkPostNote } from "../../../redux/notes";
-import ScratchPad from "../../Scratch/ScratchPad";
 import { useParams } from "react-router-dom";
-import AllNotesInNotebook from "../NotesInNoteBook/NotesinNotebook";
+import AllNotesInNotebook from "../NotesInNotebook/NotesinNotebook";
+import ScratchPadSingleNotebook from "./ScratchPadInSingleNotebook";
+
 
 export default function IndividualNotebookInfo() {
     const {notebookId} = useParams()
@@ -56,7 +57,7 @@ export default function IndividualNotebookInfo() {
                                 </div>
                             </div>
                             <div className="scratchpad-cal">
-                                <div className="scratchinhome"><ScratchPad notebook={singleNotebook} /></div>
+                                <div className="scratchinhome"><ScratchPadSingleNotebook notebook={singleNotebook} /></div>
                             </div>
                         </div>
 

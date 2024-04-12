@@ -1,20 +1,22 @@
 import React, { useEffect, useRef } from 'react';
-import './ScratchPad.css'
-import ScratchToNotesPost from './ScratchtoNotes';
-import { useModal } from '../../context/Modal';
+import './ScratchPadInSingleNotebook.css'
+import ScratchToNotesPost from '../../Scratch/ScratchtoNotes';
+import { useModal } from '../../../context/Modal';
+import ScratchToNotesPostIndivNotebook from './ScratchPadToNotes_IndivNotebook';
+import './ScratchPadInSingleNotebook.css'
 
-function ScratchPad({ notebook }) {
+export default function ScratchPadSingleNotebook({ notebook }) {
     const divRef = useRef();
     const { closeModal } = useModal()
     const { setModalContent } = useModal()
 
     const addingScratchToNotes = () => {
-        setModalContent(<ScratchToNotesPost closeModal={closeModal}/>)
+        setModalContent(<ScratchToNotesPostIndivNotebook closeModal={closeModal} notebook={notebook}/>)
     }
 
     // Load saved content from local storage when component mounts
     useEffect(() => {
-        const savedContent = localStorage.getItem(`Scratch Pad General`);
+        const savedContent = localStorage.getItem(`Scratch Pad in Notebook ${notebook?.id}`);
         if (savedContent) {
             divRef.current.innerText = savedContent;
         } else {
@@ -27,7 +29,7 @@ function ScratchPad({ notebook }) {
         if (divRef.current.innerText === 'Click here to start writing...') {
             divRef.current.innerText = '';
         }
-        localStorage.setItem(`Scratch Pad General`, divRef.current.innerText);
+        localStorage.setItem(`Scratch Pad in Notebook ${notebook?.id}`, divRef.current.innerText);
     };
 
     const handleFocus = () => {
@@ -52,9 +54,7 @@ function ScratchPad({ notebook }) {
                 onBlur={handleBlur}
                 ref={divRef}
             />
-            <button onClick={() => addingScratchToNotes}>Add to notes</button>
+            <button className='scratchtonotebuttonstyles' onClick={() => addingScratchToNotes()}>Add to notes</button>
         </>
     );
 }
-
-export default ScratchPad;
