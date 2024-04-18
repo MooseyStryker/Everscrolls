@@ -34,6 +34,7 @@
 
 .singlenotecontainer:hover {
     transform: scaleX(1.05) scaleY(1.05); /* Increase width and height by 5% on hover */
+    background-color: rgb(221, 221, 221);
 }
 
 
