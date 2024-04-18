@@ -3,13 +3,13 @@ import './ScratchPad.css'
 import ScratchToNotesPost from './ScratchtoNotes';
 import { useModal } from '../../context/Modal';
 
-function ScratchPad({ notebook }) {
+function ScratchPad({ notebooks }) {
     const divRef = useRef();
     const { closeModal } = useModal()
     const { setModalContent } = useModal()
 
     const addingScratchToNotes = () => {
-        setModalContent(<ScratchToNotesPost closeModal={closeModal}/>)
+        setModalContent(<ScratchToNotesPost closeModal={closeModal} notebooks={notebooks}/>)
     }
 
     // Load saved content from local storage when component mounts
@@ -52,7 +52,7 @@ function ScratchPad({ notebook }) {
                 onBlur={handleBlur}
                 ref={divRef}
             />
-            <button onClick={() => addingScratchToNotes}>Add to notes</button>
+            <button className='scratchtonotebuttonstyles' onClick={() => addingScratchToNotes()}>Add to notes</button>
         </>
     );
 }

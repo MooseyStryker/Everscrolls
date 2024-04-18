@@ -2,13 +2,12 @@ import { useState } from "react";
 import { thunkPostNote } from "../../redux/notes";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { thunkPostNotebody } from "../../redux/notebody";
 
-export default function ScratchToNotesPost({ notebooks }) {
-    console.log("🚀 ~ ScratchToNotesPost ~ notebooks:", notebooks)
+export default function ScratchToNotesPost({ closeModal, notebooks }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [selectedNotebookId, setSelectedNotebookId] = useState(notebooks[0]?.id);
-    console.log("🚀 ~ PostNoteModal ~ selectedNotebookId:", selectedNotebookId)
     const [title, setTitle] = useState('');  // New state for the note title
 
     const handleNewNote = async () => {
@@ -17,15 +16,35 @@ export default function ScratchToNotesPost({ notebooks }) {
             title: title || "Untitled"  // Use the title from state, or "Untitled" if it's empty
         }
 
-        const res = await dispatch(thunkPostNote(newNote))
+        const resNewNote = await dispatch(thunkPostNote(newNote))
 
-        if (res && res.errors) {
-            return setErrors(res.errors)
+        if (resNewNote && resNewNote.errors) {
+            return setErrors(resNewNote.errors)
         }
 
-        navigate(`/home/note/${res.id}`)
+
+        const bodyFromLocal = localStorage.getItem(`Scratch Pad General`);
+
+        const newBody = {
+            note_id: resNewNote.id,
+            body: bodyFromLocal
+        }
+
+
+        const resBody = await dispatch(thunkPostNotebody(resNewNote.id, newBody))
+        console.log("🚀 ~ handleNewNote ~ resBody:", resBody)
+
+        if (resBody && resBody.errors) {
+            return setErrors(resBody.errors)
+        }
+
+
+        localStorage.removeItem(`Scratch Pad General`);
+
+
+        navigate(`/home/note/${resNewNote.id}`)
         window.location.reload();  // This keeps data from the previous note from appearing on the new note.
-        // closeModal()
+
     }
 
     return (
@@ -42,7 +61,7 @@ export default function ScratchToNotesPost({ notebooks }) {
                     />
                     <h5 style={{marginBottom:'5px', marginLeft:'2px'}}>Which Notebook will this note go in?</h5>
                     <select onChange={(e) => setSelectedNotebookId(e.target.value)}>
-                        {notebooks.map(notebook => (
+                        {notebooks?.map(notebook => (
                             <option key={notebook.id} value={notebook.id}>
                                 {notebook.notebook_name}
                             </option>
