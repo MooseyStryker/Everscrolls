@@ -10,8 +10,8 @@
     overflow-x: scroll;
     overflow-y: hidden;
     width: 98%;
-
 }
+
 
 .singlenotecontainer{
     display: flex;
@@ -25,11 +25,11 @@
     padding: 20px;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Add subtle box shadow */
     transition: transform 0.3s ease; /* Add transition effect */
-    cursor: pointer;
     word-wrap: break-word;
     margin-top: 10px;
     margin-bottom: 10px;
     margin-left: 10px;
+    cursor: pointer;
 }
 
 .singlenotecontainer:hover {

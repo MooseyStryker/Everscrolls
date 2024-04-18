@@ -21,6 +21,7 @@
     color: white;
     background-color: #000000;
     transition: background-color 0.3s ease;
+    cursor: pointer;
 }
 
 .scratchtonotebuttonstyles:hover {
