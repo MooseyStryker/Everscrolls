@@ -660,10 +660,10 @@ def edit_shared_note(note_id, user_id):
 
 
 
-@note_routes.route("shared/<int:note_id>/user/<int:user_id>", methods=["DELETE"])
+@note_routes.route("shared/<int:note_id>/", methods=["DELETE"])
 @login_required
-def yeete_shared_note(note_id, user_id):
-    stmt = select(many_notes_many_users).where(and_(many_notes_many_users.c.user_id == user_id, many_notes_many_users.c.note_id == note_id))
+def yeete_shared_note(note_id):
+    stmt = select(many_notes_many_users).where(many_notes_many_users.c.note_id == note_id)
     no_more_share = db.session.execute(stmt).scalar_one()
 
     if no_more_share is None:

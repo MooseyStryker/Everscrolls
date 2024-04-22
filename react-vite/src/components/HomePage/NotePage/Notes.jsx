@@ -8,6 +8,8 @@ import { thunkGetAllNotebody } from "../../../redux/notebody";
 import TaskBar from "../../Tasks/Task";
 import SingleNoteTask from "../../Tasks/SingleNoteTask";
 import NoteBodyDivs from "./NoteBodyDivs";
+import { useModal } from "../../../context/Modal";
+import ShareNoteModal from "../../Notes/ShareNoteModal";
 
 
 
@@ -17,6 +19,7 @@ export default function NoteHomePage() {
     const navigate = useNavigate();
     const sessionUser = useSelector((state) => state.session.user);
     const currentNote = useSelector((state) => state.notes[noteid]);
+    const { closeModal, setModalContent } = useModal()
 
 
     const tasks = useSelector((state) => state.tasks)
@@ -26,7 +29,9 @@ export default function NoteHomePage() {
     const [isEditing, setIsEditing] = useState(false);
 
 
-
+    const handleShareNote = () => {
+        setModalContent(<ShareNoteModal noteId={noteid} closeModal={closeModal}/>)
+    }
 
     const handleTitleClick = () => {
         setIsEditing(true);
@@ -72,6 +77,9 @@ export default function NoteHomePage() {
                     <div className="directory"></div>
                 </div>
                 <div className="main-notes-page">
+
+                    <button onClick={() => handleShareNote()}> Share Note </button>
+
                     <div className="notesinfocontainer">
                         <div className="notesinfo">
                             <div className="titleinfo-needsmargin">

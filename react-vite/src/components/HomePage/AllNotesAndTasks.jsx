@@ -59,6 +59,10 @@ export default function AllNotesAndTasks() {
                                         <AllNotes />
                                     </div>
                                 </div>
+
+                                <div className="shared-notes-container">
+                                    {/* shared notes */}
+                                </div>
                             </div>
                             <div className="scratchpad-cal">
                                 <div className="scratchinhome"><ScratchPad notebooks={allNotebooksObj} /></div>
