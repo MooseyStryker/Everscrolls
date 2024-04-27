@@ -2,13 +2,14 @@ import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { thunkGetSharedUser } from "../../redux/finduser"
 import { thunkPostSharedNote } from "../../redux/sharenote"
+import { thunkGetAllSharedNotes } from "../../redux/sharenote"
 
 export default function ShareNoteModal({noteId, closeModal}){
     const currentUser = useSelector(state => state.session.user)
     const [errors, setErrors] = useState('')
     console.log("🚀 ~ ShareNoteModal ~ errors:", errors)
     const [shareWithUser, setShareWithUser] = useState('')
-    const[showUsername, setShowUsername] = useState(false)
+    const [showUsername, setShowUsername] = useState(false)
     const [email, setEmail] = useState()
     const dispatch = useDispatch()
 
@@ -29,25 +30,35 @@ export default function ShareNoteModal({noteId, closeModal}){
     }
 
     const sendShareNote = async() => {
-        const firstStep = {
-            user_id: parseInt(currentUser.id),
-            note_id: parseInt(noteId),
-            opened: true,
-            permissions: "View and Edit"
-        }
 
-        const sentData = await dispatch(thunkPostSharedNote(firstStep))
-        console.log("🚀 ~ sendShareNote ~ sentData:", sentData)
+        /*
+            This checks if the note was shared, if it was it will return as an error.
+        */
+        const checkSentNote = await dispatch(thunkGetAllSharedNotes(noteId))
+        const wasThisNoteSent = checkSentNote.filter(note => note.user_id === shareWithUser.id);
+        if (wasThisNoteSent) return setErrors(`This note was shared shared with ${shareWithUser.username} already`)
 
 
-        const secondStep = {
+        /*This sends the OG creator of the note to the join table, I commented this out just incase I want to use it */
+        // const firstStep = {
+        //     user_id: parseInt(currentUser.id),
+        //     note_id: parseInt(noteId),
+        //     opened: true,
+        //     permissions: "View and Edit"
+        // }
+
+        // const sentData = await dispatch(thunkPostSharedNote(firstStep))
+        // console.log("🚀 ~ sendShareNote ~ sentData:", sentData)
+
+
+        const sharedNoteToNewUser = {
             user_id: parseInt(shareWithUser.id),
             note_id: parseInt(noteId),
             opened:false,
             permissions: "View and Edit"
         }
 
-        const sentData2 = await dispatch(thunkPostSharedNote(secondStep))
+        const sentData2 = await dispatch(thunkPostSharedNote(sharedNoteToNewUser))
         console.log("🚀 ~ sendShareNote ~ sentData2:", sentData2)
 
 

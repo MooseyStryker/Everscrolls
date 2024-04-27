@@ -9,17 +9,6 @@ from sqlalchemy.orm import relationship
 role_enum = Enum('Captain', 'First Mate', 'Crew', 'Bucket swabbler', name='role_types')
 permission_enum = Enum('View Only', 'View and Edit', name='permission_types')
 
-# many_notes_many_users = db.Table(
-#     "users_notes",
-#     db.Column("user_id", db.ForeignKey('users.id'), primary_key=True),
-#     db.Column("note_id", db.ForeignKey('notes.id'), primary_key=True),
-#     db.Column('opened', db.Boolean, default=False),
-#     db.Column('permissions', permission_enum, nullable=False)
-# )
-# if environment == "production":
-#     many_notes_many_users.schema = SCHEMA
-
-
 
 class UserNote(db.Model):
     __tablename__ = 'users_to_notes'

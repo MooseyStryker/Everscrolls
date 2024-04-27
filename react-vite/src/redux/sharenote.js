@@ -23,15 +23,17 @@ const deleteSharedNote = (noteId) => ({
     noteId
 })
 
-export const thunkGetAllSharedNotes = () => async(dispatch) => {
-    const res = await fetch("/api/notes/shared");
+export const thunkGetAllSharedNotes = (noteId) => async(dispatch) => {
+    const res = await fetch(`/api/notes/shared/${noteId}`);
 
     const data = await res.json();
+    console.log("🚀 ~ thunkGetAllSharedNotes ~ data:", data)
 
     if (data.errors){
         return data.errors
     } else {
         dispatch(getAllSharedNotes(data))
+        return data
     }
 }
 
