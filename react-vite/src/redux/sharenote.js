@@ -24,7 +24,7 @@ const deleteSharedNote = (noteId) => ({
 })
 
 export const thunkGetAllSharedNotes = () => async(dispatch) => {
-    const res = await fetch("api/shared");
+    const res = await fetch("/api/notes/shared");
 
     const data = await res.json();
 
@@ -35,10 +35,11 @@ export const thunkGetAllSharedNotes = () => async(dispatch) => {
     }
 }
 
-export const thunkPostSharedNote = (noteId, userId, sharedNote) => async(dispatch) => {
-    const res = await fetch(`api/shared/${noteId}/user/${userId}`, {
+export const thunkPostSharedNote = (sharedNote) => async(dispatch) => {
+    console.log("🚀 ~ thunkPostSharedNote ~ sharedNote:", sharedNote)
+    const res = await fetch(`/api/notes/shared`, {
         method:"POST",
-        headers: { "Content_type": "application/json" },
+        headers: { "Content-type": "application/json" },
         body: JSON.stringify(sharedNote)
     })
 
@@ -52,9 +53,9 @@ export const thunkPostSharedNote = (noteId, userId, sharedNote) => async(dispatc
 }
 
 export const thunkPutSharedNote = (noteId, userId, sharedNote) => async(dispatch) => {
-    const res = await fetch(`api/shared/${noteId}/user/${userId}`, {
+    const res = await fetch(`/api/notes/shared/${noteId}/user/${userId}`, {
         method:"PUT",
-        headers: { "Content_type": "application/json" },
+        headers: { "Content-type": "application/json" },
         body: JSON.stringify(sharedNote)
     })
 
@@ -68,7 +69,7 @@ export const thunkPutSharedNote = (noteId, userId, sharedNote) => async(dispatch
 }
 
 export const thunkDeleteSharedNote = (noteId) => async(dispatch) => {
-    const res = await fetch(`api/shared/${noteId}`, {
+    const res = await fetch(`/api/notes/shared/${noteId}`, {
         method:"DELETE"
     })
 

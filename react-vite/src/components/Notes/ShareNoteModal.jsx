@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { thunkGetSharedUser } from "../../redux/finduser"
+import { thunkPostSharedNote } from "../../redux/sharenote"
 
 export default function ShareNoteModal({noteId, closeModal}){
     const currentUser = useSelector(state => state.session.user)
@@ -27,21 +28,27 @@ export default function ShareNoteModal({noteId, closeModal}){
         }
     }
 
-    const sendShareNote = () => {
+    const sendShareNote = async() => {
         const firstStep = {
-            user_id: currentUser.id,
-            note_id: noteId,
+            user_id: parseInt(currentUser.id),
+            note_id: parseInt(noteId),
+            opened: true,
             permissions: "View and Edit"
         }
-        
+
+        const sentData = await dispatch(thunkPostSharedNote(firstStep))
+        console.log("🚀 ~ sendShareNote ~ sentData:", sentData)
 
 
         const secondStep = {
-            user_id: shareWithUser.id,
-            note_id: noteId,
+            user_id: parseInt(shareWithUser.id),
+            note_id: parseInt(noteId),
+            opened:false,
             permissions: "View and Edit"
         }
 
+        const sentData2 = await dispatch(thunkPostSharedNote(secondStep))
+        console.log("🚀 ~ sendShareNote ~ sentData2:", sentData2)
 
 
     }
@@ -62,7 +69,7 @@ export default function ShareNoteModal({noteId, closeModal}){
             </div>
          </div>
          <div>
-            <button disabled={!shareWithUsername} onClick={() => sendShareNote()}>Send</button>
+            <button disabled={!shareWithUser} onClick={() => sendShareNote()}>Send</button>
             <button onClick={() => closeModal()}>Cancel</button>
          </div>
         </>

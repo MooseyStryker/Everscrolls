@@ -9,15 +9,32 @@ from sqlalchemy.orm import relationship
 role_enum = Enum('Captain', 'First Mate', 'Crew', 'Bucket swabbler', name='role_types')
 permission_enum = Enum('View Only', 'View and Edit', name='permission_types')
 
-many_notes_many_users = db.Table(
-    "users_notes",
-    db.Column("user_id", db.ForeignKey('users.id'), primary_key=True),
-    db.Column("note_id", db.ForeignKey('notes.id'), primary_key=True),
-    db.Column('opened', db.Boolean, default=False),
-    db.Column('permissions', permission_enum, nullable=False)
-)
-if environment == "production":
-    many_notes_many_users.schema = SCHEMA
+# many_notes_many_users = db.Table(
+#     "users_notes",
+#     db.Column("user_id", db.ForeignKey('users.id'), primary_key=True),
+#     db.Column("note_id", db.ForeignKey('notes.id'), primary_key=True),
+#     db.Column('opened', db.Boolean, default=False),
+#     db.Column('permissions', permission_enum, nullable=False)
+# )
+# if environment == "production":
+#     many_notes_many_users.schema = SCHEMA
+
+
+
+class UserNote(db.Model):
+    __tablename__ = 'users_to_notes'
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    note_id = db.Column(db.Integer, db.ForeignKey('notes.id'), primary_key=True)
+    opened = db.Column(db.Boolean, default=False)
+    permissions = db.Column(permission_enum, nullable=False)
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+
+    # relationships
+    user = db.relationship("User", back_populates="notes")
+    note = db.relationship("Note", back_populates="users")
+
 
 
 class User(db.Model, UserMixin):
@@ -35,7 +52,11 @@ class User(db.Model, UserMixin):
     hashed_password = db.Column(db.String(255), nullable=False)
     created_at = db.Column(DateTime, default=datetime.utcnow)
 
+    notes = db.relationship("UserNote", back_populates="user")
+
+
     user_tasks = db.relationship("Task", back_populates='task_to_user', cascade="all, delete-orphan")
+
 
     @property
     def password(self):
@@ -99,6 +120,10 @@ class Note(db.Model):
     updated_at = db.Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     #The relationships attached to Notes
+
+    users = db.relationship("UserNote", back_populates="note")
+
+
     notes_to_notebook = db.relationship("Notebook", back_populates='notebook_to_notes')
     notes_task = db.relationship("Task", back_populates='tasks_to_notes', cascade="all, delete-orphan")
     notes_body = db.relationship("NoteBody", back_populates='bodys_to_notes', cascade="all, delete-orphan")

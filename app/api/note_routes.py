@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import db, Note, Task, NoteBody, NoteAudio, NoteImage, many_notes_many_users
+from app.models import db, Note, Task, NoteBody, NoteAudio, NoteImage, UserNote
+# many_notes_many_users
 from app.forms import NoteForm, ShareNote, TaskForm, NoteBodyForm, NoteAudioForm, NoteImageForm
 from sqlalchemy import select, and_
 
@@ -586,16 +587,16 @@ def delete_audio(note_id, audio_id):
 @note_routes.route("/shared", methods=["GET"])
 @login_required
 def view_shared_notes():
-    stmt = select(Note).join(many_notes_many_users).where(many_notes_many_users.c.user_id == current_user.id)
+    stmt = select(UserNote).where(UserNote.user_id == current_user.id)
 
     allNotes = []
 
     for row in db.session.execute(stmt):
-        results = row.Notebook
+        results = row.UserNote
         results_info = {
             "id": results.id,
             "creator_id": results.creator_id,
-            "note_title": results.notebook_name,
+            "note_title": results.title,
             "updated_at": results.updated_at,
             "created_at": results.created_at
         }
@@ -604,19 +605,21 @@ def view_shared_notes():
     return jsonify(allNotes)
 
 
-@note_routes.route("shared/<int:note_id>/user/<int:user_id>", methods=["POST"])
+@note_routes.route("/shared", methods=["POST"])
 @login_required
-def share_this_note(note_id, user_id):
+def share_this_note():
     form = ShareNote()
     form["csrf_token"].data = request.cookies["csrf_token"]
 
     if form.validate_on_submit():
-        share_note = ShareNote(
-            user_id = user_id,
-            note_id = note_id,
+        share_note = UserNote(
+            user_id = form.user_id.data,
+            note_id = form.note_id.data,
+            opened = form.opened.data,
             permissions = form.permissions.data
         )
 
+        print(share_note)
         db.session.add(share_note)
         db.session.commit()
         return jsonify(share_note), 200
@@ -625,7 +628,7 @@ def share_this_note(note_id, user_id):
 
 
 
-@note_routes.route("shared/<int:note_id>/user/<int:user_id>", methods=["GET","PUT"])
+@note_routes.route("/shared/<int:note_id>/user/<int:user_id>", methods=["GET","PUT"])
 @login_required
 def edit_shared_note(note_id, user_id):
     stmt = select(many_notes_many_users).where(and_(many_notes_many_users.c.user_id == user_id, many_notes_many_users.c.note_id == note_id))
@@ -660,7 +663,7 @@ def edit_shared_note(note_id, user_id):
 
 
 
-@note_routes.route("shared/<int:note_id>/", methods=["DELETE"])
+@note_routes.route("/shared/<int:note_id>/", methods=["DELETE"])
 @login_required
 def yeete_shared_note(note_id):
     stmt = select(many_notes_many_users).where(many_notes_many_users.c.note_id == note_id)
