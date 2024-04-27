@@ -28,10 +28,19 @@ def seed_users():
         role='Crew',
         password='password'
     )
+    user4 = User(
+        username='ShareTest',
+        first_name='Lydia',
+        last_name='Ge',
+        email='share@',
+        role='Crew',
+        password='password'
+    )
 
     db.session.add(user1)
     db.session.add(user2)
     db.session.add(user3)
+    db.session.add(user4)
     db.session.commit()
 
 

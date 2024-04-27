@@ -622,7 +622,7 @@ def share_this_note():
         print(share_note)
         db.session.add(share_note)
         db.session.commit()
-        return jsonify(share_note), 200
+        return jsonify(share_note.to_dict()), 200
     else:
         return jsonify(form.errors), 400
 
