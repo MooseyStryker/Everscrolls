@@ -4,9 +4,10 @@ import { Outlet, useNavigate } from "react-router-dom";
 import './AllNotesAndTasks.css'
 import shipView from '../../../../images/website_images/bow.png'
 import { thunkGetCurrentUser } from "../../redux/session";
-import AllNotes from "../Notes/HomeNotesContainer";
+import AllNotes from "../Notes/AllNotes";
 import { thunkPostNote } from "../../redux/notes";
 import ScratchPad from "../Scratch/ScratchPad";
+import SharedAllNotes from "../Notes/SharedAllNotes";
 
 export default function AllNotesAndTasks() {
     const dispatch = useDispatch();
@@ -60,9 +61,11 @@ export default function AllNotesAndTasks() {
                                     </div>
                                 </div>
 
-                                <div className="shared-notes-container">
-                                    {/* shared notes */}
-                                </div>
+                                {/* <div className="notesinhome">
+                                    <div className="shared-note-individual">
+                                        <SharedAllNotes />
+                                    </div>
+                                </div> */}
                             </div>
                             <div className="scratchpad-cal">
                                 <div className="scratchinhome"><ScratchPad notebooks={allNotebooksObj} /></div>

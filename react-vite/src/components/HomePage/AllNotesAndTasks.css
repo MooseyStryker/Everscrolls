@@ -30,7 +30,7 @@
 }
 
 .note-individual{
-    width: 100%;
+    width: 50%;
 }
 
 .homenotelayout{
@@ -70,7 +70,7 @@
     margin: 4px;
 }
 
-.notesinhome{
+.notesinhome, .shared-notes-container{
     margin: 4px;
     display: flex;
     flex-direction: row;

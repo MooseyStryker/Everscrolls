@@ -13,6 +13,7 @@ import imageReducer from "./images";
 import audioReducer from "./audio";
 import notesReducer from "./notes";
 import findUserReducer from "./finduser";
+import sharedNotesReducer from "./sharenote";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
@@ -22,7 +23,8 @@ const rootReducer = combineReducers({
   tasks: taskReducer,
   images: imageReducer,
   audios: audioReducer,
-  findUser: findUserReducer
+  findUser: findUserReducer,
+  sharedNotes: sharedNotesReducer
 });
 
 let enhancer;

@@ -584,6 +584,27 @@ def delete_audio(note_id, audio_id):
 
 
 # Sharing a note!!!!
+@note_routes.route("/shared", methods=["GET"])
+@login_required
+def view_all_shared_notes():
+    stmt = select(UserNote)
+
+    allNotes = []
+
+    for row in db.session.execute(stmt):
+        results = row.UserNote
+        results_info = {
+            "id": results.id,
+            "user_id": results.user_id,
+            "note_id": results.note_id,
+            "opened": results.opened,
+            "permissions": results.permissions
+        }
+
+        allNotes.append(results_info)
+    return jsonify(allNotes)
+
+
 @note_routes.route("/shared/<int:note_id>", methods=["GET"])
 @login_required
 def view_shared_notes(note_id):

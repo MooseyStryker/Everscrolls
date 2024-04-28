@@ -1,10 +1,16 @@
 const GET_ALL_SHARED_NOTES = "sharedNotes/getAllSharedNotes"
+const GET_SHARED_NOTES_VIA_NOTEID= "sharedNotes/setSharedNotesByNoteId"
 const POST_SHARED_NOTES = "sharedNotes/postSharedNote";
 const PUT_SHARED_NOTES = "sharedNotes/putSharedNote";
 const DELETE_SHARED_NOTES = "sharedNotes/deleteSharedNote";
 
 const getAllSharedNotes = (sharedNotes) =>({
     type: GET_ALL_SHARED_NOTES,
+    sharedNotes
+})
+
+const getSharedNotesByNoteId = (sharedNotes) => ({
+    type: GET_SHARED_NOTES_VIA_NOTEID,
     sharedNotes
 })
 
@@ -23,7 +29,19 @@ const deleteSharedNote = (noteId) => ({
     noteId
 })
 
-export const thunkGetAllSharedNotes = (noteId) => async(dispatch) => {
+export const thunkGetAllSharedNotes = () => async(dispatch) => {
+    const res = await fetch(`/api/notes/shared`);
+
+    const data = await res.json();
+    if (data.errors){
+        return data.errors
+    } else {
+        dispatch(getAllSharedNotes(data))
+        return data
+    }
+}
+
+export const thunkGetAllSharedNotesByNoteId = (noteId) => async(dispatch) =>{
     const res = await fetch(`/api/notes/shared/${noteId}`);
 
     const data = await res.json();
@@ -32,7 +50,7 @@ export const thunkGetAllSharedNotes = (noteId) => async(dispatch) => {
     if (data.errors){
         return data.errors
     } else {
-        dispatch(getAllSharedNotes(data))
+        dispatch(getSharedNotesByNoteId(data))
         return data
     }
 }
@@ -88,6 +106,12 @@ export default function sharedNotesReducer(state = {}, action) {
     let newState;
     switch (action.type){
         case GET_ALL_SHARED_NOTES:
+            newState = {...state}
+            action.sharedNotes.forEach(note => {
+                newState[note.id] = note
+            })
+            return newState;
+        case GET_SHARED_NOTES_VIA_NOTEID:
             newState = {...state}
             action.sharedNotes.forEach(note => {
                 newState[note.id] = note

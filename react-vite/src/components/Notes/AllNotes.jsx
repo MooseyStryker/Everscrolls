@@ -10,6 +10,9 @@ import { thunkDeleteAllNoteBody } from "../../redux/notebody";
 import { useModal } from "../../context/Modal";
 import DeleteNoteModal from "./DeleteNoteModal";
 import PostNoteModal from "./PostNoteModal";
+import { FaShareFromSquare } from "react-icons/fa6";
+import { thunkGetAllSharedNotes } from "../../redux/sharenote";
+
 
 
 
@@ -23,8 +26,11 @@ export default function AllNotes() {
     const [noteUpdate, setNoteUpdate] = useState(false)
     const allNotebooks = useSelector((state) => state.notebook);
     const allNoteBooksObj = Object.values(allNotebooks)
-
+    const rawSharedNotes = useSelector((state) => state.sharedNotes)
+    const sharedNotes = Object.values(rawSharedNotes)
     const [loading, setLoading] = useState(true);
+
+
 
 
 
@@ -50,6 +56,8 @@ export default function AllNotes() {
             setLoading(false);
         };
 
+        dispatch(thunkGetAllSharedNotes())
+
         fetchCheck();
     }, [dispatch, noteUpdate]);
 
@@ -66,17 +74,11 @@ export default function AllNotes() {
                         <FaTimes />
                     </div>
                         <div className="singlenote" key={note.id}>
-                            <h2 style={{marginBottom:'15px'}}>{note.note_title && note.note_title.length > 20 ? `${note.note_title.substring(0, 14)}...` : note.note_title}</h2>
-
-                            {/* <div>
-                                First two bodies:
-                                {note.bodies && note.bodies.slice(0, 2).map((body, index) => (
-                                    <p key={index}>{body.body}</p>
-                                ))}
-                            </div> */}
+                            <h3 style={{marginBottom:'15px'}}>{note.note_title && note.note_title.length > 20 ? `${note.note_title.substring(0, 14)}...` : note.note_title}</h3>
+                            {sharedNotes.filter(shareNote => shareNote.note_id === note.id).length > 0 && <FaShareFromSquare />}
                             <div>
                                 {note.bodies && note.bodies.slice(0, 4).map((body, index) => (
-                                    <p key={index}>
+                                    <p key={index} style={{fontSize:'small'}}>
                                         • {body.body.length > 20 ? `${body.body.substring(0, 18)}...` : body.body}    {/* This keeps super long strings from bleeding over the div  */}
                                     </p>
                                 ))}
@@ -86,7 +88,7 @@ export default function AllNotes() {
                                     Tasks:
                                 </h3>
                                 {note.tasks && note.tasks.slice(0,4).map((task, index) =>(
-                                    <p key={index}>{task.body}</p>
+                                    <p key={index} style={{fontSize:'small'}}>{task.body}</p>
                                 ))}
                             </div>
                         </div>

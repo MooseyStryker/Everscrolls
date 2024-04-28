@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { thunkGetSharedUser } from "../../redux/finduser"
 import { thunkPostSharedNote } from "../../redux/sharenote"
-import { thunkGetAllSharedNotes } from "../../redux/sharenote"
+import { thunkGetAllSharedNotesByNoteId } from "../../redux/sharenote"
 
 export default function ShareNoteModal({noteId, closeModal}){
     const currentUser = useSelector(state => state.session.user)
@@ -34,9 +34,10 @@ export default function ShareNoteModal({noteId, closeModal}){
         /*
             This checks if the note was shared, if it was it will return as an error.
         */
-        const checkSentNote = await dispatch(thunkGetAllSharedNotes(noteId))
+        const checkSentNote = await dispatch(thunkGetAllSharedNotesByNoteId(noteId))
         const wasThisNoteSent = checkSentNote.filter(note => note.user_id === shareWithUser.id);
-        if (wasThisNoteSent) return setErrors(`This note was shared shared with ${shareWithUser.username} already`)
+        console.log("🚀 ~ sendShareNote ~ wasThisNoteSent:", wasThisNoteSent.length)
+        if (wasThisNoteSent.length !== 0) return setErrors(`This note was shared shared with ${shareWithUser.username} already`)
 
 
         /*This sends the OG creator of the note to the join table, I commented this out just incase I want to use it */
@@ -60,6 +61,8 @@ export default function ShareNoteModal({noteId, closeModal}){
 
         const sentData2 = await dispatch(thunkPostSharedNote(sharedNoteToNewUser))
         console.log("🚀 ~ sendShareNote ~ sentData2:", sentData2)
+
+        closeModal()
 
 
     }
