@@ -7,7 +7,7 @@ import { thunkGetCurrentUser } from "../../redux/session";
 import AllNotes from "../Notes/AllNotes";
 import { thunkPostNote } from "../../redux/notes";
 import ScratchPad from "../Scratch/ScratchPad";
-import SharedAllNotes from "../Notes/SharedAllNotes";
+import SharedAllNotes from "../Notes/SharedNotes/SharedAllNotes";
 
 export default function AllNotesAndTasks() {
     const dispatch = useDispatch();
@@ -15,8 +15,9 @@ export default function AllNotesAndTasks() {
     const sessionUser = useSelector((state) => state.session.user);
     const allNotebooks = useSelector((state) => state.notebook);
     const allNotebooksObj = Object.values(allNotebooks)
+    const [showJustShare, setShowJustShare] = useState(false)
+    const [showAllNotes, setShowAllNotes] = useState(true)
 
-    console.log("🚀 ~ AllNotesAndTasks ~ allNotebooks:", allNotebooks)
 
     const [loading, setLoading] = useState(true);
 
@@ -56,8 +57,13 @@ export default function AllNotesAndTasks() {
                             <div className="allnotes-alltasks-connectedtouser">
 
                                 <div className="notesinhome">
+                                    <div>
+                                        <button disabled={showJustShare} style={{backgroundColor: showJustShare ? 'grey' : '',cursor: showJustShare ? 'not-allowed' : 'pointer'}} onClick={() => {setShowJustShare(true); setShowAllNotes(false)}}>Show Shared Notes</button>
+                                        <button disabled={showAllNotes} style={{backgroundColor: showAllNotes ? 'grey' : '',cursor: showAllNotes ? 'not-allowed' : 'pointer'}} onClick={() => {setShowJustShare(false); setShowAllNotes(true)}}>All Notes</button>
+                                    </div>
                                     <div className="note-individual">
-                                        <AllNotes />
+                                        {showAllNotes && <AllNotes />}
+                                        {showJustShare && <SharedAllNotes user={sessionUser}/>}
                                     </div>
                                 </div>
 

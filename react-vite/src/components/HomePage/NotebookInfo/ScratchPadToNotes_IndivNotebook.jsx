@@ -5,11 +5,9 @@ import { useDispatch } from "react-redux";
 import { thunkPostNotebody } from "../../../redux/notebody";
 
 export default function ScratchToNotesPostIndivNotebook({ notebook, closeModal }) {
-    console.log("🚀 ~ ScratchToNotesPost ~ notebook:", notebook)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [selectedNotebookId, setSelectedNotebookId] = useState(notebook?.id);
-    console.log("🚀 ~ PostNoteModal ~ selectedNotebookId:", selectedNotebookId)
     const [title, setTitle] = useState('');  // New state for the note title
 
     const handleNewNote = async () => {
@@ -27,7 +25,6 @@ export default function ScratchToNotesPostIndivNotebook({ notebook, closeModal }
 
         const bodyFromLocal = localStorage.getItem(`Scratch Pad in Notebook ${notebook?.id}`);
 
-        console.log("🚀 ~ newNoteBody ~ bodyFromLocal:", bodyFromLocal)
         const newBody = {
             note_id: resNewNote.id,
             body: bodyFromLocal
@@ -35,7 +32,6 @@ export default function ScratchToNotesPostIndivNotebook({ notebook, closeModal }
 
 
         const resBody = await dispatch(thunkPostNotebody(resNewNote.id, newBody))
-        console.log("🚀 ~ handleNewNote ~ resBody:", resBody)
 
         if (resBody && resBody.errors) {
             return setErrors(resBody.errors)

@@ -1,4 +1,5 @@
 const GET_ALL_SHARED_NOTES = "sharedNotes/getAllSharedNotes"
+const GET_ALL_NOTES_SHARED_WITH_USER = "sharedNotes/getAllNotesSharedWithUser";
 const GET_SHARED_NOTES_VIA_NOTEID= "sharedNotes/setSharedNotesByNoteId"
 const POST_SHARED_NOTES = "sharedNotes/postSharedNote";
 const PUT_SHARED_NOTES = "sharedNotes/putSharedNote";
@@ -8,6 +9,11 @@ const getAllSharedNotes = (sharedNotes) =>({
     type: GET_ALL_SHARED_NOTES,
     sharedNotes
 })
+
+const getAllNotesSharedWithUser = (sharedNotes) => ({
+    type: GET_ALL_NOTES_SHARED_WITH_USER,
+    sharedNotes,
+  });
 
 const getSharedNotesByNoteId = (sharedNotes) => ({
     type: GET_SHARED_NOTES_VIA_NOTEID,
@@ -29,6 +35,9 @@ const deleteSharedNote = (noteId) => ({
     noteId
 })
 
+
+
+
 export const thunkGetAllSharedNotes = () => async(dispatch) => {
     const res = await fetch(`/api/notes/shared`);
 
@@ -41,11 +50,27 @@ export const thunkGetAllSharedNotes = () => async(dispatch) => {
     }
 }
 
+export const thunkGetAllNotesSharedWithUser = (sharedUserId) => async (dispatch) => {
+    const response = await fetch(`/api/notes/shared/all/${sharedUserId}`);
+
+    console.log("🚀 ~ thunkGetAllNotesSharedWithUser ~ response:", response)
+    if (response.ok) {
+      const data = await response.json();
+      console.log("🚀 ~ thunkGetAllNotesSharedWithUser ~ data:", data)
+
+
+      if (data.errors) {
+        return data;
+      }
+      const here = await dispatch(getAllNotesSharedWithUser(data));
+      console.log("🚀 ~ thunkGetAllNotesSharedWithUser ~ here:", here)
+    }
+};
+
 export const thunkGetAllSharedNotesByNoteId = (noteId) => async(dispatch) =>{
     const res = await fetch(`/api/notes/shared/${noteId}`);
 
     const data = await res.json();
-    console.log("🚀 ~ thunkGetAllSharedNotes ~ data:", data)
 
     if (data.errors){
         return data.errors
@@ -56,7 +81,6 @@ export const thunkGetAllSharedNotesByNoteId = (noteId) => async(dispatch) =>{
 }
 
 export const thunkPostSharedNote = (sharedNote) => async(dispatch) => {
-    console.log("🚀 ~ thunkPostSharedNote ~ sharedNote:", sharedNote)
     const res = await fetch(`/api/notes/shared`, {
         method:"POST",
         headers: { "Content-type": "application/json" },
@@ -111,6 +135,19 @@ export default function sharedNotesReducer(state = {}, action) {
                 newState[note.id] = note
             })
             return newState;
+
+
+        case GET_ALL_NOTES_SHARED_WITH_USER:
+            newState = {...state};
+            action.sharedNotes.forEach(note => {
+                newState[note.id] = note;
+            });
+            console.log("🚀 ~ sharedNotesReducer ~ newState:", newState)
+            return newState;
+
+
+
+
         case GET_SHARED_NOTES_VIA_NOTEID:
             newState = {...state}
             action.sharedNotes.forEach(note => {

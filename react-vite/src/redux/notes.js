@@ -9,6 +9,7 @@ const getAllNotes = (notes) => ({
   notes,
 });
 
+
 const getNote = (note) => ({
   type: GET_NOTE,
   note,
@@ -44,6 +45,8 @@ export const thunkGetAllNotes = () => async (dispatch) => {
       dispatch(getAllNotes(data));
     }
 };
+
+
 
 export const thunkGetNote = (note_id) => async (dispatch) => {
     const response = await fetch(`/api/notes/${note_id}`);

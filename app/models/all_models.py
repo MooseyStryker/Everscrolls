@@ -10,8 +10,8 @@ role_enum = Enum('Captain', 'First Mate', 'Crew', 'Bucket swabbler', name='role_
 permission_enum = Enum('View Only', 'View and Edit', name='permission_types')
 
 
-class UserNote(db.Model):
-    __tablename__ = 'users_to_notes'
+class ShareNote(db.Model):
+    __tablename__ = 'share_notes'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -52,7 +52,7 @@ class User(db.Model, UserMixin):
     hashed_password = db.Column(db.String(255), nullable=False)
     created_at = db.Column(DateTime, default=datetime.utcnow)
 
-    notes = db.relationship("UserNote", back_populates="user")
+    notes = db.relationship("ShareNote", back_populates="user")
 
 
     user_tasks = db.relationship("Task", back_populates='task_to_user', cascade="all, delete-orphan")
@@ -121,7 +121,7 @@ class Note(db.Model):
 
     #The relationships attached to Notes
 
-    users = db.relationship("UserNote", back_populates="note")
+    users = db.relationship("ShareNote", back_populates="note")
 
 
     notes_to_notebook = db.relationship("Notebook", back_populates='notebook_to_notes')

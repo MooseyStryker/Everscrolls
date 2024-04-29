@@ -6,4 +6,4 @@ from .tasks_forms import TaskForm
 from .note_body_form import NoteBodyForm
 from .note_audio_form import NoteAudioForm
 from .note_images_form import NoteImageForm
-from .share_note import ShareNote
+from .share_note_form import ShareNoteForm

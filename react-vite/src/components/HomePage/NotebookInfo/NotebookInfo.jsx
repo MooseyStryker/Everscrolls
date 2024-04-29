@@ -16,7 +16,6 @@ export default function IndividualNotebookInfo() {
     const navigate = useNavigate();
     const sessionUser = useSelector((state) => state.session.user);
     const singleNotebook = useSelector((state) => state.notebook[notebookId]);
-    console.log("🚀 ~ IndividualNotebookInfo ~ singleNotebook:", singleNotebook)
 
 
 

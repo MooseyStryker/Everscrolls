@@ -84,7 +84,6 @@ export default function NoteBodyDivs({noteid}) {
             divTexts = Object.values(currentNoteBody)
             .filter(body => body.note_id == noteid)             // This is needed to make sure only the notebody that is in the noteId s printed when theres no local storage. Otherwise it will add other notes data in it. /Dumb ways to dp this
             .map(body => body.body);                            // Sometimes it pull the wrong note_body info due to currentNoteBody not updating when a note has only the default setDiv with "Hi! Start Here!" this needs to be refactored
-            console.log("🚀 ~ useEffect ~ divTexts:", divTexts)
 
             const noteBodies = divTexts.map((text, index) => ({
                 id: index + 1,

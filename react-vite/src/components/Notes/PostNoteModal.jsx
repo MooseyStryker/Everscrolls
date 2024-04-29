@@ -8,7 +8,6 @@ export default function PostNoteModal({ closeModal, notebooks }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [selectedNotebookId, setSelectedNotebookId] = useState(notebooks[0]?.id);
-    console.log("🚀 ~ PostNoteModal ~ selectedNotebookId:", selectedNotebookId)
     const [title, setTitle] = useState('');  // New state for the note title
 
     const handleNewNote = async () => {

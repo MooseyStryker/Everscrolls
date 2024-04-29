@@ -1,42 +1,36 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { thunkDeleteNote, thunkGetAllNotes } from "../../redux/notes";
+import { thunkDeleteNote, thunkGetAllNotes } from "../../../redux/notes";
+import { thunkGetAllNotesSharedWithUser } from "../../../redux/sharenote";
 import { useNavigate } from "react-router-dom";
-import "./HomeNotes.css"
-import NotesBody from "../Notes_body/NoteBody";
+import NotesBody from "../../Notes_body/NoteBody";
 import { FaTimes } from 'react-icons/fa';
-import { thunkPostNote } from "../../redux/notes";
-import { thunkDeleteAllNoteBody } from "../../redux/notebody";
-import { useModal } from "../../context/Modal";
-import DeleteNoteModal from "./DeleteNoteModal";
-import PostNoteModal from "./PostNoteModal";
+import { thunkPostNote } from "../../../redux/notes";
+import { thunkDeleteAllNoteBody } from "../../../redux/notebody";
+import { useModal } from "../../../context/Modal";
+import DeleteNoteModal from "../DeleteNoteModal";
+import PostNoteModal from "../PostNoteModal";
 import { FaShareFromSquare } from "react-icons/fa6";
-import { thunkGetAllSharedNotes } from "../../redux/sharenote";
+import { thunkGetAllSharedNotes } from "../../../redux/sharenote";
 
 
 
 
-export default function SharedAllNotes() {
+export default function SharedAllNotes({user}) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { closeModal } = useModal()
     const { setModalContent } = useModal()
-    const allNotes = useSelector((state) => state.notes);
-    const notesObj = Object.values(allNotes);
     const [noteUpdate, setNoteUpdate] = useState(false)
     const allNotebooks = useSelector((state) => state.notebook);
     const allNoteBooksObj = Object.values(allNotebooks)
-    const rawSharedNotes = useSelector((state) => state.sharedNotes)
+
+    const rawSharedNotes = useSelector((state => state.sharedNotes))
     const sharedNotes = Object.values(rawSharedNotes)
+    console.log("🚀 ~ SharedAllNotes ~ sharedNotes:", sharedNotes)
+
     const [loading, setLoading] = useState(true);
 
-
-
-
-
-    const handleNewNote = async() => {
-        setModalContent(<PostNoteModal closeModal={closeModal} notebooks={allNoteBooksObj} />)
-    }
 
     const handleDeleteNoteModal = (e, noteId) => {
         e.stopPropagation()
@@ -56,7 +50,8 @@ export default function SharedAllNotes() {
             setLoading(false);
         };
 
-        dispatch(thunkGetAllSharedNotes())
+        // dispatch(thunkGetAllSharedNotes())
+        dispatch(thunkGetAllNotesSharedWithUser(user?.id))
 
         fetchCheck();
     }, [dispatch, noteUpdate]);
@@ -67,15 +62,17 @@ export default function SharedAllNotes() {
 
     return (
         <div className="homenotescontainer">
-            {notesObj?.map((note) => (
+            {sharedNotes?.map((note) => (
                 <div className="singlenotecontainer" onClick={() => handleNavigate(note.id)}>
+                    {note.note_id}
 
                     <div className="deletenoteandhidetillhover" onClick={(e) => handleDeleteNoteModal(e,note.id)} style={{ cursor: 'pointer' }}>
                         <FaTimes />
                     </div>
                         <div className="singlenote" key={note.id}>
                             <h2 style={{marginBottom:'15px'}}>{note.note_title && note.note_title.length > 20 ? `${note.note_title.substring(0, 14)}...` : note.note_title}</h2>
-                            {sharedNotes.filter(shareNote => shareNote.note_id === note.id).length > 0 && <FaShareFromSquare />}
+                            <FaShareFromSquare />
+
                             <div>
                                 {note.bodies && note.bodies.slice(0, 4).map((body, index) => (
                                     <p key={index}>
@@ -83,6 +80,7 @@ export default function SharedAllNotes() {
                                     </p>
                                 ))}
                             </div>
+
                             <div className="tasksneedsmargin">
                                 <h3 className="thistoo">
                                     Tasks:
@@ -91,14 +89,10 @@ export default function SharedAllNotes() {
                                     <p key={index}>{task.body}</p>
                                 ))}
                             </div>
+
                         </div>
                     </div>
             ))}
-            <div>
-                <div className="creatinganewnote" onClick={handleNewNote}>
-                    Create a New Note!
-                </div>
-                </div>
         </div>
     );
 

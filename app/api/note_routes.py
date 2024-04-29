@@ -1,9 +1,10 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
-from app.models import db, Note, Task, NoteBody, NoteAudio, NoteImage, UserNote
-# many_notes_many_users
-from app.forms import NoteForm, ShareNote, TaskForm, NoteBodyForm, NoteAudioForm, NoteImageForm
+from app.models import db, Note, Task, NoteBody, NoteAudio, NoteImage, ShareNote
+# ShareNote
+from app.forms import NoteForm, ShareNoteForm, TaskForm, NoteBodyForm, NoteAudioForm, NoteImageForm
 from sqlalchemy import select, and_
+from sqlalchemy.orm import joinedload
 
 note_routes = Blueprint("notes", __name__)
 
@@ -36,6 +37,7 @@ def view_note():
 
         allNotes.append(results_info)                                       # Append the note details to the list of all notes
     return jsonify(allNotes)
+
 
 
 
@@ -205,7 +207,7 @@ def adding_notebody(note_id):
 def edit_notebody(note_id, notebody_id):
     auth = select(Note).where(Note.id == note_id)                                                                               # Select the note with the given ID
     note = db.session.execute(auth).scalar_one()                                                                                # Execute the statement and get the note
-    permission_check = db.session.query(many_notes_many_users).filter_by(user_id=current_user.id, note_id=note_id).first()      # Check if the note shared has permission to edit the note
+    permission_check = db.session.query(ShareNote).filter_by(user_id=current_user.id, note_id=note_id).first()      # Check if the note shared has permission to edit the note
 
     if note.creator_id != current_user.id and (permission_check is None or permission_check.permissions != 'View and Edit'):    # If the current user is not the creator of the note and does not have 'View and Edit' permissions, return a 403 status code with an error message
         return jsonify({
@@ -583,16 +585,31 @@ def delete_audio(note_id, audio_id):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Sharing a note!!!!
 @note_routes.route("/shared", methods=["GET"])
 @login_required
 def view_all_shared_notes():
-    stmt = select(UserNote)
 
-    allNotes = []
+    stmt = select(ShareNote).where(ShareNote.user_id == current_user.id)
+
+    all_notes = []
 
     for row in db.session.execute(stmt):
-        results = row.UserNote
+        results = row.ShareNote
         results_info = {
             "id": results.id,
             "user_id": results.user_id,
@@ -601,20 +618,58 @@ def view_all_shared_notes():
             "permissions": results.permissions
         }
 
-        allNotes.append(results_info)
-    return jsonify(allNotes)
+        all_notes.append(results_info)
+
+    return jsonify(all_notes)
+
+
+# Trying to figure out how to make this eager loaded with all the right data, currently just the title
+@note_routes.route("/shared/all/<int:shared_user_id>", methods=["GET"])
+@login_required
+def view_note_shared_with_user(shared_user_id):
+
+    shared_notes_query = (
+        db.session.query(ShareNote)
+        .filter(ShareNote.user_id == shared_user_id)
+        .options(
+            db.joinedload(ShareNote.note)
+            .joinedload(Note.notes_body),
+            db.joinedload(ShareNote.note)
+            .joinedload(Note.notes_task)
+            )
+        .all()
+    )
+
+
+    shared_notes = []
+    for share_note in shared_notes_query:
+
+        note_info = {
+            "id": share_note.id,
+            "note_id": share_note.note_id,
+            "note_title": share_note.note.title,
+            "permissions": share_note.permissions,
+        }
+        shared_notes.append(note_info)
+
+
+
+    print("&" * 60)
+    print("-" * 60)
+    print(shared_notes)
+    return jsonify(shared_notes)
 
 
 @note_routes.route("/shared/<int:note_id>", methods=["GET"])
 @login_required
 def view_shared_notes(note_id):
     print("WE hit here!!!")
-    stmt = select(UserNote).where(UserNote.note_id == note_id)
+    stmt = select(ShareNote).where(ShareNote.note_id == note_id)
 
     allNotes = []
 
     for row in db.session.execute(stmt):
-        results = row.UserNote
+        results = row.ShareNote
         results_info = {
             "id": results.id,
             "user_id": results.user_id,
@@ -634,7 +689,7 @@ def share_this_note():
     form["csrf_token"].data = request.cookies["csrf_token"]
 
     if form.validate_on_submit():
-        share_note = UserNote(
+        share_note = ShareNote(
             user_id = form.user_id.data,
             note_id = form.note_id.data,
             opened = form.opened.data,
@@ -653,7 +708,7 @@ def share_this_note():
 @note_routes.route("/shared/<int:note_id>/user/<int:user_id>", methods=["GET","PUT"])
 @login_required
 def edit_shared_note(note_id, user_id):
-    stmt = select(many_notes_many_users).where(and_(many_notes_many_users.c.user_id == user_id, many_notes_many_users.c.note_id == note_id))
+    stmt = select(ShareNote).where(and_(ShareNote.c.user_id == user_id, ShareNote.c.note_id == note_id))
     shared_note = db.session.execute(stmt).scalar_one()
 
     if shared_note.user_id != current_user.id:
@@ -688,7 +743,7 @@ def edit_shared_note(note_id, user_id):
 @note_routes.route("/shared/<int:note_id>/", methods=["DELETE"])
 @login_required
 def yeete_shared_note(note_id):
-    stmt = select(many_notes_many_users).where(many_notes_many_users.c.note_id == note_id)
+    stmt = select(ShareNote).where(ShareNote.c.note_id == note_id)
     no_more_share = db.session.execute(stmt).scalar_one()
 
     if no_more_share is None:

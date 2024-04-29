@@ -109,7 +109,7 @@ def upgrade():
     if environment == "production":
         op.execute(f"ALTER TABLE tasks SET SCHEMA {SCHEMA};")
 
-    op.create_table('users_to_notes',
+    op.create_table('share_notes',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('note_id', sa.Integer(), nullable=True),

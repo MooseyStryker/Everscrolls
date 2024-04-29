@@ -1,13 +1,12 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { thunkGetSharedUser } from "../../redux/finduser"
-import { thunkPostSharedNote } from "../../redux/sharenote"
-import { thunkGetAllSharedNotesByNoteId } from "../../redux/sharenote"
+import { thunkGetSharedUser } from "../../../redux/finduser"
+import { thunkPostSharedNote } from "../../../redux/sharenote"
+import { thunkGetAllSharedNotesByNoteId } from "../../../redux/sharenote"
 
 export default function ShareNoteModal({noteId, closeModal}){
     const currentUser = useSelector(state => state.session.user)
     const [errors, setErrors] = useState('')
-    console.log("🚀 ~ ShareNoteModal ~ errors:", errors)
     const [shareWithUser, setShareWithUser] = useState('')
     const [showUsername, setShowUsername] = useState(false)
     const [email, setEmail] = useState()
@@ -15,7 +14,6 @@ export default function ShareNoteModal({noteId, closeModal}){
 
     const handleFindUser = async() => {
         const info = await dispatch(thunkGetSharedUser(email))
-        console.log("🚀 ~ handleFindUser ~ info:", info)
         if (info) setShareWithUser(info.findUser)
 
 
@@ -36,7 +34,6 @@ export default function ShareNoteModal({noteId, closeModal}){
         */
         const checkSentNote = await dispatch(thunkGetAllSharedNotesByNoteId(noteId))
         const wasThisNoteSent = checkSentNote.filter(note => note.user_id === shareWithUser.id);
-        console.log("🚀 ~ sendShareNote ~ wasThisNoteSent:", wasThisNoteSent.length)
         if (wasThisNoteSent.length !== 0) return setErrors(`This note was shared shared with ${shareWithUser.username} already`)
 
 
@@ -60,7 +57,6 @@ export default function ShareNoteModal({noteId, closeModal}){
         }
 
         const sentData2 = await dispatch(thunkPostSharedNote(sharedNoteToNewUser))
-        console.log("🚀 ~ sendShareNote ~ sentData2:", sentData2)
 
         closeModal()
 

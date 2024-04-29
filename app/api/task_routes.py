@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from app.models import db, Note, Task
 # many_notes_many_users
-from app.forms import NoteForm, ShareNote, TaskForm
+from app.forms import NoteForm, ShareNoteForm, TaskForm
 from sqlalchemy import select, and_
 
 task_routes = Blueprint("tasks", __name__)

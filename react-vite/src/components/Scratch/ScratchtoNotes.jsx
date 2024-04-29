@@ -32,7 +32,6 @@ export default function ScratchToNotesPost({ closeModal, notebooks }) {
 
 
         const resBody = await dispatch(thunkPostNotebody(resNewNote.id, newBody))
-        console.log("🚀 ~ handleNewNote ~ resBody:", resBody)
 
         if (resBody && resBody.errors) {
             return setErrors(resBody.errors)

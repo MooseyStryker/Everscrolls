@@ -4,7 +4,7 @@ import SignupFormPage from '../components/SignupFormPage';
 import AllNotebooks from '../components/Notebooks/GetAllNotebooks';
 import Layout from './Layout';
 import CreateNotebook from '../components/Notebooks/CreateNewNotebookModal';
-import AllNotes from '../components/Notes/HomeNotesContainer';
+import AllNotes from '../components/Notes/AllNotes';
 import MainPage from '../components/MainPage/MainPage'
 import AllNotesAndTasks from '../components/HomePage/AllNotesAndTasks';
 import NoteHomePage from '../components/HomePage/NotePage/Notes';

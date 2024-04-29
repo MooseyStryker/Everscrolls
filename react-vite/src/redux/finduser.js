@@ -6,7 +6,6 @@ const getSharedUser = (findUser) => ({
 })
 
 export const thunkGetSharedUser = (email) => async (dispatch) => {
-    console.log("🚀 ~ thunkGetSharedUser ~ email:", email)
     const res = await fetch("/api/users/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -14,7 +13,6 @@ export const thunkGetSharedUser = (email) => async (dispatch) => {
     });
 
     const data = await res.json();
-    console.log("🚀 ~ thunkGetSharedUser ~ data:", data)
     if(data.errors){
         return data.errors;
     }

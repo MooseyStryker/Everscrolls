@@ -6,6 +6,7 @@ from .task import seed_tasks, undo_tasks
 from .notebody import seed_note_bodies, undo_note_bodies
 from .noteaudio import seed_note_audios, undo_note_audios
 from .noteimage import seed_note_images, undo_note_images
+from .sharenotes import seed_share_notes, undo_share_notes
 
 from app.models.db import db, environment, SCHEMA
 
@@ -22,6 +23,7 @@ def seed():
         # command, which will  truncate all tables prefixed with
         # the schema name (see comment in users.py undo_users function).
         # Make sure to add all your other model's undo functions below
+        undo_share_notes()
         undo_note_images()
         undo_note_audios()
         undo_note_bodies()
@@ -36,6 +38,7 @@ def seed():
     seed_note_bodies()
     seed_note_audios()
     seed_note_images()
+    seed_share_notes()
     # Add other seed functions here
 
 
@@ -49,4 +52,5 @@ def undo():
     undo_note_bodies()
     undo_note_audios()
     undo_note_images()
+    undo_share_notes()
     # Add other undo functions here

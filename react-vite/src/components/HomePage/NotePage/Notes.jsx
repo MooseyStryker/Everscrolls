@@ -9,7 +9,7 @@ import TaskBar from "../../Tasks/Task";
 import SingleNoteTask from "../../Tasks/SingleNoteTask";
 import NoteBodyDivs from "./NoteBodyDivs";
 import { useModal } from "../../../context/Modal";
-import ShareNoteModal from "../../Notes/ShareNoteModal";
+import ShareNoteModal from "../../Notes/SharedNotes/ShareNoteModal";
 
 
 

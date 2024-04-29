@@ -40,6 +40,81 @@ def seed_notebooks():
         created_at=datetime.utcnow(),
         updated_at=datetime.utcnow()
     )
+    notebook7 = Notebook(
+    user_id=2,
+    notebook_name='Scribbles',
+    created_at=datetime.utcnow(),
+    updated_at=datetime.utcnow()
+    )
+
+    notebook8 = Notebook(
+        user_id=3,
+        notebook_name='Ideas',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
+
+    notebook9 = Notebook(
+        user_id=4,
+        notebook_name='Musings',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
+    notebook7 = Notebook(
+    user_id=2,
+    notebook_name='Scribbles',
+    created_at=datetime.utcnow(),
+    updated_at=datetime.utcnow()
+    )
+
+    notebook8 = Notebook(
+        user_id=3,
+        notebook_name='Ideas',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
+
+    notebook9 = Notebook(
+        user_id=4,
+        notebook_name='Musings',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
+
+    notebook10 = Notebook(
+        user_id=1,
+        notebook_name='Random Thoughts',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
+
+    notebook11 = Notebook(
+        user_id=2,
+        notebook_name='Dream Journal',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
+
+    notebook12 = Notebook(
+        user_id=3,
+        notebook_name='Inspirations',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
+
+    notebook13 = Notebook(
+        user_id=4,
+        notebook_name='Reflections',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
+
+    notebook14 = Notebook(
+        user_id=1,
+        notebook_name='Code Snippets',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )
 
     db.session.add(notebook1)
     db.session.add(notebook2)
@@ -47,6 +122,14 @@ def seed_notebooks():
     db.session.add(notebook4)
     db.session.add(notebook5)
     db.session.add(notebook6)
+    db.session.add(notebook7)
+    db.session.add(notebook8)
+    db.session.add(notebook9)
+    db.session.add(notebook10)
+    db.session.add(notebook11)
+    db.session.add(notebook12)
+    db.session.add(notebook13)
+    db.session.add(notebook14)
     db.session.commit()
 
 # Uses a raw SQL query to TRUNCATE or DELETE the notebooks table. SQLAlchemy doesn't

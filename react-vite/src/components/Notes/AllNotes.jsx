@@ -56,7 +56,7 @@ export default function AllNotes() {
             setLoading(false);
         };
 
-        dispatch(thunkGetAllSharedNotes())
+        // dispatch(thunkGetAllSharedNotes())
 
         fetchCheck();
     }, [dispatch, noteUpdate]);
