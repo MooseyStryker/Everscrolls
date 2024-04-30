@@ -19,13 +19,14 @@ export default function NoteHomePage() {
     const navigate = useNavigate();
     const sessionUser = useSelector((state) => state.session.user);
     const currentNote = useSelector((state) => state.notes[noteid]);
+    console.log("🚀 ~ NoteHomePage ~ currentNote:", currentNote)
     const { closeModal, setModalContent } = useModal()
 
 
     const tasks = useSelector((state) => state.tasks)
     const tasksObj = Object.values(tasks)
 
-    const [title, setTitle] = useState()
+    const [title, setTitle] = useState(currentNote?.title || "")
     const [isEditing, setIsEditing] = useState(false);
 
 
@@ -64,7 +65,7 @@ export default function NoteHomePage() {
 
     useEffect(() => {
         if (currentNote && !title) { // This will pull data when coming in but wont keep refreshing title when dispatch new edit titl
-            setTitle(currentNote.note_title);
+            setTitle(currentNote.title || currentNote.note_title); // Changed this to have title as well, It may cause issues further with title being empty
         }
     }, [currentNote]);
 

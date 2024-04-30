@@ -53,6 +53,7 @@ class User(db.Model, UserMixin):
     created_at = db.Column(DateTime, default=datetime.utcnow)
 
     notes = db.relationship("ShareNote", back_populates="user")
+    original_note_creator = db.relationship("Note", back_populates="user_creator")
 
 
     user_tasks = db.relationship("Task", back_populates='task_to_user', cascade="all, delete-orphan")
@@ -123,6 +124,7 @@ class Note(db.Model):
 
     users = db.relationship("ShareNote", back_populates="note")
 
+    user_creator = db.relationship("User", back_populates="original_note_creator")
 
     notes_to_notebook = db.relationship("Notebook", back_populates='notebook_to_notes')
     notes_task = db.relationship("Task", back_populates='tasks_to_notes', cascade="all, delete-orphan")

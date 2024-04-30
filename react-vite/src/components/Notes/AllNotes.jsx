@@ -12,6 +12,8 @@ import DeleteNoteModal from "./DeleteNoteModal";
 import PostNoteModal from "./PostNoteModal";
 import { FaShareFromSquare } from "react-icons/fa6";
 import { thunkGetAllSharedNotes } from "../../redux/sharenote";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+
 
 
 
@@ -74,8 +76,8 @@ export default function AllNotes() {
                         <FaTimes />
                     </div>
                         <div className="singlenote" key={note.id}>
-                            <h3 style={{marginBottom:'15px'}}>{note.note_title && note.note_title.length > 20 ? `${note.note_title.substring(0, 14)}...` : note.note_title}</h3>
-                            {sharedNotes.filter(shareNote => shareNote.note_id === note.id).length > 0 && <FaShareFromSquare />}
+                            <h3>{note.note_title && note.note_title.length > 20 ? `${note.note_title.substring(0, 14)}...` : note.note_title}</h3>
+                            <div>{sharedNotes.filter(shareNote => shareNote.note_id === note.id).length > 0 && <FaShareFromSquare />}</div>
                             <div>
                                 {note.bodies && note.bodies.slice(0, 4).map((body, index) => (
                                     <p key={index} style={{fontSize:'small'}}>
@@ -88,7 +90,10 @@ export default function AllNotes() {
                                     Tasks:
                                 </h3>
                                 {note.tasks && note.tasks.slice(0,4).map((task, index) =>(
-                                    <p key={index} style={{fontSize:'small'}}>{task.body}</p>
+                                    <div style={{display:'flex'}}>
+                                        <IoMdCheckmarkCircleOutline/>
+                                        <p style={{fontSize:'small', marginLeft:'5px'}} key={index}>{task.body}</p>
+                                    </div>
                                 ))}
                             </div>
                         </div>

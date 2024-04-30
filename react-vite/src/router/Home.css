@@ -17,7 +17,7 @@
 .main-container-allhands {
     display: flex;
     margin-top: 10px;
-    width: 280px;
+    width: fit-content;
 }
 
 

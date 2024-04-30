@@ -76,10 +76,11 @@ def new_note():
 def edit_note(note_id):
     stmt = select(Note).where(Note.id == note_id)               # Select the note with the given ID
     note = db.session.execute(stmt).scalar_one()                # Execute the statement and get the note
+    permission_check = db.session.query(ShareNote).filter_by(user_id=current_user.id, note_id=note_id).first()      # Check if the note shared has permission to edit the note
 
-    if note.creator_id != current_user.id:                      # Check if the current user is the creator of the note
+    if note.creator_id != current_user.id and (permission_check is None):    # If the current user is not the creator of the note and does not have 'View and Edit' permissions, return a 403 status code with an error message
         return jsonify({
-            "Not Authorized": "forbidden"
+            "Not authorized": "Forbidden"
         }), 403
 
     # If the request method is PUT, edit the note
@@ -173,7 +174,9 @@ def get_notebody(note_id):
 def adding_notebody(note_id):
     auth = select(Note).where(Note.id == note_id)
     note = db.session.execute(auth).scalar_one()
-    if (note.creator_id != current_user.id):
+    permission_check = db.session.query(ShareNote).filter_by(user_id=current_user.id, note_id=note_id).first()      # Check if the note shared has permission to edit the note
+
+    if note.creator_id != current_user.id and (permission_check is None):    # If the current user is not the creator of the note and does not have 'View and Edit' permissions, return a 403 status code with an error message
         return jsonify({
             "Not authorized": "Forbidden"
         }), 403
@@ -243,7 +246,9 @@ def edit_notebody(note_id, notebody_id):
 def yeet_notebody(note_id, notebody_id):
     auth = select(Note).where(Note.id == note_id)
     note = db.session.execute(auth).scalar_one()
-    if (note.creator_id != current_user.id):
+    permission_check = db.session.query(ShareNote).filter_by(user_id=current_user.id, note_id=note_id).first()      # Check if the note shared has permission to edit the note
+
+    if note.creator_id != current_user.id and (permission_check is None):    # If the current user is not the creator of the note and does not have 'View and Edit' permissions, return a 403 status code with an error message
         return jsonify({
             "Not authorized": "Forbidden"
         }), 403
@@ -264,7 +269,9 @@ def yeet_notebody(note_id, notebody_id):
 def delete_all_notebody(note_id):
     auth = select(Note).where(Note.id == note_id)
     note = db.session.execute(auth).scalar_one()
-    if (note.creator_id != current_user.id):
+    permission_check = db.session.query(ShareNote).filter_by(user_id=current_user.id, note_id=note_id).first()      # Check if the note shared has permission to edit the note
+
+    if note.creator_id != current_user.id and (permission_check is None):    # If the current user is not the creator of the note and does not have 'View and Edit' permissions, return a 403 status code with an error message
         return jsonify({
             "Not authorized": "Forbidden"
         }), 403
@@ -615,7 +622,7 @@ def view_all_shared_notes():
             "user_id": results.user_id,
             "note_id": results.note_id,
             "opened": results.opened,
-            "permissions": results.permissions
+            "permissions": results.permissions,
         }
 
         all_notes.append(results_info)
@@ -644,11 +651,16 @@ def view_note_shared_with_user(shared_user_id):
     shared_notes = []
     for share_note in shared_notes_query:
 
-        note_info = {
+        note_info = {                                           # This eager loads allow one pull to get all the data associated with the shared note, prevents multiple long pulls from db
             "id": share_note.id,
             "note_id": share_note.note_id,
             "note_title": share_note.note.title,
             "permissions": share_note.permissions,
+            "original_user": share_note.note.user_creator.to_dict(),
+            "tasks": [task.to_dict() for task in share_note.note.notes_task],
+            "bodies": [body.to_dict() for body in share_note.note.notes_body],
+            "audios": [audio.to_dict() for audio in share_note.note.notes_audio],
+            "images": [image.to_dict() for image in share_note.note.notes_images]
         }
         shared_notes.append(note_info)
 

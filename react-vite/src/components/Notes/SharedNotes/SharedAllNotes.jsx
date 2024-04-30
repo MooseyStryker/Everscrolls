@@ -12,6 +12,8 @@ import DeleteNoteModal from "../DeleteNoteModal";
 import PostNoteModal from "../PostNoteModal";
 import { FaShareFromSquare } from "react-icons/fa6";
 import { thunkGetAllSharedNotes } from "../../../redux/sharenote";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+
 
 
 
@@ -63,19 +65,22 @@ export default function SharedAllNotes({user}) {
     return (
         <div className="homenotescontainer">
             {sharedNotes?.map((note) => (
-                <div className="singlenotecontainer" onClick={() => handleNavigate(note.id)}>
+                <div className="singlenotecontainer" onClick={() => handleNavigate(note.note_id)}>
                     {note.note_id}
 
                     <div className="deletenoteandhidetillhover" onClick={(e) => handleDeleteNoteModal(e,note.id)} style={{ cursor: 'pointer' }}>
                         <FaTimes />
                     </div>
                         <div className="singlenote" key={note.id}>
-                            <h2 style={{marginBottom:'15px'}}>{note.note_title && note.note_title.length > 20 ? `${note.note_title.substring(0, 14)}...` : note.note_title}</h2>
-                            <FaShareFromSquare />
+                            <h3>{note.note_title && note.note_title.length > 20 ? `${note.note_title.substring(0, 14)}...` : note.note_title}</h3>
+                            <div style={{marginTop:'5px', marginBottom:'5px', display:'flex'}}>
+                                <FaShareFromSquare />
+                                <p> Shared by: {note.original_user.username && note.original_user.username.length > 20 ? `${note.original_user.username.substring(0, 20)}...` : note.original_user.username}</p>
+                            </div>
 
                             <div>
                                 {note.bodies && note.bodies.slice(0, 4).map((body, index) => (
-                                    <p key={index}>
+                                    <p key={index} style={{fontSize:'small'}}>
                                         • {body.body.length > 20 ? `${body.body.substring(0, 18)}...` : body.body}    {/* This keeps super long strings from bleeding over the div  */}
                                     </p>
                                 ))}
@@ -86,7 +91,10 @@ export default function SharedAllNotes({user}) {
                                     Tasks:
                                 </h3>
                                 {note.tasks && note.tasks.slice(0,4).map((task, index) =>(
-                                    <p key={index}>{task.body}</p>
+                                    <div style={{display:'flex'}}>
+                                        <IoMdCheckmarkCircleOutline/>
+                                        <p style={{fontSize:'small', marginLeft:'5px'}} key={index}>{task.body}</p>
+                                    </div>
                                 ))}
                             </div>
 

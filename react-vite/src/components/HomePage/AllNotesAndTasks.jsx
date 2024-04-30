@@ -57,8 +57,8 @@ export default function AllNotesAndTasks() {
                             <div className="allnotes-alltasks-connectedtouser">
 
                                 <div className="notesinhome">
-                                    <div>
-                                        <button disabled={showJustShare} style={{backgroundColor: showJustShare ? 'grey' : '',cursor: showJustShare ? 'not-allowed' : 'pointer'}} onClick={() => {setShowJustShare(true); setShowAllNotes(false)}}>Show Shared Notes</button>
+                                    <div style={{marginBottom:"5px"}}>
+                                        <button disabled={showJustShare} style={{marginRight:"10px", marginLeft:"3px", backgroundColor: showJustShare ? 'grey' : '',cursor: showJustShare ? 'not-allowed' : 'pointer'}} onClick={() => {setShowJustShare(true); setShowAllNotes(false)}}>Show Shared Notes</button>
                                         <button disabled={showAllNotes} style={{backgroundColor: showAllNotes ? 'grey' : '',cursor: showAllNotes ? 'not-allowed' : 'pointer'}} onClick={() => {setShowJustShare(false); setShowAllNotes(true)}}>All Notes</button>
                                     </div>
                                     <div className="note-individual">

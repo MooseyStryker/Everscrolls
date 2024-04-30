@@ -5,37 +5,38 @@ from sqlalchemy.sql import text
 # Adds a demo user, you can add other users here if you want
 def seed_users():
     user1 = User(
-        username='user1',
-        first_name='First1',
-        last_name='Last1',
-        email='user1@aa.io',
+        username='captainjames',
+        first_name='James',
+        last_name='Kirk',
+        email='captainjames@starfleet.com',
         role='Captain',
-        password='password'
+        password='password123'
     )
     user2 = User(
-        username='user2',
-        first_name='First2',
-        last_name='Last2',
-        email='user2@aa.io',
+        username='firstmatejohnpoipoiijopoike',
+        first_name='John',
+        last_name='Doe',
+        email='firstmatejohn@starfleet.com',
         role='First Mate',
-        password='password'
+        password='password123'
     )
     user3 = User(
-        username='user3',
-        first_name='First3',
-        last_name='Last3',
-        email='user3@aa.io',
+        username='crewmichael',
+        first_name='Michael',
+        last_name='Smith',
+        email='crewmichael@starfleet.com',
         role='Crew',
-        password='password'
+        password='password123'
     )
     user4 = User(
-        username='ShareTest',
+        username='lydiag',
         first_name='Lydia',
         last_name='Ge',
-        email='share@',
+        email='lydiag@starfleet.com',
         role='Crew',
-        password='password'
+        password='password123'
     )
+
 
     db.session.add(user1)
     db.session.add(user2)

@@ -53,17 +53,12 @@ export const thunkGetAllSharedNotes = () => async(dispatch) => {
 export const thunkGetAllNotesSharedWithUser = (sharedUserId) => async (dispatch) => {
     const response = await fetch(`/api/notes/shared/all/${sharedUserId}`);
 
-    console.log("🚀 ~ thunkGetAllNotesSharedWithUser ~ response:", response)
     if (response.ok) {
       const data = await response.json();
-      console.log("🚀 ~ thunkGetAllNotesSharedWithUser ~ data:", data)
-
-
       if (data.errors) {
         return data;
       }
       const here = await dispatch(getAllNotesSharedWithUser(data));
-      console.log("🚀 ~ thunkGetAllNotesSharedWithUser ~ here:", here)
     }
 };
 
@@ -142,7 +137,6 @@ export default function sharedNotesReducer(state = {}, action) {
             action.sharedNotes.forEach(note => {
                 newState[note.id] = note;
             });
-            console.log("🚀 ~ sharedNotesReducer ~ newState:", newState)
             return newState;
 
 
