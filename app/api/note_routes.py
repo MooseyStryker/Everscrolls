@@ -697,7 +697,7 @@ def view_shared_notes(note_id):
 @note_routes.route("/shared", methods=["POST"])
 @login_required
 def share_this_note():
-    form = ShareNote()
+    form = ShareNoteForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
 
     if form.validate_on_submit():

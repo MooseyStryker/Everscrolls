@@ -5,7 +5,10 @@
     margin-bottom: 30px;
 
 }
-
+.notebooks-container{
+    max-height: 80vh;
+    overflow: scroll;
+}
 .notebookname{
     border-radius: 5px;
     padding: 10px;

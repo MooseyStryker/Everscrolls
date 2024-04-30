@@ -66,33 +66,35 @@ export default function AllNotebooks() {
             <div className="idkanymore">
                 <h6>Double click the name to edit!</h6>
             </div>
-                {allNotebooks && notebooksObj.map((notebook) => (
-                    <div className="notebookstuffcontainer" key={notebook.user_id}>
-                        <div>
-                            {editingNotebookId === notebook.id ? (
-                                <input
-                                    className="notebooknameinput"
-                                    value={editedName}
-                                    onChange={(e) => setEditedName(e.target.value)}
-                                    onBlur={() => handleSave(notebook.id)}
-                                    onKeyDown={(event) => {
-                                        if (event.key === 'Enter') {
-                                            handleSave(notebook.id);
-                                        }
-                                    }}
-                                />
-                            ) : (
-                                <div className="notebookname" onDoubleClick={() => handleEdit(notebook)}>
-                                    <h3>{notebook.notebook_name}</h3>
-                                </div>
-                            )}
+                <div className="notebooks-container">
+                    {allNotebooks && notebooksObj.map((notebook) => (
+                        <div className="notebookstuffcontainer" key={notebook.user_id}>
+                            <div>
+                                {editingNotebookId === notebook.id ? (
+                                    <input
+                                        className="notebooknameinput"
+                                        value={editedName}
+                                        onChange={(e) => setEditedName(e.target.value)}
+                                        onBlur={() => handleSave(notebook.id)}
+                                        onKeyDown={(event) => {
+                                            if (event.key === 'Enter') {
+                                                handleSave(notebook.id);
+                                            }
+                                        }}
+                                    />
+                                ) : (
+                                    <div className="notebookname" onDoubleClick={() => handleEdit(notebook)}>
+                                        <h3>{notebook.notebook_name}</h3>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="opendeletebuttons">
+                                <button onClick={() => navigate(`/home/notebook/${notebook.id}`)} style={{marginRight:'5px'}} >Open</button>
+                                <button onClick={() =>deleteNotebook(notebook.id)}>Delete</button>
+                            </div>
                         </div>
-                        <div className="opendeletebuttons">
-                            <button onClick={() => navigate(`/home/notebook/${notebook.id}`)} style={{marginRight:'5px'}} >Open</button>
-                            <button onClick={() =>deleteNotebook(notebook.id)}>Delete</button>
-                        </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             <div>
                 <button onClick={postNotebooks}>Create new Notebook</button>
             </div>
