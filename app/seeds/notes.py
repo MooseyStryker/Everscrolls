@@ -26,11 +26,11 @@ def seed_notes():
         updated_at=datetime.utcnow()
     )
     note4 = Note(
-    creator_id=1,
-    notebook_id=4,
-    title='Thoughts',
-    created_at=datetime.utcnow(),
-    updated_at=datetime.utcnow()
+        creator_id=1,
+        notebook_id=4,
+        title='Thoughts',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
     )
 
     note5 = Note(
@@ -105,11 +105,11 @@ def seed_notes():
         updated_at=datetime.utcnow()
     )
     note14 = Note(
-    creator_id=3,
-    notebook_id=14,
-    title='Sunset',
-    created_at=datetime.utcnow(),
-    updated_at=datetime.utcnow()
+        creator_id=3,
+        notebook_id=14,
+        title='Sunset',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
     )
 
     note15 = Note(
@@ -224,11 +224,11 @@ def seed_notes():
         updated_at=datetime.utcnow()
     )
     note29 = Note(
-    creator_id=2,
-    notebook_id=1,
-    title='Whimsy',
-    created_at=datetime.utcnow(),
-    updated_at=datetime.utcnow()
+        creator_id=2,
+        notebook_id=1,
+        title='Whimsy',
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
     )
 
     note30 = Note(

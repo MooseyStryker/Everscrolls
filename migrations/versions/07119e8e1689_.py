@@ -98,6 +98,8 @@ def upgrade():
     if environment == "production":
         op.execute(f"ALTER TABLE note_images SET SCHEMA {SCHEMA};")
 
+
+
     op.create_table('tasks',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('note_id', sa.Integer(), nullable=True),
@@ -110,6 +112,8 @@ def upgrade():
     )
     if environment == "production":
         op.execute(f"ALTER TABLE tasks SET SCHEMA {SCHEMA};")
+
+
 
     op.create_table('share_notes',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
