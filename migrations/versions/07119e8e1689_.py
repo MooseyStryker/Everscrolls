@@ -73,6 +73,8 @@ def upgrade():
     if environment == "production":
         op.execute(f"ALTER TABLE note_audios SET SCHEMA {SCHEMA};")
 
+
+
     op.create_table('note_bodys',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('note_id', sa.Integer(), nullable=True),
@@ -120,7 +122,7 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     if environment == "production":
-        op.execute(f"ALTER TABLE users_notes SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE share_notes SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 
