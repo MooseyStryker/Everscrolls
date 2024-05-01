@@ -5,42 +5,42 @@ from datetime import datetime
 
 # Adds a demo note body, you can add other note bodies here if you want
 def seed_share_notes():
-    # share_note1 = ShareNote(
-    #     user_id = 1,
-    #     note_id = 2,
-    #     opened = False,
-    #     permissions = "View Only"
-    # )
-    # share_note2 = ShareNote(
-    #     user_id = 1,
-    #     note_id = 3,
-    #     opened = False,
-    #     permissions = "View Only"
-    # )
-    # share_note3 = ShareNote(
-    #     user_id = 1,
-    #     note_id = 5,
-    #     opened = False,
-    #     permissions = "View Only"
-    # )
-    # share_note4 = ShareNote(
-    #     user_id = 1,
-    #     note_id = 6,
-    #     opened = False,
-    #     permissions = "View Only"
-    # )
-    # share_note5 = ShareNote(
-    #     user_id = 1,
-    #     note_id = 7,
-    #     opened = False,
-    #     permissions = "View Only"
-    # )
-    # share_note6 = ShareNote(
-    #     user_id = 1,
-    #     note_id = 9,
-    #     opened = False,
-    #     permissions = "View Only"
-    # )
+    share_note1 = ShareNote(
+        user_id = 1,
+        note_id = 2,
+        opened = False,
+        permissions = "View Only"
+    )
+    share_note2 = ShareNote(
+        user_id = 1,
+        note_id = 3,
+        opened = False,
+        permissions = "View Only"
+    )
+    share_note3 = ShareNote(
+        user_id = 1,
+        note_id = 5,
+        opened = False,
+        permissions = "View Only"
+    )
+    share_note4 = ShareNote(
+        user_id = 1,
+        note_id = 6,
+        opened = False,
+        permissions = "View Only"
+    )
+    share_note5 = ShareNote(
+        user_id = 1,
+        note_id = 7,
+        opened = False,
+        permissions = "View Only"
+    )
+    share_note6 = ShareNote(
+        user_id = 1,
+        note_id = 9,
+        opened = False,
+        permissions = "View Only"
+    )
 
     db.session.add(share_note1)
     db.session.add(share_note2)

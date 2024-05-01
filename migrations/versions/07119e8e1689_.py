@@ -115,18 +115,18 @@ def upgrade():
 
 
 
-    # op.create_table('share_notes',
-    # sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    # sa.Column('user_id', sa.Integer(), nullable=True),
-    # sa.Column('note_id', sa.Integer(), nullable=True),
-    # sa.Column('opened', sa.Boolean(), nullable=True),
-    # sa.Column('permissions', sa.Enum('View Only', 'View and Edit', name='permission_types'), nullable=False),
-    # sa.ForeignKeyConstraint(['note_id'], ['notes.id'], ),
-    # sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
-    # sa.PrimaryKeyConstraint('id')
-    # )
-    # if environment == "production":
-    #     op.execute(f"ALTER TABLE share_notes SET SCHEMA {SCHEMA};")
+    op.create_table('share_notes',
+    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('note_id', sa.Integer(), nullable=True),
+    sa.Column('opened', sa.Boolean(), nullable=True),
+    sa.Column('permissions', sa.Enum('View Only', 'View and Edit', name='permission_types'), nullable=False),
+    sa.ForeignKeyConstraint(['note_id'], ['notes.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    if environment == "production":
+        op.execute(f"ALTER TABLE share_notes SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 
