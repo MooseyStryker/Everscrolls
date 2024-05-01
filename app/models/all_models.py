@@ -10,6 +10,31 @@ role_enum = Enum('Captain', 'First Mate', 'Crew', 'Bucket swabbler', name='role_
 permission_enum = Enum('View Only', 'View and Edit', name='permission_types')
 
 
+class ShareNote(db.Model):
+    __tablename__ = 'share_notes'
+
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    note_id = db.Column(db.Integer, db.ForeignKey('notes.id'), primary_key=True)
+    opened = db.Column(db.Boolean, default=False)
+    permissions = db.Column(permission_enum, nullable=False)
+
+
+    # relationships
+    user = db.relationship("User", back_populates="notes")
+    note = db.relationship("Note", back_populates="users")
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'note_id': self.note_id,
+            'opened': self.opened,
+            'permissions': self.permissions
+        }
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -216,31 +241,7 @@ class NoteImage(db.Model):
 
 
 
-class ShareNote(db.Model):
-    __tablename__ = 'share_notes'
 
-    if environment == "production":
-        __table_args__ = {'schema': SCHEMA}
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    note_id = db.Column(db.Integer, db.ForeignKey('notes.id'))
-    opened = db.Column(db.Boolean, default=False)
-    permissions = db.Column(permission_enum, nullable=False)
-
-
-    # relationships
-    user = db.relationship("User", back_populates="notes")
-    note = db.relationship("Note", back_populates="users")
-
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'user_id': self.user_id,
-            'note_id': self.note_id,
-            'opened': self.opened,
-            'permissions': self.permissions
-        }
 
 
 
