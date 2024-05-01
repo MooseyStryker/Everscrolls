@@ -45,12 +45,12 @@ def seed():
 # Creates the `flask seed undo` command
 @seed_commands.command('undo')
 def undo():
-    undo_users()
-    undo_notebooks()
-    undo_notes()
-    undo_tasks()
-    undo_note_bodies()
-    undo_note_audios()
-    undo_note_images()
     undo_share_notes()
+    undo_note_images()
+    undo_note_audios()
+    undo_note_bodies()
+    undo_tasks()
+    undo_notes()
+    undo_notebooks()
+    undo_users()
     # Add other undo functions here
