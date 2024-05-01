@@ -13,14 +13,15 @@ permission_enum = Enum('View Only', 'View and Edit', name='permission_types')
 class ShareNote(db.Model):
     __tablename__ = 'share_notes'
 
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+        
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     note_id = db.Column(db.Integer, db.ForeignKey('notes.id'))
     opened = db.Column(db.Boolean, default=False)
     permissions = db.Column(permission_enum, nullable=False)
 
-    if environment == "production":
-        __table_args__ = {'schema': SCHEMA}
 
     # relationships
     user = db.relationship("User", back_populates="notes")
