@@ -1,0 +1,58 @@
+.titlecontainernotebook{
+    border-bottom: 1px dotted grey;
+}
+.idkanymore{
+    margin-bottom: 30px;
+
+}
+.notebooks-container{
+    max-height: 80vh;
+    overflow: scroll;
+}
+.notebookname{
+    border-radius: 5px;
+    padding: 10px;
+    transition: background-color 0.3s ease; /* Add transition effect */
+    width: 100%;
+    cursor: pointer;
+
+
+}
+.notebooknameinput{
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #ADD8E6;
+    border: none;
+    font-size: 1.17em; /* Similar to h3 */
+    font-weight: bold; /* Make the text bold like h3 */
+    font-family: Arial, sans-serif; /* Adjust as needed */
+    margin-right: 10px;
+}
+
+
+.notebookname:hover {
+    background-color: #f5f5f5; /* change this to your preferred color */
+}
+
+.notebookstuffcontainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.notebookstuffcontainer button {
+    display: none;
+}
+
+.notebookstuffcontainer:hover button {
+    display: block; /* Show the button on hover */
+}
+
+.opendeletebuttons{
+    display: flex;
+    /* justify-content: space-between; */
+    height: 40px;
+}

@@ -1,0 +1,84 @@
+.main-container-home {
+    /* border: 1px solid blue; */
+    box-sizing: border-box;
+    display: flex;
+    width: 200px;
+    height: 100vh;
+    flex: 1;
+}
+
+.rightinfo{
+    /* border: 1px solid red; */
+    background-color: #F2F2F2;
+    margin: 15px;
+    border-radius: 25px;
+    max-width: 98%;
+    height: 97vh;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.pictureontop{
+    /* border: 1px solid green; */
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+}
+
+.shipview{
+    width: 90%;
+}
+
+.note-individual{
+    width: 100%;
+}
+
+.homenotelayout{
+    /* border: 1px solid green; */
+    margin: 4px;
+    width: auto;
+}
+
+.home-page-text{
+    /* border: 1px solid orange; */
+    margin-right: 15px;
+    margin-left: 21px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* color: ; */
+}
+
+.note-cal-task{
+    /* border: 1px solid orange; */
+    margin: 4px;
+
+}
+
+.allnotes-alltasks-connectedtouser, .scratchpad-cal{
+    display: flex;
+    justify-content: space-between;
+    margin: 4px;
+    height: 100%;
+    width: 100%;
+}
+
+.notesinhome, .tasksinhome, .scratchinhome, .bonus-calendar{
+    /* border: 1px solid brown; */
+    margin: 4px;
+}
+
+.notesinhome{
+    margin: 4px;
+    display: flex;
+    flex-direction: column;
+    width: 98%;
+}
+
+
+.creatinganewnote{
+    /* border: 1px solid pink; */
+    margin: 4px;
+    cursor: pointer;
+}

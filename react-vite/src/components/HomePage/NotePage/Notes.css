@@ -1,0 +1,93 @@
+.note-notes-container{
+    /* margin-left: 40px; */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.titleinfo-needsmargin{
+    /* border: 1px solid red; */
+    width: 802;
+}
+.titleinputedit{
+    /* border: 1px solid red; */
+    background: none;
+    border: none;
+    font-size: 31px;
+    outline: none;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 700;
+    margin-top: 21.440px;
+    margin-bottom: 21.440px;
+    width: 100%;
+}
+.titleinfo-needsmargin{
+    margin-bottom: 30px;
+    word-wrap: break-word;
+}
+
+
+.home-notes{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    /* background-color: white; */
+
+}
+
+/* This makes it look like a page */
+.main-notes-page{
+    border: 1px solid rgb(178, 178, 178);
+    background-color: white;
+    height: 97vh;
+    width: auto;
+}
+
+.notesinfocontainer{
+    /* margin-top: 40px; */
+    padding-top: 70px;
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    height:97%;
+    width: 1100px;
+    padding-left: 40px;
+    padding-right: 40px;
+
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.notesinfo{
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
+
+}
+
+.noteinput{
+    border: 3px solid rgb(38, 0, 128);
+    width: 100%;
+    border: none;
+    resize: none; /* Prevents the user from resizing the textarea */
+    outline: none; /* Removes the blue border on focus */
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.taskandattachmentscontainer{
+    /* border: 1px solid red; */
+    display: flex;
+    padding-bottom: 30px;
+}
+
+.task-store-container{
+    width: 450px
+}
+
+.attachment-store-container{
+    width: 450px
+
+}

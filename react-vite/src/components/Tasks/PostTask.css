@@ -1,0 +1,31 @@
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 400px;
+    height: auto;
+    padding: 40px;
+}
+
+.form-div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.form-input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
