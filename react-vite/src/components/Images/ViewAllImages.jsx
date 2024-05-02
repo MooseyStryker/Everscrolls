@@ -29,7 +29,7 @@ export default function ViewAllImages({noteId}){
         <h2 className="task-store">Attachments</h2>
 
         <div>
-            {allImages?.map(image =>(
+            {allImages?.filter(image => image.note_id == noteId).map(image =>( // Filters noteId so when switching notes, the images shows with the appropraite note and note show on every note
                 <div key={image.id} className="imageinnotecontainer">
                     <img className="imagenotes" src={image.image_file}></img>
                 </div>

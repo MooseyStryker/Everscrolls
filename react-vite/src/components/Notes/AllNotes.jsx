@@ -96,6 +96,14 @@ export default function AllNotes() {
                                     </div>
                                 ))}
                             </div>
+                            <div>
+                                <h3 className="thistoo">
+                                        Attachments:
+                                </h3>
+                                {note.images && note.images.slice(0,6).map((image, index) => (
+                                    <img className="imagespreviewinallnotes" key={index} src={image.image_file}></img>
+                                ))}
+                            </div>
                         </div>
                     </div>
             ))}
