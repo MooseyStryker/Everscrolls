@@ -57,7 +57,7 @@ export default function SingleNoteTask({ noteId, noteTitle }) {
     return(
         <div className="taskcontainer">
             <div>
-                <h1>Tasks</h1>
+                <h2>Tasks</h2>
             </div>
             <div>{tasksObj?.filter(task => task.note_id == noteId).length} tasks</div>
             <div>

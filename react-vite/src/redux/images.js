@@ -9,9 +9,8 @@ const getAllImage = (noteId, images) => ({
   images
 });
 
-const postImage = (noteId, image) => ({
+const postImage = (image) => ({
     type: POST_IMAGE_TO_NOTE,
-    noteId,
     image
 })
 const deleteImage = (noteId, imageId) => ({
@@ -20,8 +19,8 @@ const deleteImage = (noteId, imageId) => ({
     imageId
 })
 
-export const thunkGetAllImage = (noteId) => async (dispatch) => {
-    const response = await fetch(`/api/notes/${noteId}/image`);
+export const thunkGetAllImages = (noteId) => async (dispatch) => {
+    const response = await fetch(`/api/notes/${noteId}/images`);
     const data = await response.json();
     if (data.errors) {
         return data;
@@ -31,17 +30,17 @@ export const thunkGetAllImage = (noteId) => async (dispatch) => {
 };
 
 
-export const thunkPostAllImage = (noteId, image) => async (dispatch) => {
-    const response = await fetch(`/api/notes/${noteId}/image`,{
+export const thunkPostImage = (noteId, image) => async (dispatch) => {
+    const response = await fetch(`/api/notes/${noteId}/images`,{
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(image),
     });
-    const data = await response.json();
+    console.log("🚀 ~ thunkPostImage ~ response:", response)
+    const { data } = await response.json();
     if (data.errors) {
-        return data;
+        return data.errors;
     } else {
-        dispatch(postImage(noteId, data));
+        dispatch(postImage(data));
     }
 };
 

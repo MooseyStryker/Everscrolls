@@ -5,6 +5,7 @@ from app.models import db, Note, Task, NoteBody, NoteAudio, NoteImage, ShareNote
 from app.forms import NoteForm, ShareNoteForm, TaskForm, NoteBodyForm, NoteAudioForm, NoteImageForm
 from sqlalchemy import select, and_
 from sqlalchemy.orm import joinedload
+from app.api.aws import upload_file_to_s3, get_unique_filename
 
 note_routes = Blueprint("notes", __name__)
 
@@ -425,18 +426,19 @@ def view_all_image(note_id):
         }), 403
 
     get_image = select(NoteImage).where(NoteImage.note_id == note_id)
-    allImages = db.session.execute(get_image).all()
 
-    results_info = [
-        {
-            "id": image.id,
-            "note_id": image.note_id,
-            "image_file": image.image_file
-        }
-        for image in allImages
-    ]
+    all_photos = []
 
-    return jsonify(results_info)
+    for row in db.session.execute(get_image):
+        image = row.NoteImage
+        results_info = {
+                "id": image.id,
+                "note_id": image.note_id,
+                "image_file": image.image_file
+            }
+        all_photos.append(results_info)
+
+    return jsonify(all_photos)
 
 
 
@@ -445,7 +447,9 @@ def view_all_image(note_id):
 def add_image(note_id):
     check_auth = select(Note).where(Note.id == note_id)
     note = db.session.execute(check_auth).scalar_one()
-    if (note.creator_id != current_user.id):
+    permission_check = db.session.query(ShareNote).filter_by(user_id=current_user.id, note_id=note_id).first()      # Check if the note shared has permission to edit the note
+
+    if note.creator_id != current_user.id and (permission_check is None):    # If the current user is not the creator of the note and does not have 'View and Edit' permissions, return a 403 status code with an error message
         return jsonify({
             "Not authorized": "Forbidden"
         }), 403
@@ -454,16 +458,22 @@ def add_image(note_id):
     form["csrf_token"].data = request.cookies["csrf_token"]
 
     if form.validate_on_submit():
-        newImage = NoteImage(
-            note_id = note_id,
-            image_file = form.image_file.data,
-        )
-        db.session.add(newImage)
+        image = form.data["image"]
+        image.filename = get_unique_filename(image.filename)
+        upload = upload_file_to_s3(image)
+        print(upload)
+
+        if "image_url" not in upload:
+            return jsonify({"errors": [upload]}), 400
+        image_url = upload["image_url"]
+        new_image = NoteImage(note_id, image_file=image_url)
+        db.session.add(new_image)
         db.session.commit()
+
         return jsonify(
-            newImage.to_dict()
+            image_url
         ), 201
-    return jsonify(form.errors), 400
+    return jsonify("errors", form.errors), 400
 
 
 

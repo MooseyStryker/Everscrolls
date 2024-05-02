@@ -6,15 +6,15 @@ from datetime import datetime
 def seed_note_images():
     note_image1 = NoteImage(
         note_id=1,
-        image_file='https://imgur.com/a/5m7d3'
+        image_file='https://everscrolls.s3.amazonaws.com/Designer+(7).png'
     )
     note_image2 = NoteImage(
-        note_id=2,
-        image_file='https://imgur.com/a/IffqEVg'
+        note_id=1,
+        image_file='https://everscrolls.s3.amazonaws.com/Designer+(6).png'
     )
     note_image3 = NoteImage(
-        note_id=3,
-        image_file='https://imgur.com/a/5m7d3'
+        note_id=1,
+        image_file='https://everscrolls.s3.amazonaws.com/Designer+(5).png'
     )
 
     db.session.add(note_image1)

@@ -10,6 +10,7 @@ import SingleNoteTask from "../../Tasks/SingleNoteTask";
 import NoteBodyDivs from "./NoteBodyDivs";
 import { useModal } from "../../../context/Modal";
 import ShareNoteModal from "../../Notes/SharedNotes/ShareNoteModal";
+import ViewAllImages from "../../Images/ViewAllImages";
 
 
 
@@ -117,9 +118,9 @@ export default function NoteHomePage() {
                                     </div>
                                 </div>
 
-                                {/* <div className="attachment-store-container">
-                                    <h2 className="task-store">Attachments</h2>
-                                </div> */}
+                                <div className="attachment-store-container">
+                                    <ViewAllImages noteId={noteid} />
+                                </div>
 
                             </div>
 
