@@ -13,14 +13,15 @@ permission_enum = Enum('View Only', 'View and Edit', name='permission_types')
 class ShareNote(db.Model):
     __tablename__ = 'share_notes'
 
+    if environment == "production":
+        __table_args__ = {'schema': SCHEMA}
+
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    note_id = db.Column(db.Integer, db.ForeignKey('notes.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('users.id')))
+    note_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod('notes.id')))
     opened = db.Column(db.Boolean, default=False)
     permissions = db.Column(permission_enum, nullable=False)
 
-    if environment == "production":
-        __table_args__ = {'schema': SCHEMA}
 
     # relationships
     user = db.relationship("User", back_populates="notes")
@@ -143,7 +144,6 @@ class Note(db.Model):
         }
 
 
-
 class Task(db.Model):
     __tablename__ = 'tasks'
 
@@ -240,6 +240,7 @@ class NoteImage(db.Model):
             'note_id': self.note_id,
             'image_file': self.image_file
         }
+
 
 
 
