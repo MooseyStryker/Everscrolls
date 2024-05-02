@@ -454,25 +454,25 @@ def add_image(note_id):
             "Not authorized": "Forbidden"
         }), 403
 
+
+
     form = NoteImageForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
 
     if form.validate_on_submit():
-        image = form.data["image"]
+        image = form.data["image_file"]
         image.filename = get_unique_filename(image.filename)
         upload = upload_file_to_s3(image)
         print(upload)
 
-        if "image_url" not in upload:
+        if "url" not in upload:
             return jsonify({"errors": [upload]}), 400
-        image_url = upload["image_url"]
+        image_url = upload["url"]
         new_image = NoteImage(note_id, image_file=image_url)
         db.session.add(new_image)
         db.session.commit()
 
-        return jsonify(
-            image_url
-        ), 201
+        return jsonify(image_url), 201
     return jsonify("errors", form.errors), 400
 
 

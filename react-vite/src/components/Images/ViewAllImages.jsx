@@ -4,13 +4,14 @@ import { useModal } from "../../context/Modal"
 import { useDispatch } from "react-redux"
 import { thunkGetAllImages } from "../../redux/images"
 import PostImageModal from "./PostImageModal"
+import './ViewAllImages.css'
 
 export default function ViewAllImages({noteId}){
     const rawImage = useSelector((state) => state.images)
     const allImages = Object.values(rawImage)
 
     const dispatch = useDispatch()
-    const {closeModal, setModalContent} = useModal()
+    const { closeModal, setModalContent } = useModal()
 
     const postImageModal = () => {
         setModalContent(<PostImageModal noteId={noteId} closeModal={closeModal}/>)
@@ -29,8 +30,8 @@ export default function ViewAllImages({noteId}){
 
         <div>
             {allImages?.map(image =>(
-                <div key={image.id}>
-                    <img src={image.image_file}></img>
+                <div key={image.id} className="imageinnotecontainer">
+                    <img className="imagenotes" src={image.image_file}></img>
                 </div>
             ))}
 

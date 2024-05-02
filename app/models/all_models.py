@@ -234,6 +234,10 @@ class NoteImage(db.Model):
 
     images_to_notes = db.relationship("Note", back_populates='notes_images')
 
+    def __init__(self, note_id, image_file):
+        self.note_id = note_id
+        self.image_file = image_file
+
     def to_dict(self):
         return {
             'id': self.id,

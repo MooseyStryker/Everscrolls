@@ -12,13 +12,13 @@ export default function PostImageModal({noteId, closeModal}) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append("image", image);
+        formData.append("image_file", image);
+        formData.append("note_id", noteId)
 
         // aws uploads can be a bit slow—displaying
         // some sort of loading message is a good idea
         setImageLoading(true);
         const res = await dispatch(thunkPostImage(noteId, formData));
-        console.log("🚀 ~ handleSubmit ~ res:", res)
         closeModal()
     }
 

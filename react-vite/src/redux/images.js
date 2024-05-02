@@ -33,7 +33,7 @@ export const thunkGetAllImages = (noteId) => async (dispatch) => {
 export const thunkPostImage = (noteId, image) => async (dispatch) => {
     const response = await fetch(`/api/notes/${noteId}/images`,{
         method: "POST",
-        body: JSON.stringify(image),
+        body: image,    // AWS uses formData, which cannot be json stringified.
     });
     console.log("🚀 ~ thunkPostImage ~ response:", response)
     const { data } = await response.json();
