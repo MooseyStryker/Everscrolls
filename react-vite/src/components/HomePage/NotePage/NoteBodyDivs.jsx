@@ -21,7 +21,7 @@ export default function NoteBodyDivs({noteid}) {
         if (e.key === 'Enter') {                                                    // Hitting return will make a new div and put a useRef to the next div
             e.preventDefault();                                                     // prevents us from going to the new line
             handleSaveToLocal();                                                    // await allows the save to finish before creating a new line
-            const newDiv = { id: divs.length + 1, text: '', ref: createRef() };         // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data
+            const newDiv = { id: divs.length + 1, text: '', ref: createRef() };         // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data.
             const index = divs.findIndex(div => div.id === id);
             setDivs([...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)]);
             setTimeout(() => newDiv.ref.current.focus(), 0);                            // focus the new input element
