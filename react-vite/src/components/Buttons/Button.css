@@ -10,8 +10,7 @@ button {
 }
 
 button:hover {
-    /* Darker sea color */
-    background-color: #187bcd;
+    background-color: #1c96f9;
 }
 
 button:active {

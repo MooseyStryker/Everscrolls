@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { thunkGetSharedUser } from "../../../redux/finduser"
 import { thunkPostSharedNote } from "../../../redux/sharenote"
 import { thunkGetAllSharedNotesByNoteId } from "../../../redux/sharenote"
+import './ShareNoteModal.css'
 
-export default function ShareNoteModal({noteId, closeModal}){
-    const currentUser = useSelector(state => state.session.user)
+export default function ShareNoteModal({noteId, closeModal, note, sessionUser}){
+    console.log("🚀 ~ ShareNoteModal ~ note:", note)
     const [errors, setErrors] = useState('')
     const [shareWithUser, setShareWithUser] = useState('')
     const [showUsername, setShowUsername] = useState(false)
@@ -18,7 +19,11 @@ export default function ShareNoteModal({noteId, closeModal}){
 
 
 
-        if (!info.findUser.error){
+        if (email === sessionUser.email){
+            setShareWithUser('')
+            return setErrors("You cannot share your note using your email")
+
+        } else if (!info.findUser.error){
             setShowUsername(true)
             setErrors('')
         } else {
@@ -64,24 +69,34 @@ export default function ShareNoteModal({noteId, closeModal}){
     }
 
     return(
-        <>
-         Sharing this note? {noteId}
+        <div className="ShareNoteModalContainer">
 
-         <div>
-            <label>
-                Email this note to find user:
-                <input value={email} placeholder="email" onChange={(e) => setEmail(e.target.value)} />
-            </label>
-            <button onClick={() => handleFindUser()}>Find User</button>
             <div>
-                {shareWithUser && <div>Send this note to: {shareWithUser.username}?</div>}
-                {errors && <p className="p-errors">{errors}</p>}
+                <h2>
+                    Who would you like to share "{note?.note_title || note?.title}" with?
+                </h2>
             </div>
-         </div>
-         <div>
-            <button disabled={!shareWithUser} onClick={() => sendShareNote()}>Send</button>
-            <button onClick={() => closeModal()}>Cancel</button>
-         </div>
-        </>
+
+            <div className="findusercontainer">
+                <div>
+                <label>
+                    Use their email to send this note to:
+                    <input style={{marginLeft:'5px'}} value={email} placeholder="email" onChange={(e) => setEmail(e.target.value)} />
+                </label>
+                </div>
+                <div>
+                    <button onClick={() => handleFindUser()}>Find User by Email</button>
+                </div>
+                <div>
+                    {shareWithUser && <div>Send this note to "{shareWithUser.username}"?</div>}
+                    {errors && <p className="p-errors">{errors}</p>}
+                </div>
+            </div>
+            {shareWithUser && <div className="sharenotesmodalbuttons">
+                <button disabled={!shareWithUser} onClick={() => sendShareNote()}>Send</button>
+                <button className="cancelbuttoninsharenotesmodal" onClick={() => closeModal()}>Cancel</button>
+            </div>}
+
+        </div>
     )
 }

@@ -62,7 +62,7 @@ export default function AllNotesAndTasks() {
                                         <button disabled={showAllNotes} style={{backgroundColor: showAllNotes ? 'grey' : '',cursor: showAllNotes ? 'not-allowed' : 'pointer'}} onClick={() => {setShowJustShare(false); setShowAllNotes(true)}}>All Notes</button>
                                     </div>
                                     <div className="note-individual">
-                                        {showAllNotes && <AllNotes />}
+                                        {showAllNotes && <AllNotes currentUser={sessionUser}/>}
                                         {showJustShare && <SharedAllNotes user={sessionUser}/>}
                                     </div>
                                 </div>

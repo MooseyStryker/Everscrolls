@@ -47,17 +47,27 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    margin: 4px;
     margin-top: 10px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgb(226, 226, 226);
 }
 
 .sharebuttoninnotes{
     margin-right: 10px;
+    margin-bottom: 5px;
+    padding: 10px 20px;
+    border: none;
+    color: white;
+    background-color: #000000;
+    transition: background-color 0.3s ease;
+}
+.sharebuttoninnotes:hover {
+    background-color: #00b3b3;
 }
 
 .notesinfocontainer{
     /* margin-top: 40px; */
-    padding-top: 50px;
+    padding-top: 30px;
     display: flex;
     justify-content: center;
     background-color: white;

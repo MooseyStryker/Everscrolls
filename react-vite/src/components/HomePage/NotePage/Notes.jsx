@@ -32,7 +32,7 @@ export default function NoteHomePage() {
 
 
     const handleShareNote = () => {
-        setModalContent(<ShareNoteModal noteId={noteid} closeModal={closeModal}/>)
+        setModalContent(<ShareNoteModal noteId={noteid} note={currentNote} closeModal={closeModal} sessionUser={sessionUser}/>)
     }
 
     const handleTitleClick = () => {

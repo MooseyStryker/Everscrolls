@@ -1,0 +1,30 @@
+.ShareNoteModalContainer{
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 200px;
+}
+
+.findusercontainer{
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    height: 85px
+}
+
+
+.sharenotesmodalbuttons{
+    display: flex;
+    justify-content: space-around;
+    width: 400px
+}
+
+.cancelbuttoninsharenotesmodal{
+    background-color: #DB3545;
+}
+
+.cancelbuttoninsharenotesmodal:hover{
+    background-color: #9e2632;
+}
