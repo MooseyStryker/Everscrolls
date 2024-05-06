@@ -95,22 +95,8 @@ export default function LoginPage() {
     }
 
     const handleDemoUser = async() => {
-        setEmail('user1@aa.io')
-        setPassword('password')
-        // const demoUser = {
-        //     email: email,
-        //     password: password
-        // };
-
-
-        // const serverResponse = await dispatch(thunkLogin(demoUser));
-
-        // if (serverResponse) {
-
-        //     setErrors(serverResponse);
-        // } else {
-        //     navigate("/home");
-        // }
+        setEmail('captainjames@starfleet.com')
+        setPassword('password123')
     }
 
 

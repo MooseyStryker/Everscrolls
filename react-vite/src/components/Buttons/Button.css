@@ -1,19 +1,11 @@
 button {
-    /* Sea color */
     background-color: #1E90FF;
-    /* White text */
     color: white;
-    /* Rounded corners */
     border-radius: 12px;
-    /* Add some padding */
     padding: 10px 24px;
-    /* No border */
     border: none;
-    /* Add some text shadow for a more "deep sea" look */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, .5);
-    /* Add some box shadow for a 3D look */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
-    /* Add a smooth transition effect for the hover and active states */
+    /* box-shadow: 0 10px 20px rgba(0, 0, 0, .2); */
     transition: background-color .3s, transform .3s;
 }
 

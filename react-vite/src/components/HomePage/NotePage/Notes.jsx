@@ -80,7 +80,9 @@ export default function NoteHomePage() {
                 </div>
                 <div className="main-notes-page">
 
-                    <button onClick={() => handleShareNote()}> Share Note </button>
+                    <div className="sharebuttoncontainer">
+                        <button className="sharebuttoninnotes" onClick={() => handleShareNote()}> Share Note </button>
+                    </div>
 
                     <div className="notesinfocontainer">
                         <div className="notesinfo">
