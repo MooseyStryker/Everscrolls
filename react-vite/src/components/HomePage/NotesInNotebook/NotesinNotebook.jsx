@@ -62,7 +62,7 @@ export default function AllNotesInNotebook({ notebook }) {
                     </div>
 
                     <div onClick={() => handleNavigate(note.id)} className="singlenote" key={note.id}>
-                        <h2 style={{marginBottom:'15px'}}>{note.note_title && note.note_title.length > 20 ? `${note.note_title.substring(0, 14)}...` : note.note_title}</h2>
+                        <h2 style={{marginBottom:'15px'}}>{note.note_title && note.note_title.length > 14 ? `${note.note_title.substring(0, 14)}...` : note.note_title}</h2>
                         <div>
                             {note.bodies && note.bodies.slice(0, 4).map((body, index) => (
                                 <p key={index}>

@@ -76,7 +76,7 @@ export default function AllNotes() {
                         <FaTimes />
                     </div>
                         <div className="singlenote" key={note.id}>
-                            <h3>{note.note_title && note.note_title.length > 20 ? `${note.note_title.substring(0, 14)}...` : note.note_title}</h3>      {/* This prevents bleeding through the div  */}
+                            <h3>{note.note_title && note.note_title.length > 14 ? `${note.note_title.substring(0, 14)}...` : note.note_title}</h3>      {/* This prevents bleeding through the div  */}
                             <div>{sharedNotes.filter(shareNote => shareNote.note_id === note.id).length > 0 && <FaShareFromSquare />}</div>             {/* This shows a share icon if share notes is found on the join table  */}
                             <div>
                                 {note.bodies && note.bodies.slice(0, 4).map((body, index) => (
