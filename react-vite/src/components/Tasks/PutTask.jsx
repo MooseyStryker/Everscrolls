@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { thunkPostTask, thunkUpdateTask } from "../../redux/tasks"
+import { thunkUpdateTask } from "../../redux/tasks"
+import DeleteTask from "./DeleteTask"
 
-export default function PutTask({ task, closeModal }){
+export default function PutTask({ task, closeModal, setModalContent }){
     const dispatch = useDispatch()
     const whichNote = useSelector((state) => state.notes)
     const noteObj = Object.values(whichNote)

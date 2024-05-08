@@ -7,8 +7,9 @@ import { thunkPostNotebody } from "../../../redux/notebody";
 export default function ScratchToNotesPostIndivNotebook({ notebook, closeModal }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [selectedNotebookId, setSelectedNotebookId] = useState(notebook?.id);
+    const [selectedNotebookId] = useState(notebook?.id);
     const [title, setTitle] = useState('');  // New state for the note title
+    const [setErrors] = useState({})
 
     const handleNewNote = async () => {
         const newNote = {
@@ -58,7 +59,7 @@ export default function ScratchToNotesPostIndivNotebook({ notebook, closeModal }
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}  // Update the title state when the input changes
                     />
-                    <h5 style={{marginBottom:'5px', marginLeft:'2px'}}>This note will go into: "{notebook.notebook_name}"</h5>
+                    <h5 style={{marginBottom:'5px', marginLeft:'2px'}}>This note will go into: &quot;{notebook.notebook_name}&ldquo;</h5>
                     {/* <select onChange={(e) => setSelectedNotebookId(e.target.value)}>
                         {notebooks.map(notebook => (
                             <option key={notebook.id} value={notebook.id}>

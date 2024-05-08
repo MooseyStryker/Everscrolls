@@ -1,26 +1,30 @@
 import React from 'react';
-import {useSortable} from '@dnd-kit/sortable';
-import {CSS} from '@dnd-kit/utilities';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
-import { Item } from './Item';
+export function SortableItem({ id, value, handleKeyPress, handleTextChange }) {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+    } = useSortable({ id });
 
-export function SortableItem(props) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({id: props.id});
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <Item ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      {value}
-    </Item>
-  );
+    return (
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+            <textarea
+                className="noteinput"
+                value={value}
+                onChange={(e) => handleTextChange(e, id)}
+                onKeyDown={(e) => handleKeyPress(e, id)}
+                ref={setNodeRef}
+            />
+        </div>
+    );
 }

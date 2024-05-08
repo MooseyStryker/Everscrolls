@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import { thunkPostImage } from "../../redux/images";
 import { useDispatch } from "react-redux";
 
@@ -18,7 +18,8 @@ export default function PostImageModal({noteId, closeModal}) {
         // aws uploads can be a bit slow—displaying
         // some sort of loading message is a good idea
         setImageLoading(true);
-        const res = await dispatch(thunkPostImage(noteId, formData));
+        await dispatch(thunkPostImage(noteId, formData));
+
         closeModal()
     }
 

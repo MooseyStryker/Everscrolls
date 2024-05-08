@@ -85,7 +85,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/home/note/:noteid",
-        element: <NotesWithDragAndDrop />,
+        element: <NoteHomePage />,
       },
       // Add other child routes specific to /home here
     ],
@@ -119,7 +119,7 @@ function NotesWithDragAndDrop(){
         return arrayMove(items, oldIndex, newIndex);
       });
     }
-    setActiveId(null);
+
   }
 
   return (

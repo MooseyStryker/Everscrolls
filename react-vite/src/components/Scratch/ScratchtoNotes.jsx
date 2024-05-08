@@ -9,6 +9,7 @@ export default function ScratchToNotesPost({ closeModal, notebooks }) {
     const navigate = useNavigate();
     const [selectedNotebookId, setSelectedNotebookId] = useState(notebooks[0]?.id);
     const [title, setTitle] = useState('');  // New state for the note title
+    const [setErrors] = useState({})
 
     const handleNewNote = async () => {
         const newNote = {

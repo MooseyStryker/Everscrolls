@@ -4,6 +4,25 @@ import { Outlet, useNavigate} from "react-router-dom";
 import './Notes.css'
 import { thunkDeleteAllNoteBody, thunkPostNotebody } from "../../../redux/notebody";
 
+import {
+    closestCenter,
+    DndContext,
+    DragOverlay,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+  } from '@dnd-kit/core';
+  import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    verticalListSortingStrategy,
+  } from '@dnd-kit/sortable';
+
+  import { SortableItem } from "../../../router/SortableItem";
+  import { Item } from "../../../router/Item";
+
 
 
 
@@ -146,22 +165,35 @@ export default function NoteBodyDivs({noteid}) {
         });
     }, [divs]);
 
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
+
+    function handleDragEnd(event) {
+        const {active, over} = event;
+
+        if (active.id !== over.id) {
+            setDivs((divs) => {
+                const oldIndex = divs.findIndex(div => div.id.toString() === active.id);
+                const newIndex = divs.findIndex(div => div.id.toString() === over.id);
+
+                return arrayMove(divs, oldIndex, newIndex);
+            });
+        }
+    }
 
     return(
         <>
-            <div>
-                {divs.map(div => (
-                    <div key={div.id}>
-                        <textarea
-                            className="noteinput"
-                            value={div.text}
-                            onChange={(e) => handleTextChange(e, div.id)}
-                            onKeyDown={(e) => handleKeyPress(e, div.id)}
-                            ref={div.ref}
-                        />
-                    </div>
-                ))}
-            </div>
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                <SortableContext items={divs.map(div => div.id.toString())} strategy={verticalListSortingStrategy}>
+                    {divs.map(div => (
+                        <SortableItem key={div.id} id={div.id.toString()} value={div.text} handleTextChange={handleTextChange} handleKeyPress={handleKeyPress} />
+                    ))}
+                </SortableContext>
+            </DndContext>
         </>
     )
 }

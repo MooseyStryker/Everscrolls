@@ -38,11 +38,11 @@ export default function PostTaskInNote({ closeModal, singleNoteId, noteTitle }){
             setNoteId(noteObj[0].id);
         }
 
-    }, [noteObj, singleNoteId]);
+    }, [noteObj, singleNoteId, dispatch]);
 
     useEffect(() => {
         dispatch(thunkGetAllNotes())
-    }, []) // Run only on mount
+    }, [dispatch]) // Run only on mount
 
 
 
@@ -52,7 +52,7 @@ export default function PostTaskInNote({ closeModal, singleNoteId, noteTitle }){
         <>
             <form onSubmit={handleTaskSubmit} className="form">
                 <div className="form-div">
-                    <h2>Adding a task to the note: "{noteTitle}"</h2>
+                    <h2>Adding a task to the note: &quot;{noteTitle}&ldquo;</h2>
                 </div>
                 <div className="form-div">
                     <label className="form-label">
