@@ -13,24 +13,26 @@ export default function NoteBodyDivs({noteid}) {
     const [prevNoteBody, setPrevNoteBody] = useState({});
     const [dbUpload, setDbUpload] = useState(false)
     const [divs, setDivs] = useState([{ id: 1, text: 'Hi! Start Here!', ref: createRef() }]);
-
-
+    console.log("🚀 ~ NoteBodyDivs ~ divs:", divs)
 
 
     const handleKeyPress = async(e, id) => {
-        if (e.key === 'Enter') {                                                    // Hitting return will make a new div and put a useRef to the next div
-            e.preventDefault();                                                     // prevents us from going to the new line
-            handleSaveToLocal();                                                    // await allows the save to finish before creating a new line
-            const newDiv = { id: divs.length + 1, text: '', ref: createRef() };         // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data.
+        if (e.key === 'Enter') {                                                        // Hitting return will make a new div and put a useRef to the next div
+            e.preventDefault();
+            const newDiv = { id: divs.length + 1, text: 'We been added', ref: createRef() };         // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data.
             const index = divs.findIndex(div => div.id === id);
             setDivs([...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)]);
-            setTimeout(() => newDiv.ref.current.focus(), 0);                            // focus the new input element
+
+            setTimeout(() => newDiv.ref.current.focus(), 0);                        // focus the new input element
+            return handleSaveToLocal();                                                        // await allows the save to finish before creating a new line
+
+
         }
         if (e.key === 'Backspace') {
             const index = divs.findIndex(div => div.id === id);
             if (divs[index].text === '' && divs.length > 1) {                           // Check if divs length is greater than 1 which prevents user from deleting all the divs
                 e.preventDefault();                                                     // prevents the default delete action
-                handleSaveToLocal();                                                    // await allows the delete to be saved
+                await handleSaveToLocal();                                                    // await allows the delete to be saved
                 const newDivs = [...divs];
                 newDivs.splice(index, 1);
                 setDivs(newDivs);
@@ -42,9 +44,10 @@ export default function NoteBodyDivs({noteid}) {
             }
         }
         if(e.key){
-            handleSaveToLocal()
+            await handleSaveToLocal()
         }
     };
+
 
     const handleTextChange = (e, id) => {
         e.target.style.height = 'inherit';                     // Resets the height when we add text to the textarea
@@ -158,7 +161,7 @@ export default function NoteBodyDivs({noteid}) {
                             onChange={(e) => handleTextChange(e, div.id)}
                             onKeyDown={(e) => handleKeyPress(e, div.id)}
                             ref={div.ref}
-                        />
+                            />
                     </div>
                 ))}
             </div>
