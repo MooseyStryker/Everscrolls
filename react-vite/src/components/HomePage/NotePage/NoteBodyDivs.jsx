@@ -12,7 +12,7 @@ export default function NoteBodyDivs({noteid}) {
     const currentNoteBody = useSelector((state) => state.notebody)
     const [prevNoteBody, setPrevNoteBody] = useState({});
     const [dbUpload, setDbUpload] = useState(false)
-    const [divs, setDivs] = useState([{ id: 1, text: 'Hi! Start Here!', ref: createRef() }]);
+    const [divs, setDivs] = useState([{ id: 1, text: 'Hi! Start Here!', ref: createRef(), placeholder: 'Enter \'/\' to view more options' }]);
 
 
 
@@ -21,7 +21,7 @@ export default function NoteBodyDivs({noteid}) {
         if (e.key === 'Enter') {                                                    // Hitting return will make a new div and put a useRef to the next div
             e.preventDefault();                                                     // prevents us from going to the new line
             handleSaveToLocal();                                                    // await allows the save to finish before creating a new line
-            const newDiv = { id: divs.length + 1, text: '', ref: createRef() };         // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data.
+            const newDiv = { id: divs.length + 1, text: '', ref: createRef(), placeholder: 'Enter \'/\' to view more options' };         // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data.
             const index = divs.findIndex(div => div.id === id);
             setDivs([...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)]);
             setTimeout(() => newDiv.ref.current.focus(), 0);                            // focus the new input element
@@ -147,6 +147,21 @@ export default function NoteBodyDivs({noteid}) {
     }, [divs]);
 
 
+    /* This allows a place holder to occur letting the user know to press '/', but only when the the user clicks the div */
+    const handleOnBlur = (id) => {
+        setDivs(divs.map(div => div.id === id ? { ...div, placeholder: '' } : div));
+    }
+
+    const handleOnFocus = (id) => {
+        setDivs(divs.map(div => div.id === id ? { ...div, placeholder: 'Enter \'/\' to view more options' } : div));
+    }
+
+    const handleShortCut = () => {
+        const divShortCut = divs.find(div => div.text.slice(0,1) === '/')
+        console.log("🚀 ~ handleShortCut ~ divShortCut:", divShortCut)
+    }
+    handleShortCut()
+
     return(
         <>
             <div>
@@ -158,6 +173,9 @@ export default function NoteBodyDivs({noteid}) {
                             onChange={(e) => handleTextChange(e, div.id)}
                             onKeyDown={(e) => handleKeyPress(e, div.id)}
                             ref={div.ref}
+                            placeholder={div.placeholder}
+                            onBlur={() => handleOnBlur(div.id)}
+                            onFocus={() => handleOnFocus(div.id)}
                         />
                     </div>
                 ))}
