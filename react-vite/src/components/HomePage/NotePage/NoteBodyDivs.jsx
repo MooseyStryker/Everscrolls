@@ -19,39 +19,38 @@ export default function NoteBodyDivs({noteid}) {
     const handleKeyPress = async(e, id) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            handleSaveToLocal();
-            const newDiv = { id: divs.length + 1, text: '', ref: createRef() };
-            const index = divs.findIndex(div => div.id === id);
-            const newDivs = [...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)];
 
-            const reorderedDivs = newDivs.map((div, i) => {
+            const newDiv = { id: divs.length + 1, text: '', ref: createRef() };                 // Creates a new div when hitting return
+            const index = divs.findIndex(div => div.id === id);                                 // Finds the index using the id of the div that the keypress occured in
+            const newDivs = [...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)];    // Slices and spreads the info of the divs state from the 0 index, to the index of the id, placing the newDiv in place, then spreading the remaining info of the divs state
+
+            const reorderedDivs = newDivs.map((div, i) => {                                     // Manually reorder the divs due to automatically reordering not occuring fast enough
                 return { ...div, id: i + 1 };
             });
-            setDivs(reorderedDivs);
+            setDivs(reorderedDivs);                                                             // setDivs for the same reason, to reorder faster
 
-            const newRef = reorderedDivs.find(div => div.id === (id + 1))
-            console.log("🚀 ~ handleKeyPress ~ newRef:", newRef)
+            const newRef = reorderedDivs.find(div => div.id === (id + 1))                       // Finds the new reference by incrementing the id by 1.
 
-            setTimeout(() => newRef.ref.current.focus(), 0);
-            console.log("end of enter key")
+            setTimeout(() => newRef.ref.current.focus(), 0);                                    // When a user hits return/enter it moves the reference to the next div
+            handleSaveToLocal();                                                                // Saves to local storage when done
         }
         if (e.key === 'Backspace') {
             const index = divs.findIndex(div => div.id === id);
-            if (divs[index].text === '' && divs.length > 1) {                           // Check if divs length is greater than 1 which prevents user from deleting all the divs
-                e.preventDefault();                                                     // prevents the default delete action
-                await handleSaveToLocal();                                                    // await allows the delete to be saved
+            if (divs[index].text === '' && divs.length > 1) {                                   // Check if divs length is greater than 1 which prevents user from deleting all the divs
+                e.preventDefault();                                                             // prevents the default delete action
                 const newDivs = [...divs];
                 newDivs.splice(index, 1);
                 setDivs(newDivs);
                 if (newDivs[index]) {
-                    setTimeout(() => newDivs[index].ref.current.focus(), 0);            // focus the next input element
+                    setTimeout(() => newDivs[index].ref.current.focus(), 0);                    // focus the next input element
                 } else if (newDivs[index - 1]) {
-                    setTimeout(() => newDivs[index - 1].ref.current.focus(), 0);         // focus the previous input element
+                    setTimeout(() => newDivs[index - 1].ref.current.focus(), 0);                 // focus the previous input element
                 }
+                handleSaveToLocal();                                                            // await allows the delete to be saved
             }
         }
         if(e.key){
-            await handleSaveToLocal()
+            handleSaveToLocal()
         }
     };
 
