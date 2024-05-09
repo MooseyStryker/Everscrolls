@@ -17,20 +17,23 @@ export default function NoteBodyDivs({noteid}) {
 
 
     const handleKeyPress = async(e, id) => {
-        if (e.key === 'Enter') {                                                        // Hitting return will make a new div and put a useRef to the next div
+        if (e.key === 'Enter') {
             e.preventDefault();
-            const newDiv = { id: divs.length + 1, text: '', ref: createRef() };         // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data.
+            handleSaveToLocal();
+            const newDiv = { id: divs.length + 1, text: '', ref: createRef() };
             const index = divs.findIndex(div => div.id === id);
-            console.log("🚀 ~ handleKeyPress ~ index:", index)
-            setDivs([...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)]);
+            const newDivs = [...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)];
 
-            const nextDivOver = divs.find(div => div.id === index+1)
-            console.log("🚀 ~ handleKeyPress ~ nextDivOver:", nextDivOver)
+            const reorderedDivs = newDivs.map((div, i) => {
+                return { ...div, id: i + 1 };
+            });
+            setDivs(reorderedDivs);
 
-            setTimeout(() => nextDivOver.ref.current.focus(), 0);                             // focus the new input element
-            return handleSaveToLocal();                                                 // await allows the save to finish before creating a new line
+            const newRef = reorderedDivs.find(div => div.id === (id + 1))
+            console.log("🚀 ~ handleKeyPress ~ newRef:", newRef)
 
-
+            setTimeout(() => newRef.ref.current.focus(), 0);
+            console.log("end of enter key")
         }
         if (e.key === 'Backspace') {
             const index = divs.findIndex(div => div.id === id);
