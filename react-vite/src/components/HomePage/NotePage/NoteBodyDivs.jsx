@@ -19,12 +19,16 @@ export default function NoteBodyDivs({noteid}) {
     const handleKeyPress = async(e, id) => {
         if (e.key === 'Enter') {                                                        // Hitting return will make a new div and put a useRef to the next div
             e.preventDefault();
-            const newDiv = { id: divs.length + 1, text: 'We been added', ref: createRef() };         // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data.
+            const newDiv = { id: divs.length + 1, text: '', ref: createRef() };         // Open a new div, but focused on the .length so it doesnt accidentally reassign an id that will over write my data.
             const index = divs.findIndex(div => div.id === id);
+            console.log("🚀 ~ handleKeyPress ~ index:", index)
             setDivs([...divs.slice(0, index + 1), newDiv, ...divs.slice(index + 1)]);
 
-            setTimeout(() => newDiv.ref.current.focus(), 0);                        // focus the new input element
-            return handleSaveToLocal();                                                        // await allows the save to finish before creating a new line
+            const nextDivOver = divs.find(div => div.id === index+1)
+            console.log("🚀 ~ handleKeyPress ~ nextDivOver:", nextDivOver)
+
+            setTimeout(() => nextDivOver.ref.current.focus(), 0);                             // focus the new input element
+            return handleSaveToLocal();                                                 // await allows the save to finish before creating a new line
 
 
         }
